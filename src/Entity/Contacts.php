@@ -3,16 +3,14 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\AgentsRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Repository\ContactsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
- * @ORM\Entity(repositoryClass=AgentsRepository::class)
+ * @ORM\Entity(repositoryClass=ContactsRepository::class)
  */
-class Agents
+class Contacts
 {
     /**
      * @ORM\Id
@@ -37,9 +35,9 @@ class Agents
     private $birthDate;
 
     /**
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(type="string", length=255)
      */
-    private $indentificationCode;
+    private $codeName;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -47,20 +45,10 @@ class Agents
     private $nationality;
 
     /**
-     * @ORM\OneToMany(targetEntity=Specialties::class, mappedBy="agents")
-     */
-    private $agentSpecialties;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Missions::class, inversedBy="agentMission")
+     * @ORM\ManyToOne(targetEntity=Missions::class, inversedBy="contactMission")
      * @ORM\JoinColumn(nullable=false)
      */
     private $missions;
-
-    public function __construct()
-    {
-        $this->agentSpecialties = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -103,14 +91,14 @@ class Agents
         return $this;
     }
 
-    public function getIndentificationCode(): ?string
+    public function getCodeName(): ?string
     {
-        return $this->indentificationCode;
+        return $this->codeName;
     }
 
-    public function setIndentificationCode(string $indentificationCode): self
+    public function setCodeName(string $codeName): self
     {
-        $this->indentificationCode = $indentificationCode;
+        $this->codeName = $codeName;
 
         return $this;
     }
@@ -123,36 +111,6 @@ class Agents
     public function setNationality(string $nationality): self
     {
         $this->nationality = $nationality;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Specialties[]
-     */
-    public function getAgentSpecialties(): Collection
-    {
-        return $this->agentSpecialties;
-    }
-
-    public function addAgentSpecialty(Specialties $agentSpecialty): self
-    {
-        if (!$this->agentSpecialties->contains($agentSpecialty)) {
-            $this->agentSpecialties[] = $agentSpecialty;
-            $agentSpecialty->setAgents($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAgentSpecialty(Specialties $agentSpecialty): self
-    {
-        if ($this->agentSpecialties->removeElement($agentSpecialty)) {
-            // set the owning side to null (unless already changed)
-            if ($agentSpecialty->getAgents() === $this) {
-                $agentSpecialty->setAgents(null);
-            }
-        }
 
         return $this;
     }

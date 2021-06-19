@@ -30,6 +30,11 @@ class Specialties
      */
     private $agents;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Missions::class, mappedBy="specialtieMission", cascade={"persist", "remove"})
+     */
+    private $missions;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -55,6 +60,23 @@ class Specialties
     public function setAgents(?Agents $agents): self
     {
         $this->agents = $agents;
+
+        return $this;
+    }
+
+    public function getMissions(): ?Missions
+    {
+        return $this->missions;
+    }
+
+    public function setMissions(Missions $missions): self
+    {
+        // set the owning side of the relation if necessary
+        if ($missions->getSpecialtieMission() !== $this) {
+            $missions->setSpecialtieMission($this);
+        }
+
+        $this->missions = $missions;
 
         return $this;
     }
