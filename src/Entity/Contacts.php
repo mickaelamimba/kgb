@@ -2,12 +2,30 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ContactsRepository;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *       collectionOperations={"get"={
+ *          "normalization_context"={"groups"={"contacts_read"}},
+ *     },
+ *     "post"
+ *     },
+ *
+ *     itemOperations={
+ *         "get",
+ *         "put",
+ *        "delete",
+ *
+ *     }
+ * )
+ * @ApiFilter(OrderFilter::class, properties={"lastName","birthDate"
+ * ,"firstName","nationality","missions"})
  * @ORM\Entity(repositoryClass=ContactsRepository::class)
  */
 class Contacts
@@ -16,37 +34,45 @@ class Contacts
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"contacts_read","missions_read_operation"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"contacts_read","missions_read_operation"})
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"contacts_read","missions_read_operation"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups({"contacts_read","missions_read_operation"})
      */
     private $birthDate;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"contacts_read","missions_read_operation"})
      */
     private $codeName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"contacts_read","missions_read_operation"})
      */
     private $nationality;
 
     /**
      * @ORM\ManyToOne(targetEntity=Missions::class, inversedBy="contactMission")
      * @ORM\JoinColumn(nullable=false)
+     *
+     *
      */
     private $missions;
 

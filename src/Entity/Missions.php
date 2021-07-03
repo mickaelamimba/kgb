@@ -2,14 +2,38 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\MissionsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *          collectionOperations={"get"={
+ *     "normalization_context"={"groups"={"missions_read"}},
+ *
+ *     },
+ *     "post"
+ *     },
+ *
+ *     itemOperations={
+ *         "get"={"normalization_context"={"groups"={"missions_read_operation"}}},
+ *         "put",
+ *      "delete",
+ *
+ *     }
+ *
+ *
+ * )
+ * @ApiFilter(OrderFilter::class, properties={"title","country"})
+ * @ApiFilter(SearchFilter::class,properties={"id": "exact","title":"exact",
+ *     "description":"partial","codeName":"exact","country":"partial"})
  * @ORM\Entity(repositoryClass=MissionsRepository::class)
  */
 class Missions
@@ -18,72 +42,94 @@ class Missions
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *@Groups({"missions_read","missions_read_operation"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"missions_read","missions_read_operation"})
+     *
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"missions_read","missions_read_operation"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"missions_read","missions_read_operation"})
+     *
      */
     private $codeName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"missions_read","missions_read_operation"})
+     *
      */
     private $country;
 
     /**
      * @ORM\OneToMany(targetEntity=Agents::class, mappedBy="missions", orphanRemoval=true)
+     * @Groups({"missions_read_operation"})
+     *
      */
     private $agentMission;
 
     /**
      * @ORM\OneToMany(targetEntity=Contacts::class, mappedBy="missions", orphanRemoval=true)
+     *@Groups({"missions_read_operation"})
+     *
      */
     private $contactMission;
 
     /**
      * @ORM\OneToMany(targetEntity=Targets::class, mappedBy="missions", orphanRemoval=true)
+     *@Groups({"missions_read_operation"})
+     *
      */
     private $targetMission;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *@Groups({"missions_read","missions_read_operation"})
+     *
      */
     private $missionType;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Le statut de la mission est obligatoire")
+     *@Groups({"missions_read","missions_read_operation"})
      */
     private $status;
 
     /**
      * @ORM\ManyToMany(targetEntity=Stashs::class, inversedBy="missions")
+     *@Groups({"missions_read_operation"})
      */
     private $stashMission;
 
     /**
      * @ORM\Column(type="date")
+     *@Groups({"missions_read_operation"})
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="date")
+     *@Groups({"missions_read_operation"})
      */
     private $endDate;
 
     /**
      * @ORM\OneToOne(targetEntity=Specialties::class, inversedBy="missions", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     *@Groups({"missions_read_operation"})
      */
     private $specialtieMission;
 

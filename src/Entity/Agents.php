@@ -2,14 +2,34 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use App\Repository\AgentsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *          collectionOperations={"get"={
+ *          "normalization_context"={"groups"={"agents_read"}},
+ *     },
+ *     "post"
+ *     },
+ *
+ *     itemOperations={
+ *         "get",
+ *         "put",
+ *         "delete",
+ *
+ *     }
+ *
+ *
+ * )
+ * @ApiFilter(OrderFilter::class, properties={"lastName","birthDate"
+ * ,"firstName","nationality","missions","agentSpecialties"})
  * @ORM\Entity(repositoryClass=AgentsRepository::class)
  */
 class Agents
@@ -18,42 +38,50 @@ class Agents
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *@Groups({"agents_read","missions_read_operation"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"agents_read","missions_read_operation"})
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *  @Groups({"agents_read","missions_read_operation"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="date")
+     *  @Groups({"agents_read","missions_read_operation"})
      */
     private $birthDate;
 
     /**
      * @ORM\Column(type="bigint")
+     *  @Groups({"agents_read","missions_read_operation"})
      */
     private $indentificationCode;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *  @Groups({"agents_read","missions_read_operation"})
      */
     private $nationality;
 
     /**
-     * @ORM\OneToMany(targetEntity=Specialties::class, mappedBy="agents")
+     * @ORM\ManyToMany(targetEntity=Specialties::class, inversedBy="agents")
+     *
      */
     private $agentSpecialties;
 
     /**
      * @ORM\ManyToOne(targetEntity=Missions::class, inversedBy="agentMission")
      * @ORM\JoinColumn(nullable=false)
+     *
      */
     private $missions;
 
@@ -139,7 +167,7 @@ class Agents
     {
         if (!$this->agentSpecialties->contains($agentSpecialty)) {
             $this->agentSpecialties[] = $agentSpecialty;
-            $agentSpecialty->setAgents($this);
+
         }
 
         return $this;
@@ -147,12 +175,9 @@ class Agents
 
     public function removeAgentSpecialty(Specialties $agentSpecialty): self
     {
-        if ($this->agentSpecialties->removeElement($agentSpecialty)) {
-            // set the owning side to null (unless already changed)
-            if ($agentSpecialty->getAgents() === $this) {
-                $agentSpecialty->setAgents(null);
-            }
-        }
+        $this->agentSpecialties->removeElement($agentSpecialty);
+
+
 
         return $this;
     }

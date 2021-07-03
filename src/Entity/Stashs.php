@@ -7,9 +7,25 @@ use App\Repository\StashsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *              collectionOperations={"get"={
+ *          "normalization_context"={"groups"={"stashs_read"}},
+ *     },
+ *     "post"
+ *     },
+ *
+ *     itemOperations={
+ *         "get",
+ *         "put",
+ *        "delete",
+ *
+ *     }
+ *
+ *
+ * )
  * @ORM\Entity(repositoryClass=StashsRepository::class)
  */
 class Stashs
@@ -18,31 +34,37 @@ class Stashs
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"stashs_read","missions_read_operation"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="bigint")
+     * @Groups({"stashs_read","missions_read_operation"})
      */
     private $code;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"stashs_read","missions_read_operation"})
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"stashs_read","missions_read_operation"})
      */
     private $country;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"stashs_read","missions_read_operation"})
      */
     private $type;
 
     /**
      * @ORM\ManyToMany(targetEntity=Missions::class, mappedBy="stashMission")
+     * 
      */
     private $missions;
 

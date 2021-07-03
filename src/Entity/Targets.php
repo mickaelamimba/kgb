@@ -5,9 +5,23 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\TargetsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *      collectionOperations={"get"={
+ *          "normalization_context"={"groups"={"tatgets_read"}},
+ *     },
+ *     "post"
+ *     },
+ *
+ *     itemOperations={
+ *         "get",
+ *         "put",
+ *        "delete",
+ *
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=TargetsRepository::class)
  */
 class Targets
@@ -16,37 +30,44 @@ class Targets
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"tatgets_read","missions_read_operation"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"tatgets_read","missions_read_operation"})
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"tatgets_read","missions_read_operation"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups({"tatgets_read","missions_read_operation"})
      */
     private $birthDate;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"tatgets_read","missions_read_operation"})
      */
     private $codeName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"tatgets_read","missions_read_operation"})
      */
     private $nationality;
 
     /**
      * @ORM\ManyToOne(targetEntity=Missions::class, inversedBy="targetMission")
      * @ORM\JoinColumn(nullable=false)
+     *
      */
     private $missions;
 
