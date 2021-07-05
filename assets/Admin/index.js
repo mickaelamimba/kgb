@@ -1,16 +1,11 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from "./App";
 import '../styles/app.css'
 import {Provider} from "react-redux";
 import store from '../Store/'
 
 import {BrowserRouter} from "react-router-dom";
-
-
-
-
+import Admin from "../Admin/Admin";
 
 
 
@@ -20,10 +15,12 @@ ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
             <BrowserRouter>
-                        <App />
+
+                <Admin />
+
             </BrowserRouter>
         </Provider>
 
     </React.StrictMode>,
-    document.getElementById('root')
+    document.getElementById('root_admin')
 );

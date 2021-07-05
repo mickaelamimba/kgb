@@ -1,27 +1,33 @@
 import React from "react";
+import {Box, Flex, Heading, Paragraph} from "theme-ui";
 const Agent =({firstName,indentificationCode,lastName,nationality,birthDate})=>{
     return(
         <React.Fragment>
-            <article>
-                <h3>Agent</h3>
+            <Box as='article' sx={{
+                gridColumnStart:[1],
+                gridColumnEnd:[1,2,2,5]
+            }}>
+                <Heading as='h3' sx={{
+                    textAlign:'center',
+                }}>Agent</Heading>
                 <section>
-                    <div>
-                        <p>Non: <span>{lastName}</span></p>
-                        <p>Prenom: <span>{firstName}</span></p>
-                    </div>
-                    <div>
-                        <p>Nationaliter : <span>{nationality}</span></p>
-                        <p>Code d'idetification : <span>{indentificationCode}</span></p>
-                    </div>
+                    <Box>
+                        <Paragraph>Non: <Paragraph as='span'>{lastName}</Paragraph></Paragraph>
+                        <p>Prenom: <Paragraph as='span'>{firstName}</Paragraph></p>
+                    </Box>
+                    <Box>
+                        <Paragraph>Nationaliter : <Paragraph as='span'>{nationality}</Paragraph></Paragraph>
+                        <Paragraph>Code d'idetification : <Paragraph as='span'>{indentificationCode}</Paragraph></Paragraph>
+                    </Box>
                 </section>
-                <div>
-                    <p>
+                <Box>
+                    <Paragraph>
                         {
                             new Date(birthDate).toDateString()
                         }
-                    </p>
-                </div>
-            </article>
+                    </Paragraph>
+                </Box>
+            </Box>
         </React.Fragment>
     )
 }

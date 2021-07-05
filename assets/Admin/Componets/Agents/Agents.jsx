@@ -1,25 +1,25 @@
 import React from 'react';
-import Form from "../../Form/Form";
-import FormLabel from "../../Form/FormLabel";
-import FormInput from "../../Form/FormInput";
+import {Box, Button, Flex, Input, Label} from "theme-ui";
+
 
 const Agents =()=>{
 
     return (
-        <Form bntTexte={'Creer'}>
-            <FormLabel text={'Non:'}>
-                <FormInput type={'text'} placeholder={'Voter Non'} require={true} />
-            </FormLabel>
-            <FormLabel text={'Prenom:'}>
-                <FormInput type={'text'} placeholder={'Voter Prenom'} require={true} />
-            </FormLabel>
-            <FormLabel text={'Date de naissance:'}>
-                <FormInput type={'date'}  require={true} />
-            </FormLabel>
-            <FormLabel text={'code d\'idetification'}>
-                <FormInput type={'text'} placeholder='voter code '  require={true} />
-            </FormLabel>
-        </Form>
+        <Box as="form" onSubmit={(e) => e.preventDefault()}>
+
+            <Box>
+                <Flex >
+                 <Label htmlFor="userlastname">Non</Label>
+                     <Input name="userlastname" id="userlastname" mb={3} />
+                <Label htmlFor="username">Prenom</Label>
+                    <Input name="username" id="username" mb={3} />
+                </Flex>
+                <Input type="date" name="userbirthday"  mb={3} />
+
+            </Box>
+
+            <Button>Creer</Button>
+        </Box>
       )
 }
 export default Agents

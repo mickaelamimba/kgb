@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import Padding from "../Padding";
 import {fetchMission} from "../../../Store/Mission/missionSlice";
 import Lists from "./Lists";
+import {Box, Grid, Spinner} from "theme-ui";
 
 function Mission (){
 
@@ -18,21 +19,24 @@ function Mission (){
     },[dispatch] )
     return(
 
-        <div>
+        <Grid as='section' gap={[1,2,3]} width={[228, 230, 292,200]} columns={[2,2]} >
+
             {padding === 'load' ? (
-                <Padding message={'Loading...'}/>
+                    <Spinner  />
             ) : (mission.length !== 0 ? (mission.map((data, i) => {
-               return( <Lists
-                    key={i}
-                    {...data}
-                   />
+               return(
+
+                       <Lists
+                           key={i}
+                           {...data}
+                       />
 
                )})) : error
 
 
             )}
 
-        </div>
+        </Grid>
     )
 }
 

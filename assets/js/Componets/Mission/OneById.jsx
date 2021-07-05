@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchMission} from "../../../Store/Mission/missionSlice";
 import Padding from "../Padding";
 import MissionOneById from "./MissionOneById";
+import {Spinner} from "theme-ui";
 
 
 const OneById =()=>{
@@ -24,7 +25,7 @@ const OneById =()=>{
 
         <div>
             {padding === 'load' ?(
-                <Padding message={'Loading...'}/>):(
+                <Spinner  />):(
                 mission.length !== 0 ? (mission.map((data, i)=>{
                     return(<MissionOneById
                         key={i}

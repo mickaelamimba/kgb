@@ -3,31 +3,58 @@ import Agent from "../Agents/Agent";
 import Specialite from "../Specialite/Specialite";
 import Stashs from "../Stashs/Stashs";
 import Target from "../Target/Target";
+import Icon from '@material-ui/core/Icon';
+import {Box, Flex, Grid, Heading, Paragraph} from "theme-ui";
 const MissionOneById =({title,codeName, description, country,missionType,
                            status,agentMission,endDate,startDate,specialtieMission,
                            stashMission,targetMission})=>{
 
     return(
         <React.Fragment>
-            <section>
-                <h2>{title}</h2>
-                <div>
-                    <p>type de mission : <span>{missionType}</span></p>
-                    <p>statut : <span>{status}</span> </p>
-                </div>
+            <Grid gap={[1,2,3]} width={[228, 230, 292,200]}>
+            <Box as='section' sx={{
+                gridColumnStart:[1],
+                gridRowStart:[1],
+                gridRowEnd:[4],
+                gridColumnEnd:[2,3,4,5]
+            }} >
+                <Heading py={2} as='h2' sx={{
+                    textAlign: 'center',
+                    borderTop: '1px solid #2d3748',
+                    borderBottom: '1px solid #2d3748',
+
+                }}>{title}</Heading>
+                <Flex sx={{
+                    justifyContent: 'space-between'
+                }}>
+
+                    <Paragraph>type de mission :  <Paragraph as='span'>{missionType}</Paragraph></Paragraph>
+                    <Paragraph>statut : <Paragraph as='span'>{status}</Paragraph> </Paragraph>
+                </Flex>
                 <article>
-                    <p>{description}</p>
-                    <div>
+                    <Paragraph py={3} sx={{
+                        textAlign: 'justify'
+
+                    }}>
+                        {description}
+
+                    </Paragraph>
+                    <Flex sx={{
+                        justifyContent: 'space-around'
+                    }}>
                         <p>Non de code : <span>{codeName}</span></p>
                         <p>Pays : <span>{country}</span></p>
-                    </div>
-                    <div>
-                        <p>debut: <span>{new Date(startDate).toDateString()}</span></p>
-                        <p>fin: <span>{new Date(endDate).toDateString()}</span></p>
-                    </div>
+                    </Flex>
+                    <Flex sx={{
+                        justifyContent: 'flex-end'
+
+                    }}>
+                        <Paragraph px={1}>debut: <span>{new Date(startDate).toDateString()}</span></Paragraph>
+                        <Paragraph>fin: <span>{new Date(endDate).toDateString()}</span></Paragraph>
+                    </Flex>
 
                 </article>
-            </section>
+            </Box>
             <Specialite {...specialtieMission}/>
             {
                 agentMission.map((agent,i)=>{
@@ -46,7 +73,8 @@ const MissionOneById =({title,codeName, description, country,missionType,
                 })
             }
 
-
+            </Grid>
         </React.Fragment>)
 }
 export default MissionOneById
+
