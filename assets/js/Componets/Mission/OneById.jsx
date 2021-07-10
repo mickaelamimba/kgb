@@ -11,7 +11,7 @@ const OneById =()=>{
 
  let match = useRouteMatch('/missions/:id')
     const mission = useSelector(state =>state.mission.missionOneById)
-    console.log(mission)
+
     const padding = useSelector(state => state.mission.isLoading)
     const error = useSelector(state => state.mission.error)
     const dispatch = useDispatch()

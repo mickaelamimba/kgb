@@ -12,11 +12,24 @@ const fetchMission = createAsyncThunk(
                         return data;
                     }
                     const response = await CustomAxios.get('api/missions')
+
                     return await response.data['hydra:member']
                 }catch (err) {
                    return err.message
                 }
 
+
+    }
+)
+const postNewMission = createAsyncThunk(
+    'post/newMission',
+    async(payload)=>{
+        try {
+            const response = await CustomAxios.post('api/missions',payload)
+            return await response.data
+        }catch (err){
+            return err.message
+        }
 
     }
 )
@@ -42,9 +55,9 @@ const missionSlice  = createSlice({
         },
         [fetchMission.fulfilled]:(state,action)=>{
             state.isLoading = 'success'
-            state.missionEntities=[...state.missionEntities, ...action.payload]
+            state.missionEntities= action.payload
             if(action.meta.arg){
-                state.missionOneById =[...state.missionOneById, ...action.payload]
+                state.missionOneById = action.payload
             }
 
 
@@ -54,6 +67,9 @@ const missionSlice  = createSlice({
             state.missionOneById =[]
             state.missionEntities =[]
             state.errors = payload.error.message
+        },
+        [postNewMission.fulfilled]:(state,action)=>{
+            state.missionEntities=[...state.missionEntities, action.payload]
         }
 
     }
@@ -63,4 +79,4 @@ const missionSlice  = createSlice({
 
 
 
-export{ missionSlice, fetchMission }
+export{ missionSlice, fetchMission,postNewMission }

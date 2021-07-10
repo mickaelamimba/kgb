@@ -19,13 +19,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "normalization_context"={"groups"={"missions_read"}},
  *
  *     },
- *     "post"
+ *     "post"={"normalization_context"={"groups"={"missions_post"}}     }
  *     },
  *
  *     itemOperations={
  *         "get"={"normalization_context"={"groups"={"missions_read_operation"}}},
  *         "put",
- *      "delete",
+ *          "delete",
  *
  *     }
  *
@@ -48,27 +48,27 @@ class Missions
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"missions_read","missions_read_operation"})
+     * @Groups({"missions_read","missions_read_operation","missions_post"})
      *
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"missions_read","missions_read_operation"})
+     * @Groups({"missions_read","missions_read_operation","missions_post"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"missions_read","missions_read_operation"})
+     * @Groups({"missions_read","missions_read_operation","missions_post"})
      *
      */
     private $codeName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"missions_read","missions_read_operation"})
+     * @Groups({"missions_read","missions_read_operation","missions_post"})
      *
      */
     private $country;
@@ -96,7 +96,7 @@ class Missions
 
     /**
      * @ORM\Column(type="string", length=255)
-     *@Groups({"missions_read","missions_read_operation"})
+     *@Groups({"missions_read","missions_read_operation","missions_post"})
      *
      */
     private $missionType;
@@ -104,7 +104,7 @@ class Missions
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le statut de la mission est obligatoire")
-     *@Groups({"missions_read","missions_read_operation"})
+     *@Groups({"missions_read","missions_read_operation","missions_post"})
      */
     private $status;
 
@@ -116,20 +116,20 @@ class Missions
 
     /**
      * @ORM\Column(type="date")
-     *@Groups({"missions_read_operation"})
+     *@Groups({"missions_read_operation","missions_post"})
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="date")
-     *@Groups({"missions_read_operation"})
+     *@Groups({"missions_read_operation","missions_post"})
      */
     private $endDate;
 
     /**
      * @ORM\OneToOne(targetEntity=Specialties::class, inversedBy="missions", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     *@Groups({"missions_read_operation"})
+     *@Groups({"missions_read_operation","missions_post"})
      */
     private $specialtieMission;
 

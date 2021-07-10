@@ -15,7 +15,7 @@ function Layout({navBar,children}){
             <HeaderWrapper>
                 {navBar}
             </HeaderWrapper>
-            <Container p={4} bg="background">
+            <Container p={4} >
             <main>
                 {children}
             </main>

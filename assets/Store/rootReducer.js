@@ -1,11 +1,14 @@
 
-import {missionIdSlice, missionSlice} from "./Mission/missionSlice";
+import { missionSlice} from "./Mission/missionSlice";
 import {combineReducers} from "redux";
-import {specialtieSlice} from "./Mission/specialtieMission";
+
+import {agentsSlice} from "./Agents/agentsSlice";
+import {specialtiesSlice} from "./Specialite/specialtieMission";
 
 const rootReducer = combineReducers({
     mission : missionSlice.reducer,
-    specialtie : specialtieSlice.reducer,
+    specialties : specialtiesSlice.reducer,
+    agents: agentsSlice.reducer,
 
 })
 

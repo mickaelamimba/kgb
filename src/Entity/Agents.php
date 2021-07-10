@@ -13,10 +13,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
+ *     paginationItemsPerPage=13,
+ *     denormalizationContext={"groups"={"agents_post"}},
  *          collectionOperations={"get"={
  *          "normalization_context"={"groups"={"agents_read"}},
  *     },
- *     "post"
+ *     "post",
  *     },
  *
  *     itemOperations={
@@ -45,30 +47,35 @@ class Agents
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"agents_read","missions_read_operation"})
+     * @Groups({"agents_post"})
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
      *  @Groups({"agents_read","missions_read_operation"})
+     * @Groups({"agents_post"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="date")
      *  @Groups({"agents_read","missions_read_operation"})
+     * @Groups({"agents_post"})
      */
     private $birthDate;
 
     /**
      * @ORM\Column(type="bigint")
      *  @Groups({"agents_read","missions_read_operation"})
+     * @Groups({"agents_post"})
      */
     private $indentificationCode;
 
     /**
      * @ORM\Column(type="string", length=255)
      *  @Groups({"agents_read","missions_read_operation"})
+     * @Groups({"agents_post"})
      */
     private $nationality;
 
@@ -81,6 +88,8 @@ class Agents
     /**
      * @ORM\ManyToOne(targetEntity=Missions::class, inversedBy="agentMission")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"agents_post"})
+     *
      *
      */
     private $missions;

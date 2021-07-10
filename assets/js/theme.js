@@ -50,7 +50,9 @@ const theme = {
         danger: "#feb2b2",
         light: "#f7fafc",
         dark: "#2d3748",
-        textMuted: "#718096"
+        textMuted: "#718096",
+        tablebg :"rgba(113,128,150,0.47)",
+        primaryMuted: "rgba(43,108,176,0.34)",
     },
     styles: {
         root: {
@@ -107,7 +109,8 @@ const theme = {
             lineHeight: 'body'
         },
         a: {
-            color: 'primary'
+            color: 'primary',
+
         },
         pre: {
             fontFamily: 'monospace',
@@ -127,15 +130,21 @@ const theme = {
         },
         th: {
             textAlign: 'left',
-            borderBottomStyle: 'solid'
+            borderBottomStyle: 'solid',
+            padding: '10px '
         },
         td: {
             textAlign: 'left',
-            borderBottomStyle: 'solid'
+            borderBottomStyle: 'solid',
+            padding: '10px ',
+        },
+        tr: {
+            padding: '10px ',
         },
         img: {
             maxWidth: '100%'
         }
+
     },
     cards:{
         boxShadow: '0 0 8px rgba(0, 0, 0, 0.125)',
@@ -171,6 +180,36 @@ const theme = {
             fontSize: "100%",
             lineHeight: "inherit",
             backgroundColor: "primary",
+            border: "none",
+            color: "white",
+            fontWeight: "bold",
+            borderRadius: "default",
+            "&:hover": {
+                backgroundColor: "primaryHover"
+            },
+        },
+        edit:{
+            py: 2,
+            px: 3,
+            cursor: "pointer",
+            fontSize: "100%",
+            lineHeight: "inherit",
+            backgroundColor: "warning",
+            border: "none",
+            color: "white",
+            fontWeight: "bold",
+            borderRadius: "default",
+            "&:hover": {
+                backgroundColor: "primaryHover"
+            },
+        },
+        delete:{
+            py: 2,
+            px: 3,
+            cursor: "pointer",
+            fontSize: "100%",
+            lineHeight: "inherit",
+            backgroundColor: "danger",
             border: "none",
             color: "white",
             fontWeight: "bold",

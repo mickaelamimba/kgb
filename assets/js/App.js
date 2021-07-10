@@ -11,6 +11,7 @@ import OneById from "./Componets/Mission/OneById";
 import {Route, Switch} from "react-router-dom";
 
 import Menu from "./Componets/Menu/Menu";
+import UnknownRout from "./Componets/Route/UnknownRout";
 
 
 
@@ -21,6 +22,10 @@ function App(){
             component : OneById
 
         },
+        {
+            path:'*',
+            component: UnknownRout
+        }
 
 
     ]
@@ -30,6 +35,7 @@ function App(){
                 path:'/',
                 name:'Mission'
             },
+
 
 
         ]

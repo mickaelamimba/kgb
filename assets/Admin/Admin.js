@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Menu from "../js/Componets/Menu/Menu";
-import Layout from "../js/Componets/Layout";
+
+
 import theme from "../js/theme";
 import {ThemeProvider} from "theme-ui";
 import HandelRoute from "../js/Componets/Route/HandelRoute";
@@ -9,13 +9,17 @@ import Agents from "./Componets/Agents/Agents";
 import Specialite from "./Componets/Specialite/Specialite";
 import Mission from "./Componets/Mission/Mission";
 import Target from "./Componets/Target/Target";
+import Layout from "./Componets/UI/Layout/Layout";
+import {Switch, useLocation} from "react-router-dom";
+
 
 const Admin =()=>{
+ const location = useLocation()
     const routes =
         [
 
             {
-                path:'/Admin/agent',
+                path:'/Admin/agents/:id',
                 component :Agents
             },
             {
@@ -34,34 +38,11 @@ const Admin =()=>{
 
         ]
 
-    const Lists =
-        [
-            {
-                path:'/',
-                name:'Home'
-            },
-            {
-                path:'/Admin/agent',
-                name:'Agents'
-            },
-            {
-                path:'/Admin/specialite',
-                name:'specialite'
-            },
-            {
-                path:'/Admin/mission',
-                name:'Mission'
-            }
-            ,
-            {
-                path:'/Admin/target',
-                name:'Target'
-            }
 
-        ]
     return (
         <ThemeProvider theme={theme}>
-       <Layout navBar={ Menu(Lists)}>
+       <Layout >
+            <Switch location={location} >
            {
 
                routes.map((route,i)=>(
@@ -69,7 +50,7 @@ const Admin =()=>{
 
                ))
            }
-
+            </Switch>
        </Layout>
         </ThemeProvider>
 

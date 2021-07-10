@@ -1,25 +1,35 @@
 import React from 'react';
-import {Box, Button, Flex, Input, Label} from "theme-ui";
+import {Button} from "theme-ui";
+import Create from "./Create";
+import List from "./List";
+import useListsAgents from "../../Hooks/useListsAgents";
+import useNewAgents from "../../Hooks/useNewAgents";
+import {useRouteMatch} from "react-router-dom";
+
 
 
 const Agents =()=>{
+    let match = useRouteMatch('/Admin/agents/:id')
+
+    const {agentsListe, isLoading, handleSubmit,pageBox,nextPage, page,lastPage,backPage} =useListsAgents (match.params.id)
+    const {formAgentInput,handleSubmitNewAgent,handleOpen,handleClose,open}= useNewAgents()
 
     return (
-        <Box as="form" onSubmit={(e) => e.preventDefault()}>
+        <div>
+            <Button onClick={handleOpen}>ADD NEW AGENT</Button>
+            <List agents={agentsListe}
+                  loading={isLoading}
+                  pageBox={pageBox}
+                  nextPage={nextPage}
+                  page={page}
+                  lastPage={lastPage}
+                  backPage={backPage}
+                  handleSubmit={ handleSubmit}/>
+            {
+                open ? <Create formAgentInput={formAgentInput}  handleSubmit={handleSubmitNewAgent} handleClose={handleClose}/>: null
+            }
+        </div>
 
-            <Box>
-                <Flex >
-                 <Label htmlFor="userlastname">Non</Label>
-                     <Input name="userlastname" id="userlastname" mb={3} />
-                <Label htmlFor="username">Prenom</Label>
-                    <Input name="username" id="username" mb={3} />
-                </Flex>
-                <Input type="date" name="userbirthday"  mb={3} />
-
-            </Box>
-
-            <Button>Creer</Button>
-        </Box>
       )
 }
 export default Agents
