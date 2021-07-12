@@ -89,7 +89,7 @@ export default function useNewAgents(){
         setModifyId(e)
         setUpdateOpen(true)
         history.push(`/Admin/agents/${match.id}/modify/${e}`)
-        
+
 
     }
     const handleUpdate =()=>{
