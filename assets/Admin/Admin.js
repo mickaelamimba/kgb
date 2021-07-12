@@ -23,6 +23,10 @@ const Admin =()=>{
                 component :Agents
             },
             {
+                path:'/Admin/agents/:id/modify/:id',
+                component :Agents
+            },
+            {
                 path:'/Admin/specialite',
                 component :Specialite
             },

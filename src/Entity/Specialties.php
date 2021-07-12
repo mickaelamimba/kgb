@@ -39,6 +39,7 @@ class Specialties
      * @ORM\Column(type="integer")
      *@Groups({"missions_read_operation"})
      * @Groups({"specialties_read"})
+     * @Groups({"agents_read"})
      */
     private $id;
 
@@ -46,6 +47,7 @@ class Specialties
      * @ORM\Column(type="string", length=255)
      * @Groups({"specialties_read"})
      *@Groups({"missions_read_operation"})
+     * @Groups({"agents_read"})
      */
     private $name;
 

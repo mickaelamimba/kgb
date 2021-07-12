@@ -1,41 +1,25 @@
 
 import React from 'react';
-import {Box, Button, Close, Input, Label, Select} from "theme-ui";
+import {Box, Input, Label, Select,Switch } from "theme-ui";
+import CreateBox from "../UI/CreateBox/CreateBox";
 
 
 const Create =({handleClose,formAgentInput, handleSubmit})=>{
 
     return(
-        <Box as="form" onSubmit={(e) => e.preventDefault()
-        } sx={{
-            position:'fixed',
-            zIndex:1,
-            left:0,
-            top:0,
-            width:'100%',
-            height:'100%',
-            overflow: 'auto',
-            backgroundColor:'rgba(0,0,0,0.4)'
+        <CreateBox
+            handleSubmit={handleSubmit}
+            handleClose={handleClose}
+            title='Ajouter Un Agent'
+        >
 
-        }}>
-            <Box sx={{
-                backgroundColor:'light',
-                margin :'15% auto',
-                padding: 20,
-                width:'80%',
-                borderRadius:4,
-                '& Close':{
 
-                }
-            }}><Box mb={3} sx={{textAlign:'end',}}>
-                <Close onClick={handleClose}  />
-            </Box>
             {
-                formAgentInput.map(({format,value,name,onChange,placeholder,type,label,options},i)=>{
-                    return(
+                formAgentInput.map(({format, value, name, onChange, placeholder, type, label, options}, i) => {
+                    return (
                         <React.Fragment key={i}>
 
-                            {format ==='input' ?
+                            {format === 'input' ?
                                 <Input
                                     name={name}
                                     mb={3}
@@ -46,9 +30,9 @@ const Create =({handleClose,formAgentInput, handleSubmit})=>{
                                     sx={{
                                         filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))'
                                     }}
-                                />: format ==='date' ?
+                                /> : format === 'date' ?
                                     <div>
-                                        <Label  htmlFor={name} >{label}</Label>
+                                        <Label htmlFor={name}>{label}</Label>
                                         <Input
                                             name={name}
                                             id={name}
@@ -61,7 +45,7 @@ const Create =({handleClose,formAgentInput, handleSubmit})=>{
                                                 filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))'
                                             }}
                                         />
-                                    </div> : format ==='select' ?
+                                    </div> : format === 'select' ?
                                         <Select
                                             mb={3}
                                             id={name}
@@ -69,23 +53,37 @@ const Create =({handleClose,formAgentInput, handleSubmit})=>{
                                             onChange={onChange}
                                         >
                                             {
-                                                options.map((opition)=>{
-                                                    return <option key={opition.id} value={opition['@id']}>{opition.title}</option>
+                                                options.map((opition) => {
+                                                    return <option key={opition.id}
+                                                                   value={opition['@id']}>{opition.title}</option>
                                                 })
                                             }
-                                        </Select>: null
+                                        </Select> : format === 'checked' ?
+                                            <Box>
+                                                <Label htmlFor={name}>{label}</Label>
+                                                {
+                                                    options.map((opition) => {
+                                                        return <Switch key={opition.id}
+                                                                       onChange={onChange}
+                                                                       htmlFor={opition.name}
+                                                                       id={opition['@id']}
+
+                                                                       value={value}
+                                                                       label={opition.name}/>
+                                                    })
+                                                }
+
+                                            </Box> : null
 
 
                             }
                         </React.Fragment>
                     )
                 })
+
             }
 
-            <Button onClick={handleSubmit}>Edit</Button>
-            </Box>
-
-        </Box>
+</CreateBox>
     )
 }
 export default Create

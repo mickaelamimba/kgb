@@ -59,17 +59,25 @@ const agentsSlice  = createSlice({
     initialState :{
         isLoading: 'load',
         agents:[],
+        filter:[],
         error:'',
     },
     reducers :{
-
+        filterAgents(state,action){
+            return{
+                ...state,
+                filter:[...state.agents['hydra:member'].filter(agent => agent.id === action.payload)]
+            }
+        }
     },
     extraReducers:{
         [updateAgent.fulfilled]:(state,action)=>{
             state.agents=[...state.agents ,action.payload]
         },
         [deleteAgent.fulfilled]:(state, action)=>{
-            state.agents.splice(action.payload,1)
+
+           delete state.agents[action.meta.arg]
+            return state
         },
         [fetchAgent.pending]:(state)=>{
             state.isLoading = 'load'
@@ -77,14 +85,14 @@ const agentsSlice  = createSlice({
             state.error =''
         },
         [fetchAgent.fulfilled]:(state,action)=>{
-            console.log(action.payload)
+
             state.isLoading = 'success'
             state.agents =action.payload
         },
         [postNewAgents.fulfilled]:(state,action)=>{
-            state.agents=[...state.agents ,action.payload]
+            state.agents['hydra:member']=[...state.agents['hydra:member'] ,action.payload]
         }
     }
 })
-
+export const{filterAgents} =agentsSlice.actions
 export{postNewAgents, agentsSlice,fetchAgent,deleteAgent,updateAgent}

@@ -13,7 +13,15 @@ export default function useNewMission() {
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
     const dispatch = useDispatch()
+    const [openMission, setOpenMission] = useState(false)
 
+    const handleOpen = () =>{
+        setOpenMission(true)
+    }
+
+    const handleClose = () =>{
+        setOpenMission(false)
+    }
 
     const handleSubmit=()=>{
         if(title&& codeName && description && country){
@@ -100,7 +108,7 @@ export default function useNewMission() {
 
     ]
 
-    return {formMissionInput,handleSubmit}
+    return {formMissionInput,handleSubmit, openMission,handleOpen, handleClose}
 
 }
 

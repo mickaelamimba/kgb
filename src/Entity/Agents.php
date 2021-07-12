@@ -81,14 +81,14 @@ class Agents
 
     /**
      * @ORM\ManyToMany(targetEntity=Specialties::class, inversedBy="agents")
-     *
+     *@Groups({"agents_post","agents_read"})
      */
     private $agentSpecialties;
 
     /**
      * @ORM\ManyToOne(targetEntity=Missions::class, inversedBy="agentMission")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"agents_post"})
+     * @Groups({"agents_post","agents_read"})
      *
      *
      */

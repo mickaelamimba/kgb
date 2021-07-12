@@ -1,35 +1,41 @@
 import React from 'react';
-import {Button} from "theme-ui";
+import {Button, Heading} from "theme-ui";
 import Create from "./Create";
 import List from "./List";
-import useListsAgents from "../../Hooks/useListsAgents";
 import useNewAgents from "../../Hooks/useNewAgents";
 import {useRouteMatch} from "react-router-dom";
+import Edit from "./Edit";
 
 
 
 const Agents =()=>{
-    let match = useRouteMatch('/Admin/agents/:id')
+    let match = useRouteMatch(['/Admin/agents/:id','/Admin/agents/:id/modify/:id'])
 
-    const {agentsListe, isLoading, handleSubmit,pageBox,nextPage, page,lastPage,backPage} =useListsAgents (match.params.id)
-    const {formAgentInput,handleSubmitNewAgent,handleOpen,handleClose,open}= useNewAgents()
+    const {agentsListe, isLoading, handleSubmit, page,totalPages,changePage,
+        totalItem,formAgentInput,handleSubmitNewAgent,handleOpen,
+        handleClose,open,handleUpdate,updateOpen,handleModifie }= useNewAgents()
 
     return (
         <div>
+            <title>Agent</title>
+            <Heading mb={3} as='h1'>Agents</Heading>
             <Button onClick={handleOpen}>ADD NEW AGENT</Button>
             <List agents={agentsListe}
                   loading={isLoading}
-                  pageBox={pageBox}
-                  nextPage={nextPage}
+                  changePage={changePage}
                   page={page}
-                  lastPage={lastPage}
-                  backPage={backPage}
-                  handleSubmit={ handleSubmit}/>
+                  totalItem={totalItem}
+                  handleSubmit={ handleSubmit}
+                  handleModifie={handleModifie}
+                  totalPages={totalPages}
+            />
             {
                 open ? <Create formAgentInput={formAgentInput}  handleSubmit={handleSubmitNewAgent} handleClose={handleClose}/>: null
             }
+            {
+               updateOpen ? <Edit formAgentInput={formAgentInput}  handleUpdate={handleUpdate } handleClose={handleClose}/>: null
+            }
         </div>
-
       )
 }
 export default Agents

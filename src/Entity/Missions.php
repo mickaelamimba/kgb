@@ -43,12 +43,14 @@ class Missions
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      *@Groups({"missions_read","missions_read_operation"})
+     * @Groups({"agents_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"missions_read","missions_read_operation","missions_post"})
+     * @Groups({"agents_read"})
      *
      */
     private $title;
