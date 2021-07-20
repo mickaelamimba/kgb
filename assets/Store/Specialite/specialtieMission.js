@@ -10,6 +10,22 @@ const fetchSpecialties = createAsyncThunk(
         return await response.data['hydra:member']
     }
 )
+const postSpecialties= createAsyncThunk(
+    'post/newSpecialties',
+    async(payload)=>{
+        try {
+            console.log(payload)
+            const response = await CustomAxios.post('api/specialties',payload)
+
+            return await response.data
+        }catch(e){
+
+            return  e.message
+        }
+    }
+
+
+)
 
 const specialtiesSlice = createSlice({
     name:'specialties',
@@ -19,10 +35,7 @@ const specialtiesSlice = createSlice({
     reducers :{},
     extraReducers:{
         [fetchSpecialties.fulfilled]:(state,action)=>{
-
-            state.specialties=action.payload
-
-}
+            state.specialties=action.payload}
     }
 }
 

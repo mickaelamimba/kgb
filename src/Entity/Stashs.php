@@ -11,9 +11,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
- *              collectionOperations={"get"={
- *          "normalization_context"={"groups"={"stashs_read"}},
- *     },
+ *     paginationItemsPerPage=13,
+ *     normalizationContext={"groups"={"stashs:read"}},
+ *     denormalizationContext={"groups"={"stashs:write"}},
+ *              collectionOperations={
+ *     "get",
  *     "post"
  *     },
  *
@@ -34,43 +36,43 @@ class Stashs
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"stashs_read","missions_read_operation"})
+     * @Groups({"stashs:read","missions:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="bigint")
-     * @Groups({"stashs_read","missions_read_operation"})
+     * @Groups({"stashs:read","missions:read","stashs:write"})
      */
     private $code;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"stashs_read","missions_read_operation"})
+     * @Groups({"stashs:read","missions:read","stashs:write"})
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"stashs_read","missions_read_operation"})
+     * @Groups({"stashs:read","missions:read","stashs:write"})
      */
     private $country;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"stashs_read","missions_read_operation"})
+     * @Groups({"stashs:read","missions:read","stashs:write"})
      */
     private $type;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Missions::class, mappedBy="stashMission")
-     * 
+     * @ORM\OneToMany(targetEntity=Missions::class, mappedBy="stashs")
      */
-    private $missions;
+    private $stashMission;
+
 
     public function __construct()
     {
-        $this->missions = new ArrayCollection();
+        $this->stashMission = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,27 +131,32 @@ class Stashs
     /**
      * @return Collection|Missions[]
      */
-    public function getMissions(): Collection
+    public function getStashMission(): Collection
     {
-        return $this->missions;
+        return $this->stashMission;
     }
 
-    public function addMission(Missions $mission): self
+    public function addStashMission(Missions $stashMission): self
     {
-        if (!$this->missions->contains($mission)) {
-            $this->missions[] = $mission;
-            $mission->addStashMission($this);
+        if (!$this->stashMission->contains($stashMission)) {
+            $this->stashMission[] = $stashMission;
+            $stashMission->setStashs($this);
         }
 
         return $this;
     }
 
-    public function removeMission(Missions $mission): self
+    public function removeStashMission(Missions $stashMission): self
     {
-        if ($this->missions->removeElement($mission)) {
-            $mission->removeStashMission($this);
+        if ($this->stashMission->removeElement($stashMission)) {
+            // set the owning side to null (unless already changed)
+            if ($stashMission->getStashs() === $this) {
+                $stashMission->setStashs(null);
+            }
         }
 
         return $this;
     }
+
+
 }

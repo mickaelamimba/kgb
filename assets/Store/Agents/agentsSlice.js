@@ -1,6 +1,8 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import { CustomAxios} from "../../js/ApiUrl/CustomAxios";
 
+
+
 const deleteAgent = createAsyncThunk(
     'delete/agents',
     async(id)=>{
@@ -40,7 +42,7 @@ const postNewAgents= createAsyncThunk(
     'post/newAgents',
     async(payload)=>{
         try {
-
+            console.log(payload)
             const response = await CustomAxios.post('api/agents',payload)
 
             return await response.data
@@ -65,7 +67,6 @@ const agentsSlice  = createSlice({
     reducers :{
         filterAgents(state,action){
             return{
-                ...state,
                 filter:[...state.agents['hydra:member'].filter(agent => agent.id === action.payload)]
             }
         }
@@ -75,9 +76,7 @@ const agentsSlice  = createSlice({
             state.agents=[...state.agents ,action.payload]
         },
         [deleteAgent.fulfilled]:(state, action)=>{
-
-           delete state.agents[action.meta.arg]
-            return state
+            state.agents['hydra:member']=[...state.agents['hydra:member'].filter(agent => agent.id !== action.meta.arg)]
         },
         [fetchAgent.pending]:(state)=>{
             state.isLoading = 'load'
@@ -91,8 +90,8 @@ const agentsSlice  = createSlice({
         },
         [postNewAgents.fulfilled]:(state,action)=>{
             state.agents['hydra:member']=[...state.agents['hydra:member'] ,action.payload]
-        }
+        },
     }
 })
-export const{filterAgents} =agentsSlice.actions
+export const{filterAgents,removeAgent} =agentsSlice.actions
 export{postNewAgents, agentsSlice,fetchAgent,deleteAgent,updateAgent}

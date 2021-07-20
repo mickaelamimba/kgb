@@ -45,7 +45,7 @@ const Create =({handleClose,formAgentInput, handleSubmit})=>{
                                                 filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))'
                                             }}
                                         />
-                                    </div> : format === 'select' ?
+                                    </div>: format === 'select' ?
                                         <Select
                                             mb={3}
                                             id={name}
@@ -53,9 +53,9 @@ const Create =({handleClose,formAgentInput, handleSubmit})=>{
                                             onChange={onChange}
                                         >
                                             {
-                                                options.map((opition) => {
-                                                    return <option key={opition.id}
-                                                                   value={opition['@id']}>{opition.title}</option>
+                                                options.map(({id,nationalite}) => {
+                                                    return <option key={id}
+                                                                   value={id}>{nationalite}</option>
                                                 })
                                             }
                                         </Select> : format === 'checked' ?

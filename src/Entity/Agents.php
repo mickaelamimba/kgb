@@ -9,15 +9,18 @@ use App\Repository\AgentsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
+
 
 /**
  * @ApiResource(
  *     paginationItemsPerPage=13,
- *     denormalizationContext={"groups"={"agents_post"}},
- *          collectionOperations={"get"={
- *          "normalization_context"={"groups"={"agents_read"}},
- *     },
+ *     normalizationContext={"groups"={"agents:read"},"enable_max_depth"=true},
+ *     denormalizationContext={"groups"={"agents:write"}},
+ *          collectionOperations={
+ *     "get",
  *     "post",
  *     },
  *
@@ -31,7 +34,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * )
  * @ApiFilter(OrderFilter::class, properties={"lastName","birthDate"
- * ,"firstName","nationality","missions","agentSpecialties"})
+ * ,"firstName","nationality","agentSpecialties"})
  * @ORM\Entity(repositoryClass=AgentsRepository::class)
  */
 class Agents
@@ -40,63 +43,62 @@ class Agents
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     *@Groups({"agents_read","missions_read_operation"})
+     * @Groups({"agents:read","missions:read"})
      */
-    private $id;
+    private  $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"agents_read","missions_read_operation"})
-     * @Groups({"agents_post"})
+     * @Groups({"agents:read","agents:write","missions:read"})
      */
-    private $lastName;
+    private  $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     *  @Groups({"agents_read","missions_read_operation"})
-     * @Groups({"agents_post"})
+     * @Groups({"agents:read","agents:write","missions:read"})
      */
-    private $firstName;
+    private ?string $firstName;
 
     /**
      * @ORM\Column(type="date")
-     *  @Groups({"agents_read","missions_read_operation"})
-     * @Groups({"agents_post"})
+     * @Groups({"agents:read","agents:write","missions:read"})
      */
     private $birthDate;
 
     /**
      * @ORM\Column(type="bigint")
-     *  @Groups({"agents_read","missions_read_operation"})
-     * @Groups({"agents_post"})
+     * @Groups({"agents:read","agents:write","missions:read"})
      */
     private $indentificationCode;
 
     /**
      * @ORM\Column(type="string", length=255)
-     *  @Groups({"agents_read","missions_read_operation"})
-     * @Groups({"agents_post"})
+     * @Groups({"agents:read","agents:write","missions:read"})
      */
     private $nationality;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Specialties::class, inversedBy="agents")
-     *@Groups({"agents_post","agents_read"})
-     */
-    private $agentSpecialties;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Missions::class, inversedBy="agentMission")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"agents_post","agents_read"})
-     *
+     * @ORM\ManyToMany(targetEntity=Specialties::class, inversedBy="agents")
+     * @Groups({"agents:write","agents:read","missions:read"})
+     * @MaxDepth(1)
+     */
+    private  $agentSpecialties;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Missions::class, inversedBy="agents")
      *
      */
-    private $missions;
+    private  $agentsMissions;
+
+
+
+
 
     public function __construct()
     {
         $this->agentSpecialties = new ArrayCollection();
+        $this->agentsMissions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -176,7 +178,6 @@ class Agents
     {
         if (!$this->agentSpecialties->contains($agentSpecialty)) {
             $this->agentSpecialties[] = $agentSpecialty;
-
         }
 
         return $this;
@@ -186,20 +187,34 @@ class Agents
     {
         $this->agentSpecialties->removeElement($agentSpecialty);
 
+        return $this;
+    }
 
+    /**
+     * @return Collection|Missions[]
+     */
+    public function getAgentsMissions(): Collection
+    {
+        return $this->agentsMissions;
+    }
+
+    public function addAgentsMission(Missions $agentsMission): self
+    {
+        if (!$this->agentsMissions->contains($agentsMission)) {
+            $this->agentsMissions[] = $agentsMission;
+        }
 
         return $this;
     }
 
-    public function getMissions(): ?Missions
+    public function removeAgentsMission(Missions $agentsMission): self
     {
-        return $this->missions;
-    }
-
-    public function setMissions(?Missions $missions): self
-    {
-        $this->missions = $missions;
+        $this->agentsMissions->removeElement($agentsMission);
 
         return $this;
     }
+
+
+
+
 }

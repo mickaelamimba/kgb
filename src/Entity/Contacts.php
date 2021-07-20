@@ -6,14 +6,18 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ContactsRepository;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
- *       collectionOperations={"get"={
- *          "normalization_context"={"groups"={"contacts_read"}},
- *     },
+ *       paginationItemsPerPage=13,
+ *     normalizationContext={"groups"={"contacts:read"}},
+ *     denormalizationContext={"groups"={"contacts:write"}},
+ *       collectionOperations={
+ *     "get",
  *     "post"
  *     },
  *
@@ -34,47 +38,54 @@ class Contacts
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"contacts_read","missions_read_operation"})
+     * @Groups({"contacts:read","missions:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"contacts_read","missions_read_operation"})
+     * @Groups({"contacts:read","contacts:write","missions:read"})
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"contacts_read","missions_read_operation"})
+     * @Groups({"contacts:read","contacts:write","missions:read"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="date")
-     * @Groups({"contacts_read","missions_read_operation"})
+     * @Groups({"contacts:read","contacts:write","missions:read"})
      */
     private $birthDate;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"contacts_read","missions_read_operation"})
+     * @Groups({"contacts:read","contacts:write","missions:read"})
      */
     private $codeName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"contacts_read","missions_read_operation"})
+     * @Groups({"contacts:read","contacts:write","missions:read"})
      */
     private $nationality;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Missions::class, inversedBy="contactMission")
-     * @ORM\JoinColumn(nullable=false)
-     *
-     *
+     * @ORM\ManyToMany(targetEntity=Missions::class, inversedBy="contacts")
      */
-    private $missions;
+    private $contactMissions;
+
+
+
+    public function __construct()
+    {
+        $this->missionContact = new ArrayCollection();
+        $this->contactMissions = new ArrayCollection();
+    }
+
+
 
     public function getId(): ?int
     {
@@ -141,15 +152,29 @@ class Contacts
         return $this;
     }
 
-    public function getMissions(): ?Missions
+    /**
+     * @return Collection|Missions[]
+     */
+    public function getContactMissions(): Collection
     {
-        return $this->missions;
+        return $this->contactMissions;
     }
 
-    public function setMissions(?Missions $missions): self
+    public function addContactMission(Missions $contactMission): self
     {
-        $this->missions = $missions;
+        if (!$this->contactMissions->contains($contactMission)) {
+            $this->contactMissions[] = $contactMission;
+        }
 
         return $this;
     }
+
+    public function removeContactMission(Missions $contactMission): self
+    {
+        $this->contactMissions->removeElement($contactMission);
+
+        return $this;
+    }
+
+
 }

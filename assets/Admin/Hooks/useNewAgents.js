@@ -1,9 +1,18 @@
 import React, {useEffect, useState} from "react";
-import {deleteAgent, fetchAgent, filterAgents, postNewAgents, updateAgent} from "../../Store/Agents/agentsSlice";
+import {
+    addInterceptors,
+    deleteAgent,
+    fetchAgent,
+    filterAgents,
+    postNewAgents,
+    removeAgent,
+    updateAgent
+} from "../../Store/Agents/agentsSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchMission} from "../../Store/Mission/missionSlice";
 import {fetchSpecialties} from "../../Store/Specialite/specialtieMission";
 import {useHistory, useParams} from "react-router-dom";
+import Pays from "../Nationality/Nationality";
 
 
 
@@ -17,22 +26,19 @@ export default function useNewAgents(){
     const [birthDate, setBirthDate] = useState('')
     const [indentificationCode, setIndentificationCode] = useState('')
     const [nationality, setNationality] = useState('')
-    const [mission, setMission] = useState('')
-    const [checkSpecialtie, setCheckSpecialtie] = useState(true)
+    const [checkSpecialtie, setCheckSpecialtie] = useState(false)
     const [specialtiesId, setSpecialtiesId] =useState([])
 
     const [modifyId, setModifyId] =useState(0)
     const dispatch = useDispatch()
-    const missions =  useSelector(state => state.mission.missionEntities )
     const specialties =  useSelector(state => state.specialties.specialties )
-
     const [open, setOpen] = useState(false)
     const [updateOpen, setUpdateOpen] = useState(false)
     const agentsListe =  useSelector(state => state.agents.agents['hydra:member'] )
     const totalItem =useSelector(state => state.agents.agents['hydra:totalItems'] )
     const isLoading = useSelector(state => state.agents.isLoading )
-    const filters = useSelector( state => state.agents.filter)
-    console.log(filters)
+
+
     const totalPages =  Math.ceil( totalItem / 13)
 
     let [page , setPage]= useState(1)
@@ -49,42 +55,70 @@ export default function useNewAgents(){
     }
     useEffect(() =>{
         dispatch(fetchAgent(match.id))
+        dispatch(fetchSpecialties())
     },[match.id,dispatch])
     const handleOpen = () => {
        !open ? setOpen(true) :!updateOpen ?setUpdateOpen(true): null
-        dispatch( fetchMission())
-        dispatch(fetchSpecialties())
+
+        !open ? history.push(`/Admin/agents/${match.id}/added/`):null
 
     };
     const handleClose = () => {
         open ? setOpen(false) :updateOpen ?setUpdateOpen(false): null
-        if(open){
-            setLastName('')
-            setFirstName('')
-            setBirthDate('')
-            setIndentificationCode('')
-            setNationality('')
-        }
+        open ? history.push(`/Admin/agents/${match.id}`):
+            updateOpen ? history.push(`/Admin/agents/${match.id}`):null
+        setLastName('')
+        setFirstName('')
+        setBirthDate( '')
+        setIndentificationCode('')
+        setNationality('')
     };
-    const handleCheckInput =(e)=>{
-     let  id = e.target.id
-        setSpecialtiesId([...specialtiesId, id])
-        console.log(setSpecialtiesId)
-        setCheckSpecialtie(!checkSpecialtie)
+    const toggle = (arr,item)=>{
+        if(arr.includes(item)){
+           return arr.filter(i=> i !== item)
+        }
+        else{
+            return [...arr,item]
+        }
     }
-    const handleModifie =(e)=>{
-        dispatch(filterAgents(e))
+    const handleCheckInput= (e )=>{
+      let id= e.target.id
 
-        if(filters){
-            filters.map(({lastName,firstName,birthDate,indentificationCode,nationality})=>{
+        setCheckSpecialtie(!checkSpecialtie)
+            setSpecialtiesId(toggle(specialtiesId, id))
+    }
+
+
+    const handleCheckUpdate= (e)=>{
+
+        setSpecialtiesId(toggle(specialtiesId, id))
+    }
+    const handleModifie = async(e)=>{
+
+        if(agentsListe.length> 0){
+         const filters=  agentsListe.filter(agent => agent.id === e)
+
+            filters.map(({lastName,firstName,birthDate,indentificationCode,nationality,agentSpecialties})=>{
                 setLastName(lastName)
                 setFirstName(firstName)
-                setBirthDate(birthDate)
+                setBirthDate( new Date(birthDate).toISOString().substr(0,10))
                 setIndentificationCode(indentificationCode)
                 setNationality(nationality)
+                agentSpecialties.map(items => {
+
+                    console.log(items.id)
+                    specialties.filter(i => {
+
+                        if(i.id === items.id){
+                            setCheckSpecialtie(!checkSpecialtie)
+
+                        }
+
+                    })
+                })
             })
-            dispatch( fetchMission())
-            dispatch(fetchSpecialties())
+
+
         }
         setModifyId(e)
         setUpdateOpen(true)
@@ -100,7 +134,6 @@ export default function useNewAgents(){
             birthDate: birthDate,
             indentificationCode: indentificationCode,
             nationality: nationality,
-            missions:mission,
             specialties:[]
         }))
     }
@@ -114,10 +147,11 @@ export default function useNewAgents(){
                 birthDate: birthDate,
                 indentificationCode: indentificationCode,
                 nationality: nationality,
-                missions:mission,
-                specialties:specialtiesId
+                agentSpecialties:specialtiesId
             }))
         }
+        setOpen(false)
+
     }
 
    const  formAgentInput=[
@@ -150,26 +184,18 @@ export default function useNewAgents(){
            placeholder :'Code d\'idetification',
            type: 'text'
        },{
-           format:'input',
+           format:'select',
            value: nationality,
            name:"nationality",
            onChange: e => setNationality(e.target.value),
-           placeholder :'Nationaliter',
-           type: 'text'
-       },
-       {
-           format:'select',
-           value: mission,
-           name:"Mission",
-           onChange: e => setMission(e.target.value),
-           options :missions,
-
+           label  :'Nationaliter',
+           options:Pays
        },
        {
            format: 'checked',
            value: checkSpecialtie,
            name:"Specialites",
-           onChange: handleCheckInput,
+           onChange: updateOpen ? handleCheckUpdate : handleCheckInput,
            label :'Specialites',
            options:specialties,
 

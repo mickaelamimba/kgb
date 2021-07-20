@@ -14,9 +14,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- *          collectionOperations={"get"={
- *          "normalization_context"={"groups"={"specialties_read"}},
- *     },
+ *      normalizationContext={"groups"={"specialties:read"},"enable_max_depth"=true},
+ *     denormalizationContext={"groups"={"specialties:write"}},
+ *          collectionOperations={
+ *     "get",
+ *
+ *
  *     "post"
  *     },
  *
@@ -37,17 +40,13 @@ class Specialties
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     *@Groups({"missions_read_operation"})
-     * @Groups({"specialties_read"})
-     * @Groups({"agents_read"})
+     * @Groups({"agents:read","specialties:read","missions:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"specialties_read"})
-     *@Groups({"missions_read_operation"})
-     * @Groups({"agents_read"})
+     * @Groups({"agents:read","specialties:read","specialties:write","missions:read"})
      */
     private $name;
 
@@ -55,16 +54,20 @@ class Specialties
      * @ORM\ManyToMany(targetEntity=Agents::class, mappedBy="agentSpecialties")
      *
      */
-    private $agents;
+    private  $agents;
 
     /**
-     * @ORM\OneToOne(targetEntity=Missions::class, mappedBy="specialtieMission", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Missions::class, mappedBy="specialties")
      *
      */
-    private $missions;
+    private  $missionsSpecialties;
 
-    public function __construct(){
-        $this->$this->agents = new ArrayCollection();
+
+
+    public function __construct()
+    {
+        $this->agents = new ArrayCollection();
+        $this->missionsSpecialties = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -85,46 +88,61 @@ class Specialties
     }
 
     /**
-     * @return Collection | Agents[]
+     * @return \Doctrine\Common\Collections\Collection|Agents[]
      */
-    public function getAgents(): Collection
+    public function getAgents(): \Doctrine\Common\Collections\Collection
     {
         return $this->agents;
     }
 
-    public function addAgents(Agents $agents): self
+    public function addAgent(Agents $agent): self
     {
-        if (!$this->agents->contains($agents)) {
-            $this->$agents[] = $agents;
-            $agents->addAgentSpecialty($this);
+        if (!$this->agents->contains($agent)) {
+            $this->agents[] = $agent;
+            $agent->addAgentSpecialty($this);
         }
 
         return $this;
     }
 
-    public function removeAgents(Agents $agents): self
+    public function removeAgent(Agents $agent): self
     {
-        if ($this->agents->removeElement($agents)) {
-            $agents->removeAgentSpecialty($this);
+        if ($this->agents->removeElement($agent)) {
+            $agent->removeAgentSpecialty($this);
         }
 
         return $this;
     }
 
-    public function getMissions(): ?Missions
+    /**
+     * @return \Doctrine\Common\Collections\Collection|Missions[]
+     */
+    public function getMissionsSpecialties(): \Doctrine\Common\Collections\Collection
     {
-        return $this->missions;
+        return $this->missionsSpecialties;
     }
 
-    public function setMissions(Missions $missions): self
+    public function addMissionsSpecialty(Missions $missionsSpecialty): self
     {
-        // set the owning side of the relation if necessary
-        if ($missions->getSpecialtieMission() !== $this) {
-            $missions->setSpecialtieMission($this);
+        if (!$this->missionsSpecialties->contains($missionsSpecialty)) {
+            $this->missionsSpecialties[] = $missionsSpecialty;
+            $missionsSpecialty->setSpecialties($this);
         }
-
-        $this->missions = $missions;
 
         return $this;
     }
+
+    public function removeMissionsSpecialty(Missions $missionsSpecialty): self
+    {
+        if ($this->missionsSpecialties->removeElement($missionsSpecialty)) {
+            // set the owning side to null (unless already changed)
+            if ($missionsSpecialty->getSpecialties() === $this) {
+                $missionsSpecialty->setSpecialties(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }

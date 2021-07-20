@@ -2,9 +2,9 @@
 import React from 'react';
 const Specialite=()=>{
     return(
-        <div>
-            <h1>Specialitie</h1>
-        </div>
+        <BoxHeading title='Specialitie'>
+
+        </BoxHeading>
     )
 }
 export default Specialite

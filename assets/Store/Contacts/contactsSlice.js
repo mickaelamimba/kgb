@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {CustomAxios} from "../../js/ApiUrl/CustomAxios";
+import {updateAgent} from "../Agents/agentsSlice";
 
 
 const deleteContact = createAsyncThunk(
@@ -75,7 +76,27 @@ const contactsSlice  = createSlice({
                 contacts:[
                     ...state.contacts['hydra:member'].filter(contact => contact.id !== action.payload)]
             }
+        },
+        extraReducers:{
+            [fetchContacts.fulfilled]:(state,action)=>{
+                state.isLoading = 'success'
+                state.contacts =action.payload
+            },
+            [updateContact.fulfilled]:(state,action)=>{
+                    state.contacts['hydra:member']=[...state.agents['hydra:member'] ,action.payload]
+            },
+            [postNewContact.fulfilled]:(state,action)=>{
+                state.contacts['hydra:member']=[...state.contacts['hydra:member'] ,action.payload]
+            },
+            [deleteContact.fulfilled]:(state,action)=>{
+
+            }
         }
     },
 })
 
+
+export const{filterContact,removeContact}=contactsSlice.actions
+export{
+    fetchContacts,updateContact,postNewContact,deleteContact,contactsSlice
+}

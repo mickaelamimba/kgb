@@ -12,7 +12,7 @@ export default function useSidebar(){
     const Lists =
         [
             {
-                path:'/',
+                path:'/Admin',
                 name:'Home',
                 icon: faHome
             },
@@ -23,18 +23,18 @@ export default function useSidebar(){
             },
             {
                 path:'/Admin/specialite',
-                name:'Specialite',
+                name:'Spécialités',
                 icon: faUserGraduate
             },
             {
                 path:'/Admin/mission',
-                name:'Mission',
+                name:'Missions',
                 icon:faBriefcase
             }
             ,
             {
                 path:'/Admin/target',
-                name:'Target',
+                name:'Cibles',
                 icon: faUserTag
             },
             {
@@ -44,7 +44,7 @@ export default function useSidebar(){
             },
             {
                 path:'/Admin/stashs',
-                name:'Stashs',
+                name:'Planques',
                 icon:faTintSlash
             }
 

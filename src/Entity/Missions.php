@@ -15,15 +15,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- *          collectionOperations={"get"={
- *     "normalization_context"={"groups"={"missions_read"}},
- *
+ *     paginationItemsPerPage=13,
+ *     normalizationContext={"groups"={"missions:read"}},
+ *     denormalizationContext={"groups"={"missions:write"}},
+ *          collectionOperations={"get"={"normalization_context"={"groups"={"missions"}}},
+ *     "post"
  *     },
- *     "post"={"normalization_context"={"groups"={"missions_post"}}     }
- *     },
- *
  *     itemOperations={
- *         "get"={"normalization_context"={"groups"={"missions_read_operation"}}},
+ *         "get",
  *         "put",
  *          "delete",
  *
@@ -42,63 +41,42 @@ class Missions
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     *@Groups({"missions_read","missions_read_operation"})
-     * @Groups({"agents_read"})
+     *@Groups({"missions:read","missions"})
+     *
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"missions_read","missions_read_operation","missions_post"})
-     * @Groups({"agents_read"})
+     * @Groups({"missions:read","missions","missions:write"})
+     *
      *
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"missions_read","missions_read_operation","missions_post"})
+     * @Groups({"missions:read","missions","missions:write"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"missions_read","missions_read_operation","missions_post"})
+     * @Groups({"missions:read","missions","missions:write"})
      *
      */
     private $codeName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"missions_read","missions_read_operation","missions_post"})
+     * @Groups({"missions:read","missions","missions:write"})
      *
      */
     private $country;
 
     /**
-     * @ORM\OneToMany(targetEntity=Agents::class, mappedBy="missions", orphanRemoval=true)
-     * @Groups({"missions_read_operation"})
-     *
-     */
-    private $agentMission;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Contacts::class, mappedBy="missions", orphanRemoval=true)
-     *@Groups({"missions_read_operation"})
-     *
-     */
-    private $contactMission;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Targets::class, mappedBy="missions", orphanRemoval=true)
-     *@Groups({"missions_read_operation"})
-     *
-     */
-    private $targetMission;
-
-    /**
      * @ORM\Column(type="string", length=255)
-     *@Groups({"missions_read","missions_read_operation","missions_post"})
+     *@Groups({"missions:read","missions","missions:write"})
      *
      */
     private $missionType;
@@ -106,41 +84,61 @@ class Missions
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le statut de la mission est obligatoire")
-     *@Groups({"missions_read","missions_read_operation","missions_post"})
+     *@Groups({"missions:read","missions","missions:write"})
      */
     private $status;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Stashs::class, inversedBy="missions")
-     *@Groups({"missions_read_operation"})
-     */
-    private $stashMission;
-
-    /**
      * @ORM\Column(type="date")
-     *@Groups({"missions_read_operation","missions_post"})
+     *@Groups({"missions:read","missions:write"})
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="date")
-     *@Groups({"missions_read_operation","missions_post"})
+     *@Groups({"missions:read","missions:write"})
      */
     private $endDate;
 
     /**
-     * @ORM\OneToOne(targetEntity=Specialties::class, inversedBy="missions", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     *@Groups({"missions_read_operation","missions_post"})
+     * @ORM\ManyToOne(targetEntity=Specialties::class, inversedBy="missionsSpecialties")
+     * @Groups({"missions:read","missions:write"})
      */
-    private $specialtieMission;
+    private $specialties;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Agents::class, mappedBy="agentsMissions")
+     * @Groups({"missions:read","missions:write"})
+     */
+    private $agents;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Contacts::class, mappedBy="contactMissions")
+     * @Groups({"missions:read","missions:write"})
+     */
+    private $contacts;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Stashs::class, inversedBy="stashMission")
+     * @Groups({"missions:read","missions:write"})
+     */
+    private $stashs;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Targets::class, mappedBy="targetsMissions")
+     * @Groups({"missions:read","missions:write"})
+     */
+    private $targets;
+
 
     public function __construct()
     {
-        $this->agentMission = new ArrayCollection();
-        $this->contactMission = new ArrayCollection();
-        $this->targetMission = new ArrayCollection();
+
         $this->stashMission = new ArrayCollection();
+        $this->agents = new ArrayCollection();
+        $this->contacts = new ArrayCollection();
+        $this->targets = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -196,96 +194,6 @@ class Missions
         return $this;
     }
 
-    /**
-     * @return Collection|Agents[]
-     */
-    public function getAgentMission(): Collection
-    {
-        return $this->agentMission;
-    }
-
-    public function addAgentMission(Agents $agentMission): self
-    {
-        if (!$this->agentMission->contains($agentMission)) {
-            $this->agentMission[] = $agentMission;
-            $agentMission->setMissions($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAgentMission(Agents $agentMission): self
-    {
-        if ($this->agentMission->removeElement($agentMission)) {
-            // set the owning side to null (unless already changed)
-            if ($agentMission->getMissions() === $this) {
-                $agentMission->setMissions(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Contacts[]
-     */
-    public function getContactMission(): Collection
-    {
-        return $this->contactMission;
-    }
-
-    public function addContactMission(Contacts $contactMission): self
-    {
-        if (!$this->contactMission->contains($contactMission)) {
-            $this->contactMission[] = $contactMission;
-            $contactMission->setMissions($this);
-        }
-
-        return $this;
-    }
-
-    public function removeContactMission(Contacts $contactMission): self
-    {
-        if ($this->contactMission->removeElement($contactMission)) {
-            // set the owning side to null (unless already changed)
-            if ($contactMission->getMissions() === $this) {
-                $contactMission->setMissions(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Targets[]
-     */
-    public function getTargetMission(): Collection
-    {
-        return $this->targetMission;
-    }
-
-    public function addTargetMission(Targets $targetMission): self
-    {
-        if (!$this->targetMission->contains($targetMission)) {
-            $this->targetMission[] = $targetMission;
-            $targetMission->setMissions($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTargetMission(Targets $targetMission): self
-    {
-        if ($this->targetMission->removeElement($targetMission)) {
-            // set the owning side to null (unless already changed)
-            if ($targetMission->getMissions() === $this) {
-                $targetMission->setMissions(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getMissionType(): ?string
     {
         return $this->missionType;
@@ -310,29 +218,6 @@ class Missions
         return $this;
     }
 
-    /**
-     * @return Collection|Stashs[]
-     */
-    public function getStashMission(): Collection
-    {
-        return $this->stashMission;
-    }
-
-    public function addStashMission(Stashs $stashMission): self
-    {
-        if (!$this->stashMission->contains($stashMission)) {
-            $this->stashMission[] = $stashMission;
-        }
-
-        return $this;
-    }
-
-    public function removeStashMission(Stashs $stashMission): self
-    {
-        $this->stashMission->removeElement($stashMission);
-
-        return $this;
-    }
 
     public function getStartDate(): ?\DateTimeInterface
     {
@@ -358,15 +243,110 @@ class Missions
         return $this;
     }
 
-    public function getSpecialtieMission(): ?Specialties
+    public function getSpecialties(): ?Specialties
     {
-        return $this->specialtieMission;
+        return $this->specialties;
     }
 
-    public function setSpecialtieMission(Specialties $specialtieMission): self
+    public function setSpecialties(?Specialties $specialties): self
     {
-        $this->specialtieMission = $specialtieMission;
+        $this->specialties = $specialties;
 
         return $this;
     }
+
+    /**
+     * @return Collection|Agents[]
+     */
+    public function getAgents(): Collection
+    {
+        return $this->agents;
+    }
+
+    public function addAgent(Agents $agent): self
+    {
+        if (!$this->agents->contains($agent)) {
+            $this->agents[] = $agent;
+            $agent->addAgentsMission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAgent(Agents $agent): self
+    {
+        if ($this->agents->removeElement($agent)) {
+            $agent->removeAgentsMission($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Contacts[]
+     */
+    public function getContacts(): Collection
+    {
+        return $this->contacts;
+    }
+
+    public function addContact(Contacts $contact): self
+    {
+        if (!$this->contacts->contains($contact)) {
+            $this->contacts[] = $contact;
+            $contact->addContactMission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContact(Contacts $contact): self
+    {
+        if ($this->contacts->removeElement($contact)) {
+            $contact->removeContactMission($this);
+        }
+
+        return $this;
+    }
+
+    public function getStashs(): ?Stashs
+    {
+        return $this->stashs;
+    }
+
+    public function setStashs(?Stashs $stashs): self
+    {
+        $this->stashs = $stashs;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Targets[]
+     */
+    public function getTargets(): Collection
+    {
+        return $this->targets;
+    }
+
+    public function addTarget(Targets $target): self
+    {
+        if (!$this->targets->contains($target)) {
+            $this->targets[] = $target;
+            $target->addTargetsMission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTarget(Targets $target): self
+    {
+        if ($this->targets->removeElement($target)) {
+            $target->removeTargetsMission($this);
+        }
+
+        return $this;
+    }
+
+
 }

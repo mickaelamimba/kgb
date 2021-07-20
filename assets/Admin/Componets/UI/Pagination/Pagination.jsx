@@ -6,7 +6,6 @@ import {Box, Button} from "theme-ui";
 const Pagination =({totalItem,itemPerPage,paginate,previousLabel = null,nextLabel=null})=>{
 
     const pageNumber =[]
-    console.log(pageNumber)
     const totalPages = Math.ceil( totalItem / itemPerPage)
     const [currentPage, setCurrentPage]=useState({selected:1})
     const [previous, setPrevious]=useState(0)
@@ -24,10 +23,8 @@ const Pagination =({totalItem,itemPerPage,paginate,previousLabel = null,nextLabe
         setCurrentPage({selected: currentPage.selected +1})
        return paginate({ selected :currentPage.selected })
 
-
-
     }
-    const handleNext = async ()=>{
+    const handleNext = ()=>{
 
         setCurrentPage({selected: currentPage.selected -1})
        return paginate({ selected :currentPage.selected })
@@ -36,7 +33,7 @@ const Pagination =({totalItem,itemPerPage,paginate,previousLabel = null,nextLabe
     }
 
 
-     const handleClick=async (e)=>{
+     const handleClick=(e)=>{
         setCurrentPage({ selected :e})
         return paginate({ selected :e})
     }

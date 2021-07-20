@@ -1,10 +1,11 @@
 
 import React from 'react';
+import BoxHeading from "../UI/BoxHeading/BoxHeading";
 const Target=()=>{
     return(
-        <div>
+        <BoxHeading title='Cibles'>
             <h1>Target</h1>
-        </div>
+        </BoxHeading>
     )
 }
 export default Target

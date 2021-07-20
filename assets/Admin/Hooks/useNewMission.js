@@ -87,7 +87,7 @@ export default function useNewMission() {
             value: status,
             name:'status',
             onChange: e => setStatus(e.target.value),
-            options:['En préparation','en cours','terminé','échec'],
+            options:['En préparation','en cours','terminé','échec', 'donner'],
 
 
         },{
