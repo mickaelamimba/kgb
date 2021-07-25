@@ -1,0 +1,13 @@
+{
+  "formMessage": {
+    "nameRequired": "Le champ « Nom » est obligatoire. Veuillez saisir ce champ.",
+    "firstNameRequired": "Le champ « Prénom » est obligatoire. Veuillez saisir ce champ."
+  },
+  "submitErrors": {
+    "error": "une erreur est survenue lore de l enregistrement",
+    "deleteValue": "Etes-vous sûr(e) de vouloir supprimer ce(s) élément(s)"
+  },
+  "submitSuccess": {
+    "success":"les donnes son enregistrement avec success"
+  }
+}

@@ -1,18 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {
-    addInterceptors,
-    deleteAgent,
-    fetchAgent,
-    filterAgents,
-    postNewAgents,
-    removeAgent,
-    updateAgent
-} from "../../Store/Agents/agentsSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchMission} from "../../Store/Mission/missionSlice";
-import {fetchSpecialties} from "../../Store/Specialite/specialtieMission";
 import {useHistory, useParams} from "react-router-dom";
 import Pays from "../Nationality/Nationality";
+import {Agents, Specialties} from "../../Store/EntitySlice/EntityUrl";
+import {setOpenModalOptions} from "../Func/OpenModale";
 
 
 
@@ -31,31 +22,33 @@ export default function useNewAgents(){
 
     const [modifyId, setModifyId] =useState(0)
     const dispatch = useDispatch()
-    const specialties =  useSelector(state => state.specialties.specialties )
+    const specialties =  useSelector(state => state.specialties.entities['hydra:member'] )
     const [open, setOpen] = useState(false)
     const [updateOpen, setUpdateOpen] = useState(false)
-    const agentsListe =  useSelector(state => state.agents.agents['hydra:member'] )
-    const totalItem =useSelector(state => state.agents.agents['hydra:totalItems'] )
-    const isLoading = useSelector(state => state.agents.isLoading )
+    const agentsListe =  useSelector(state => state.agents.entities['hydra:member'])
+
+    const totalItem =useSelector(state => state.agents.entities['hydra:totalItems'] )
+    const isLoading = useSelector(state => state.agents.loading )
 
 
     const totalPages =  Math.ceil( totalItem / 13)
-
+    const { handleOpenModal, openModal, setOpenModal}=setOpenModalOptions()
     let [page , setPage]= useState(1)
     const changePage =({selected})=>{
 
         setPage(selected)
         history.push(`/Admin/agents/${selected}`)
-        dispatch(fetchAgent(selected))
+        dispatch(Agents.fetches(selected))
     }
 
    function handleSubmit(e){
-        dispatch(deleteAgent(e))
+        dispatch(Agents.deletes(e))
 
     }
     useEffect(() =>{
-        dispatch(fetchAgent(match.id))
-        dispatch(fetchSpecialties())
+        dispatch(Agents.fetches(match.id))
+        dispatch(Specialties.fetches(match.id))
+
     },[match.id,dispatch])
     const handleOpen = () => {
        !open ? setOpen(true) :!updateOpen ?setUpdateOpen(true): null
@@ -128,7 +121,7 @@ export default function useNewAgents(){
     }
     const handleUpdate =()=>{
 
-        dispatch(updateAgent(modifyId,{
+        dispatch(Agents.updates(modifyId,{
             firstName:firstName,
             lastName: lastName,
             birthDate: birthDate,
@@ -141,7 +134,7 @@ export default function useNewAgents(){
 
     const handleSubmitNewAgent=()=>{
         if(lastName && firstName && birthDate){
-            dispatch(postNewAgents({
+            dispatch(Agents.posts({
                 firstName:firstName,
                 lastName: lastName,
                 birthDate: birthDate,
@@ -202,5 +195,22 @@ export default function useNewAgents(){
        }
    ]
 
-    return {agentsListe, isLoading, handleSubmit, page,totalPages,changePage,totalItem,formAgentInput,handleSubmitNewAgent,handleOpen,handleClose,open,handleUpdate ,updateOpen,setUpdateOpen ,handleModifie}
+    return {
+        agentsListe,
+        isLoading,
+        handleSubmit,
+        page,totalPages,
+        changePage,totalItem,
+        formAgentInput,
+        handleSubmitNewAgent,
+        handleOpen,handleClose,
+        open,
+        handleUpdate ,
+        updateOpen,
+        setUpdateOpen
+        ,handleModifie,
+        handleOpenModal,
+        openModal,
+        setOpenModal
+    }
 }

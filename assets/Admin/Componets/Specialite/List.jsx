@@ -4,28 +4,33 @@ import {Paragraph, Spinner} from "theme-ui";
 import {useHistory} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPen, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
-const List =(loading ,totalItem, itemPerPage, totalPages, changePage,specialties})=>{
+import useSpecialtie from "../../Hooks/useSpecialtie";
+const Lists =()=>{
         const history =useHistory()
         const pen =<FontAwesomeIcon icon={faPen} color='yellow' />
         const trash = <FontAwesomeIcon icon={faTrashAlt} color='red'/>
-return (
+    const{specialtiesListe, isLoading, totalPages ,changePage,totalItem } =useSpecialtie()
+    return (
     <TableUI
         totalItem={totalItem}
         totalPages={totalPages}
-        itemPerPage={itemPerPage}
+        itemPerPage={13}
         changePage={changePage}
-    >{loading === 'load' ?<Spinner/>: specialties ?
+    >{isLoading === 'load' ?<Spinner/>: specialtiesListe ?
         <table>
            <thead>
-           <tr>Specialité</tr>
-           <tr>Action</tr>
+           <tr>
+               <th>Specialité</th>
+               <th>Action</th>
+           </tr>
+
            </thead>
            <tbody>
            {
-                   specialties.map(({id,specialtie})=>{
+               specialtiesListe.map(({id,name})=>{
                            return(
                                <tr key={id}>
-                                   <td>{specialtie}</td>
+                                   <td>{name}</td>
                                    <td>
                                       <Paragraph  as='span'  onClick={()=>handleModifie(id)}>{pen}</Paragraph>
                                       <Paragraph pl={2} as='span'  onClick={()=>handleSubmit(id)}  value={id}>{trash}</Paragraph>
@@ -43,4 +48,4 @@ return (
 
     </TableUI>)
 }
-export default  List
+export default  Lists

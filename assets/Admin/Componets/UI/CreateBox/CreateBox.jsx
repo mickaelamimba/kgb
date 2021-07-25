@@ -1,9 +1,8 @@
 import React from 'react';
-import {Box, Button, Close, Heading} from "theme-ui";
-const CreateBox =({handleClose, handleSubmit, children ,title})=>{
+import {Box, Close, Heading} from "theme-ui";
+const CreateBox =({handleClose, children ,title})=>{
     return(
-        <Box as="form" onSubmit={(e) => e.preventDefault()
-        } sx={{
+        <Box sx={{
             position:'fixed',
             zIndex:1,
             left:0,
@@ -31,7 +30,7 @@ const CreateBox =({handleClose, handleSubmit, children ,title})=>{
                     children
                 }
 
-                <Button onClick={handleSubmit}>Edit</Button>
+
             </Box>
 
         </Box>

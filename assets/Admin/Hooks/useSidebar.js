@@ -22,7 +22,7 @@ export default function useSidebar(){
                 icon: faUserTie
             },
             {
-                path:'/Admin/specialite',
+                path:'/Admin/specialite/1',
                 name:'Spécialités',
                 icon: faUserGraduate
             },
@@ -38,8 +38,8 @@ export default function useSidebar(){
                 icon: faUserTag
             },
             {
-                path:'/Admin/contact',
-                name:'Contact',
+                path:'/Admin/contacts/1',
+                name:'Contacts',
                 icon: faIdCard
             },
             {

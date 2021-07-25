@@ -1,5 +1,10 @@
 import React from 'react';
-const Edit =(id)=>{
+import CreateBox from "../UI/CreateBox/CreateBox";
+const Edit =()=>{
+return(
+    <CreateBox>
 
+    </CreateBox>
+)
 }
 export default Edit

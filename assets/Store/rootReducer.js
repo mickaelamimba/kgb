@@ -1,17 +1,19 @@
 
-import { missionSlice} from "./Mission/missionSlice";
+
 import {combineReducers} from "redux";
 
-import {agentsSlice} from "./Agents/agentsSlice";
-import {specialtiesSlice} from "./Specialite/specialtieMission";
-import {contactsSlice} from "./Contacts/contactsSlice";
+import {Agents, Contacts, Missions, Specialties, Stashs, Targets} from "./EntitySlice/EntityUrl";
+
 
 
 const rootReducer = combineReducers({
-    mission : missionSlice.reducer,
-    specialties : specialtiesSlice.reducer,
-    agents: agentsSlice.reducer,
-    contacts: contactsSlice.reducer,
+    missions : Missions.reducer,
+    specialties : Specialties.reducer,
+    contacts: Contacts.reducer,
+    agents: Agents.reducer,
+    targets: Targets.reducer,
+    stashs :Stashs.reducer
+
 
 
 })

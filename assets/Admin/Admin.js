@@ -9,10 +9,12 @@ import Specialite from "./Componets/Specialite/Specialite";
 import Mission from "./Componets/Mission/Mission";
 import Target from "./Componets/Target/Target";
 import Layout from "./Componets/UI/Layout/Layout";
-import {Switch, useLocation} from "react-router-dom";
+import {Route, Switch, useLocation} from "react-router-dom";
 import Create from "./Componets/Agents/Create";
 import Edit from "./Componets/Agents/Edit";
 import Home from "./Componets/Home/Home";
+import Contacts from "./Componets/Contact/Contacts";
+
 
 
 const Admin = () => {
@@ -37,6 +39,11 @@ const Admin = () => {
                 component: Specialite
             },
             {
+                path: '/Admin/contacts/:id',
+                component: Contacts
+            },
+
+            {
                 path: '/Admin/mission',
                 component: Mission
             }
@@ -45,10 +52,8 @@ const Admin = () => {
                 path: '/Admin/target',
                 component: Target
             },
-            {
-                path: '/Admin',
-                component: Home
-            }
+
+
 
 
         ]
@@ -58,7 +63,11 @@ const Admin = () => {
         <ThemeProvider theme={theme}>
             <Layout>
                 <Switch location={location}>
+                    <Route exact path ='/Admin'>
+                        <Home />
+                    </Route>
                     {
+
 
                         routes.map((route, i) => (
                             <HandelRoute key={i}{...route} />

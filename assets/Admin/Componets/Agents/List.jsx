@@ -1,14 +1,14 @@
 import React from 'react';
 import {Box, Button, Paragraph, Spinner} from "theme-ui";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faChevronLeft, faChevronRight, faPen, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
-import Pagination from "../UI/Pagination/Pagination";
-import {useHistory} from "react-router-dom";
+import { faPen, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
+
+
 import TableUI from "../UI/TableUI/TableUI";
 
 
 const List =({agents, loading,handleSubmit,totalPages,changePage,totalItem,handleModifie })=>{
-    const history =useHistory()
+
     const pen =<FontAwesomeIcon icon={faPen} color='yellow' />
     const trash = <FontAwesomeIcon icon={faTrashAlt} color='red'/>
     return(
