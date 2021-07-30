@@ -6,6 +6,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import {Box, Button, Flex, Input, Label, Paragraph, Select} from "theme-ui";
 import * as yup from "yup";
 import Pays from "../../Nationality/Nationality";
+import FormInput from "../UI/FormBox/FormInput";
+import FormSelectInput from "../UI/FormBox/FormSelectInput";
 
 
 const FormMissions =({title, onSubmit})=>{
@@ -17,10 +19,10 @@ const FormMissions =({title, onSubmit})=>{
         missionType: yup.string().required(),
         status: yup.string().required(),
         specialties: yup.string().required(),
-        agents: yup.array().string().required(),
-        contacts :yup.array().string().required(),
+        agents: yup.array().required(),
+        contacts :yup.array().required(),
         stashs:yup.string().required(),
-        targets:yup.array().string().required(),
+        targets:yup.array().required(),
         startDate: yup.date().required(),
         endDate: yup.date().required(),
 
@@ -33,25 +35,27 @@ const FormMissions =({title, onSubmit})=>{
     )
     return(
         <form onSubmit={handleSubmit(onSubmit)}>
-           <Flex sx={{
-               justifyContent:'space-around',
-               flexWrap: 'wrap'
-           }}>
-               <Input type='text' mb={3} name='firstName'{...register('title')}
-                      placeholder='Titre' sx={{filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))'}}
-               />
-               <Paragraph color='danger' mb={3}> {errors.title?.message}</Paragraph>
-               <Input type='text' mb={3} name='description'{...register('description')}
-                      placeholder='Description' sx={{filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))'}}
-               />
-               <Paragraph color='danger' mb={3}> {errors.description?.message}</Paragraph>
-           </Flex>
+            <FormInput
+                errors={errors.title?.message} type='text' name='title' placeholder='Titre'{...register('title')}
+            />
+            <FormInput
+                errors={errors.description?.message} type='text' name='description' placeholder='description'{...register('description')}
+            />
+            <FormInput
+                errors={errors.codeName?.message} type='text' name='codeName' placeholder='Nom de code'{...register('codeName')}
+            />
+            <FormSelectInput
+                label='Pays'
+                id='country'
+                errors={errors.country?.message}
+                {...register('country')}
+                options={Pays.map(pay => <option key={pay.id} value={pay.libelle}> {pay.libelle}</option>)}
+
+            />
+
             <Box>
 
-                <Input type='text' mb={3} name='codeName'{...register('codeName')}
-                       sx={{filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))'}}
-                />
-                <Paragraph color='danger' mb={3}> {errors.codeName?.message}</Paragraph>
+
                 <Input type='text' mb={3} name='missionType'{...register('missionType')}
                        placeholder='Nom de Code' sx={{filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))'}}
                 />

@@ -1,33 +1,37 @@
 import React from 'react';
-import {Button} from "theme-ui";
+import {Button, Paragraph} from "theme-ui";
 import BoxHeading from "../UI/BoxHeading/BoxHeading";
 import useContact from "../../Hooks/useContact";
 import {useRouteMatch} from "react-router-dom";
-import DisplayValidRequest from "../UI/DisplayMessage/DisplayValidRequest";
-import Lists from "./Lists";
 
-import DisplayError from "../UI/DisplayMessage/DisplayError";
+
+
 import Create from "../UI/FormBox/Create";
 import FormContacts from "./FormContacts";
+import DisplayTableUi from "../UI/TableUI/DisplayTableUi";
+import Configs from "../../Config/Config.json";
+
 const Contacts =()=>{
-   const { isLoading,contactsListe,
-       totalPages, totalItem, page, changePage,handleDelete, handleModify,handleOpenModal, openModal, onSubmit, } =useContact()
     let match = useRouteMatch(['/Admin/contacts/:id'])
+   const { isLoading,Lists,
+       handleOpenModal, openModal, onSubmit, } =useContact()
+
+
 
     return(
-        <BoxHeading title='Contacts' >
+        <BoxHeading
+            title={Configs.componentInfos.contacts.headerTitle}
+            btnTitle={Configs.componentInfos.contacts.button}
+            handleOpenModal={handleOpenModal} >
+            <DisplayTableUi
+                isLoading={isLoading}
+                tableHeadProps={Configs.table.duplicateValue}
 
-            <Button onClick={handleOpenModal}>ADD NEW CONTACT</Button>
-            <Lists contact={contactsListe}
-                   loading={isLoading}
-                   changePage={changePage}
-                   page={page}
-                   totalItem={totalItem}
-                   handleDelete ={handleDelete}
-                   handleModify={handleModify}
-                   totalPages={totalPages}
+            >
+                <Lists/>
+                
+            </DisplayTableUi>
 
-            />
 
             {openModal?
                 <Create

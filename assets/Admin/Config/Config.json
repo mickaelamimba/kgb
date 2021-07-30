@@ -9,5 +9,84 @@
   },
   "submitSuccess": {
     "success":"les donnes son enregistrement avec success"
+  },
+  "formInfo": {
+    "missions": {
+      "titleAdd":"Ajouter une Missions",
+      "titleUpdate": "Modifier une Missions"
+    }
+  },
+  "table": {
+    "duplicateValue":{
+      "firstName": "Prénom",
+      "lastName":"Nom",
+      "birthDate":"Date de naissance",
+      "codeName":"Non de Code",
+      "nationality": "Nationalité",
+      "action":"Action"
+    },
+    "mission":{
+      "title":"Titre",
+      "description":"Description",
+      "codeName":" Nom de code",
+      "country":"Pays",
+      "agents": "Agents",
+      "contacts": "Contacts",
+      "target":"Cibles",
+      "missionType":" Type de mission",
+      "status":"Statut",
+      "stashs":"Planque",
+      "specialties":"Spécialité",
+      "startDate":"Date de début",
+      "endDate":" Date de fin",
+      "action":"Action"
+    },
+    "missionType":[
+      "Surveillance",
+      "Assassinat",
+      " Infiltration"
+    ],
+    "status":[
+      "En préparation",
+      "En cours",
+     " Terminé",
+      "échec"
+
+    ],
+    "stashs": {
+      "code": "Code",
+      "address": "Adresse",
+      "country":"Pays",
+      "type":"type",
+      "action":"Action"
+    },
+    "agents": {
+      "firstName": "Prénom",
+      "lastName":"Nom",
+      "birthDate":"Date de naissance",
+      "indentificationCode":"Code d'identification",
+      "nationality":"Nationalité",
+      "specialties":"Spécialité",
+      "action":"Action"
+
+    }
+  },
+  "componentInfos":{
+    "stashs":{
+      "button":"Ajouter une planque",
+      "headerTitle": "Planque"
+    },
+    "agents": {
+      "button":"Ajouter un agent",
+      "headerTitle": "Agents"
+    },
+    "missions": {
+      "button":"Ajouter une mission ",
+      "headerTitle":"Missions"
+    },
+    "contacts":{
+      "button":"Ajouter un contact",
+      "headerTitle": "Contacts"
+    }
   }
 }

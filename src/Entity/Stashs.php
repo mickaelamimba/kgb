@@ -41,7 +41,7 @@ class Stashs
     private $id;
 
     /**
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(type="integer")
      * @Groups({"stashs:read","missions:read","stashs:write"})
      */
     private $code;

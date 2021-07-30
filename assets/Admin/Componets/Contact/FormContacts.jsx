@@ -6,25 +6,31 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import {Box, Button, Flex, Input, Label, Paragraph, Select} from "theme-ui";
 import * as yup from "yup";
 import Pays from "../../Nationality/Nationality";
-import useContact from "../../Hooks/useContact";
+
 import DisplayValidRequest from "../UI/DisplayMessage/DisplayValidRequest";
 import DisplayError from "../UI/DisplayMessage/DisplayError";
 import Configs from "../../Config/Config.json";
+import FormInput from "../UI/FormBox/FormInput";
+import FormSelectInput from "../UI/FormBox/FormSelectInput";
 
 
 const FormContacts =({title, onSubmit})=>{
-    const {submitErrors,setSubmitErrors}=useContact()
+
     const schema  =yup.object().shape({
         firstName: yup.string().required(),
         lastName: yup.string().required(),
-
+        birthDate : yup.date().required(),
         codeName: yup.string().required(),
         nationality: yup.string().required(),
+
     })
 
     const {register,handleSubmit, formState:{errors ,isSubmitSuccessful,
-        isSubmitted, isSubmitting,hasSubmitErrors, isValid, } }=useForm(
-        { resolver: yupResolver(schema),}
+        isSubmitted, isSubmitting, isValid, } }=useForm(
+
+        {
+            mode:'onTouched',
+            resolver: yupResolver(schema),}
     )
 
 
@@ -37,36 +43,35 @@ const FormContacts =({title, onSubmit})=>{
                 isSubmitted && isValid ? isSubmitSuccessful ===false ?<DisplayError message={Configs.submitErrors.error}/>: null:null
         }
            <Flex sx={{
-               justifyContent:'space-around',
-               flexWrap: 'wrap'
+               justifyContent:'space-between',
+              alignItems: 'stretch'
+
            }}>
-               <Input type='text' mb={3} name='firstName'{...register('firstName')}
-                      placeholder='Prénom' sx={{filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))'}}
+               <FormInput
+                   errors={errors.firstName?.message} type='text' name='firstName' placeholder='prénom'{...register('firstName')}
                />
-               <Paragraph color='danger' mb={3}> {errors.firstName?.message}</Paragraph>
-               <Input type='text' mb={3} name='lastName'{...register('lastName')}
-                      placeholder='Nom' sx={{filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))'}}
+               <FormInput
+                   errors={errors.lastName?.message} type='text' name='lastName' placeholder='Nom'{...register('lastName')}
                />
-               <Paragraph color='danger' mb={3}> {errors.lastName?.message}</Paragraph>
+
            </Flex>
-            <Box>
-                <Label htmlFor='birthDate'> date de naissance </Label>
-                <Input type='date' mb={3} name='birthDate'{...register('birthDate')}
-                       sx={{filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))'}}
+
+                <FormInput
+                    label=' date de naissance' id='birthDate'
+                    errors={errors.birthDate?.message} type='date' name='birthDate'{...register('birthDate')}
                 />
-                <Paragraph color='danger' mb={3}> {errors.birthDate?.message}</Paragraph>
-                <Input type='text' mb={3} name='CodeName'{...register('codeName')}
-                       placeholder='Nom de Code' sx={{filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))'}}
+                <FormInput
+                    errors={errors.codeName?.message} type='text' name='codeName' placeholder='Nom de Code'{...register('codeName')}
                 />
-                <Paragraph color='danger' mb={3}> {errors.codeName?.message}</Paragraph>
-            </Box>
-            <Box>
-                <Select mb={3} {...register('nationality')} >
-                    {
-                        Pays.map(pay => <option key={pay.id} value={pay.nationalite}> {pay.nationalite}</option>)
-                    }
-                </Select>
-            </Box>
+            <FormSelectInput
+                label='Nationalité'
+                id='nationality'
+                errors={errors.nationality?.message}
+                {...register('nationality')}
+                options={Pays.map(pay => <option key={pay.id} value={pay.nationalite}> {pay.nationalite}</option>)}
+
+            />
+
             <Button disabled={isSubmitting} >{title}</Button>
         </form>
     )

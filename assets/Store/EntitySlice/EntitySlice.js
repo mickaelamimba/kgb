@@ -60,18 +60,28 @@ export default({
       name,
       initialState:{
           entities:[],
+          oneById:{},
           loading:'load',
           errors:''
 
       },
         reducers:{
-       
+
         },
         extraReducers:{
           [fetchById.fulfilled]:(state,action)=>{
-              state.entities[action.payload.id]= action.payload
+              state.loading ='success'
+              state.oneById= {
+                  ...action.payload}
+
           },
+            [fetchById.pending]:(state)=>{
+
+                state.oneById={}
+
+            },
            [fetches.pending]:(state)=>{
+
                state.entities=[]
             },
           [fetches.fulfilled]:(state,action)=>{
@@ -81,8 +91,12 @@ export default({
                  ...action.payload
              }
           },
-          [posts.fulfilled]:(state,action)=>{
+            [posts.pending]:(state)=>{
+                state.entities=[]
 
+            },
+          [posts.fulfilled]:(state,action)=>{
+              state.loading ='success'
 
               state.entities['hydra:member']=[ ...state.entities['hydra:member'],
                   action.payload
@@ -93,11 +107,19 @@ export default({
                 state.errors = action.error.message
             },
           [updates.fulfilled]:(state,action)=>{
+              state.loading ='success'
               state.entities['hydra:member'].id = action.payload
           },
+            [updates.pending]:(state,action)=>{
+
+                state.entities= []
+            },
           [deletes.fulfilled]:(state, action)=>{
              state.entities['hydra:member']=[...state.entities['hydra:member'].filter(entity => entity.id !== action.meta.arg)]
           },
+            [deletes.pending]:(state, action)=>{
+                state.entities=[]
+            },
         }
     })
 

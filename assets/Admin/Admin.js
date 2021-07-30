@@ -10,10 +10,11 @@ import Mission from "./Componets/Mission/Mission";
 import Target from "./Componets/Target/Target";
 import Layout from "./Componets/UI/Layout/Layout";
 import {Route, Switch, useLocation} from "react-router-dom";
-import Create from "./Componets/Agents/Create";
+
 import Edit from "./Componets/Agents/Edit";
 import Home from "./Componets/Home/Home";
 import Contacts from "./Componets/Contact/Contacts";
+import Stashs from "./Componets/Stashs/Stashs";
 
 
 
@@ -32,7 +33,7 @@ const Admin = () => {
             },
             {
                 path: '/Admin/agents/:id/added/',
-                component: Create
+                component: Agents
             },
             {
                 path: '/Admin/specialite',
@@ -44,13 +45,17 @@ const Admin = () => {
             },
 
             {
-                path: '/Admin/mission',
+                path: '/Admin/missions/:id',
                 component: Mission
             }
             ,
             {
                 path: '/Admin/target',
                 component: Target
+            },
+            {
+                path: '/Admin/stashs/:id',
+                component: Stashs
             },
 
 

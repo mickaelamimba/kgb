@@ -1,41 +1,60 @@
 import React from 'react';
-import {Button, Heading} from "theme-ui";
-import Create from "./Create";
-import List from "./List";
+import {Button} from "theme-ui";
+
+
 import useNewAgents from "../../Hooks/useNewAgents";
 import {useRouteMatch} from "react-router-dom";
-import Edit from "./Edit";
-import DisplayError from "../UI/DisplayMessage/DisplayError";
+
 import BoxHeading from "../UI/BoxHeading/BoxHeading";
+import DisplayTableUi from "../UI/TableUI/DisplayTableUi";
+import Configs from "../../Config/Config.json";
+import Create from "../UI/FormBox/Create";
+import FormAgent from "./FormAgent";
 
 
 
 const Agents =()=>{
     let match = useRouteMatch(['/Admin/agents/:id','/Admin/agents/:id/modify/:id','/Admin/agents/:id/added'])
 
-    const {agentsListe, isLoading, handleSubmit, page,totalPages,changePage,
-        totalItem,formAgentInput,handleSubmitNewAgent,handleOpen,
-        handleClose,open,handleUpdate,updateOpen,handleModifie ,handleOpenModal, openModal }= useNewAgents()
+    const { isLoading, onSubmit,openModal, handleOpenModal,Lists, valueUpdate, update}= useNewAgents()
 
     return (
-        <BoxHeading title='Agents'>
-            <DisplayError message='erreur enregistrement' />
-            <Button onClick={handleOpenModal}>ADD NEW AGENT</Button>
-            <List agents={agentsListe}
-                  loading={isLoading}
-                  changePage={changePage}
-                  page={page}
-                  totalItem={totalItem}
-                  handleSubmit={ handleSubmit}
-                  handleModifie={handleModifie}
-                  totalPages={totalPages}
-            />
-            {
-                openModal  ? <Create formAgentInput={formAgentInput}  handleSubmit={handleSubmitNewAgent} handleClose={handleOpenModal}/>: null
+        <BoxHeading
+            title={Configs.componentInfos.agents.headerTitle}
+            handleOpenModal={handleOpenModal}
+            btnTitle={Configs.componentInfos.agents.button}
+        >
+
+            <DisplayTableUi
+                isLoading={isLoading}
+                tableHeadProps={Configs.table.agents}
+            >
+            <Lists/>
+            </DisplayTableUi>
+            { openModal ?
+                <Create
+                    close={handleOpenModal}
+
+                >
+                    {
+                        openModal &&  !update ?  <FormAgent
+                            onSubmit={onSubmit}
+                        />: null
+                    }
+
+
+                    {
+
+                        update && openModal? <FormAgent
+                            onSubmit={onSubmit}
+                            valueUpdate={valueUpdate}
+                        />:null
+                    }
+
+                </Create>: null
             }
-            {
-                !openModal ? <Edit formAgentInput={formAgentInput}  handleUpdate={handleUpdate } handleClose={handleOpenModal}/>: null
-            }
+
+
         </BoxHeading>
       )
 }

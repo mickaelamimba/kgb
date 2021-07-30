@@ -1,29 +1,33 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory, useParams} from "react-router-dom";
-import Pays from "../Nationality/Nationality";
+
 import {Agents, Specialties} from "../../Store/EntitySlice/EntityUrl";
 import {setOpenModalOptions} from "../Func/OpenModale";
+import {Paragraph} from "theme-ui";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPen, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
+
 
 
 
 
 export default function useNewAgents(){
+    const pen =<FontAwesomeIcon icon={faPen} color='yellow' />
+    const trash = <FontAwesomeIcon icon={faTrashAlt} color='red'/>
     let match = useParams()
 
     const history=useHistory()
-    const [lastName, setLastName] = useState('')
-    const [firstName, setFirstName] = useState('')
-    const [birthDate, setBirthDate] = useState('')
-    const [indentificationCode, setIndentificationCode] = useState('')
-    const [nationality, setNationality] = useState('')
-    const [checkSpecialtie, setCheckSpecialtie] = useState(false)
-    const [specialtiesId, setSpecialtiesId] =useState([])
 
-    const [modifyId, setModifyId] =useState(0)
+
+    const [update, setUpdate] = useState(false)
+
+
+
     const dispatch = useDispatch()
-    const specialties =  useSelector(state => state.specialties.entities['hydra:member'] )
-    const [open, setOpen] = useState(false)
+    const specialtiesListe =  useSelector(state => state.specialties.entities['hydra:member'] )
+
+    const [create, setCreate] = useState(false)
     const [updateOpen, setUpdateOpen] = useState(false)
     const agentsListe =  useSelector(state => state.agents.entities['hydra:member'])
 
@@ -41,176 +45,100 @@ export default function useNewAgents(){
         dispatch(Agents.fetches(selected))
     }
 
-   function handleSubmit(e){
-        dispatch(Agents.deletes(e))
+ const  handleDelete= async (e)=>{
+        dispatch( await Agents.deletes(e))
 
     }
     useEffect(() =>{
-        dispatch(Agents.fetches(match.id))
-        dispatch(Specialties.fetches(match.id))
-
-    },[match.id,dispatch])
-    const handleOpen = () => {
-       !open ? setOpen(true) :!updateOpen ?setUpdateOpen(true): null
-
-        !open ? history.push(`/Admin/agents/${match.id}/added/`):null
-
-    };
-    const handleClose = () => {
-        open ? setOpen(false) :updateOpen ?setUpdateOpen(false): null
-        open ? history.push(`/Admin/agents/${match.id}`):
-            updateOpen ? history.push(`/Admin/agents/${match.id}`):null
-        setLastName('')
-        setFirstName('')
-        setBirthDate( '')
-        setIndentificationCode('')
-        setNationality('')
-    };
-    const toggle = (arr,item)=>{
-        if(arr.includes(item)){
-           return arr.filter(i=> i !== item)
-        }
-        else{
-            return [...arr,item]
-        }
-    }
-    const handleCheckInput= (e )=>{
-      let id= e.target.id
-
-        setCheckSpecialtie(!checkSpecialtie)
-            setSpecialtiesId(toggle(specialtiesId, id))
-    }
-
-
-    const handleCheckUpdate= (e)=>{
-
-        setSpecialtiesId(toggle(specialtiesId, id))
-    }
-    const handleModifie = async(e)=>{
-
-        if(agentsListe.length> 0){
-         const filters=  agentsListe.filter(agent => agent.id === e)
-
-            filters.map(({lastName,firstName,birthDate,indentificationCode,nationality,agentSpecialties})=>{
-                setLastName(lastName)
-                setFirstName(firstName)
-                setBirthDate( new Date(birthDate).toISOString().substr(0,10))
-                setIndentificationCode(indentificationCode)
-                setNationality(nationality)
-                agentSpecialties.map(items => {
-
-                    console.log(items.id)
-                    specialties.filter(i => {
-
-                        if(i.id === items.id){
-                            setCheckSpecialtie(!checkSpecialtie)
-
-                        }
-
-                    })
-                })
-            })
-
+        if(isLoading  === 'load'){
+            dispatch(Agents.fetches(match.id))
+            dispatch(Specialties.fetches(match.id))
 
         }
-        setModifyId(e)
+
+
+    },[isLoading ,match.id,dispatch])
+
+
+
+
+    const handle = async(e)=>{
+
+
         setUpdateOpen(true)
         history.push(`/Admin/agents/${match.id}/modify/${e}`)
 
 
     }
-    const handleUpdate =()=>{
-
-        dispatch(Agents.updates(modifyId,{
-            firstName:firstName,
-            lastName: lastName,
-            birthDate: birthDate,
-            indentificationCode: indentificationCode,
-            nationality: nationality,
-            specialties:[]
-        }))
-    }
-
-
-    const handleSubmitNewAgent=()=>{
-        if(lastName && firstName && birthDate){
-            dispatch(Agents.posts({
-                firstName:firstName,
-                lastName: lastName,
-                birthDate: birthDate,
-                indentificationCode: indentificationCode,
-                nationality: nationality,
-                agentSpecialties:specialtiesId
-            }))
+    const handleModify = async (i)=>{
+        if(i){
+            setUpdate(true)
+            setOpenModal(true)
         }
-        setOpen(false)
+        openModal ? update ?setUpdate(true): setUpdate(false): null
+        console.log(i)
+
+    }
+    const valueUpdate =
+       {
+            firstName: 'test',
+            lastName: 'martin',
+            birthDate : '',
+            indentificationCode: '',
+            nationality:'' ,
+            agentSpecialties: '',
+        }
+
+
+
+    const onSubmit= async (data)=>{
+        if (data){
+            dispatch( await Agents.posts(data))
+        }
+
+
+    }
+    const Lists =()=>{
+
+        return(
+            agentsListe.map(({id, firstName, lastName, birthDate, indentificationCode,nationality, agentSpecialties},i)=>{
+                return(
+                    <tr key={i}>
+                        <td>{firstName}</td>
+                        <td>{lastName}</td>
+                        <td>{birthDate}</td>
+                        <td>{indentificationCode}</td>
+                        <td>{nationality}</td>
+                        <td>{agentSpecialties.map(item => <span key={item.id}>{item.name}</span>)}</td>
+
+                        <td>
+                            <Paragraph  as='span'  onClick={()=>handleModify(id)}>{pen}</Paragraph>
+                            <Paragraph pl={2} as='span'  onClick={()=>handleDelete(id)} >{trash}</Paragraph>
+                        </td>
+
+                    </tr>
+                )
+
+
+            })
+        )
 
     }
 
-   const  formAgentInput=[
-       {
-           format:'input',
-           value: lastName,
-           name:"lastName",
-           onChange: e => setLastName(e.target.value),
-           placeholder :'Nom',
-           type: 'text'
-       }, {
-           format:'input',
-           value: firstName,
-           name:"firstName",
-           onChange: e => setFirstName(e.target.value),
-           placeholder :'Prenom',
-           type: 'text'
-       },{
-           format:'date',
-           value: birthDate,
-           name:"birth_date",
-           onChange: e => setBirthDate(e.target.value),
-           label :'date de naisence',
-           type: 'date'
-       },{
-           format:'input',
-           value: indentificationCode,
-           name:"indentification_code",
-           onChange: e => setIndentificationCode(e.target.value),
-           placeholder :'Code d\'idetification',
-           type: 'text'
-       },{
-           format:'select',
-           value: nationality,
-           name:"nationality",
-           onChange: e => setNationality(e.target.value),
-           label  :'Nationaliter',
-           options:Pays
-       },
-       {
-           format: 'checked',
-           value: checkSpecialtie,
-           name:"Specialites",
-           onChange: updateOpen ? handleCheckUpdate : handleCheckInput,
-           label :'Specialites',
-           options:specialties,
 
-       }
-   ]
 
     return {
-        agentsListe,
+
         isLoading,
-        handleSubmit,
-        page,totalPages,
-        changePage,totalItem,
-        formAgentInput,
-        handleSubmitNewAgent,
-        handleOpen,handleClose,
-        open,
-        handleUpdate ,
-        updateOpen,
-        setUpdateOpen
-        ,handleModifie,
+
+        onSubmit,
+        valueUpdate,
+
+        update,
         handleOpenModal,
         openModal,
-        setOpenModal
+        setOpenModal,
+        specialtiesListe,
+        Lists
     }
 }

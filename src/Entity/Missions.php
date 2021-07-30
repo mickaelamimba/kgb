@@ -18,7 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     paginationItemsPerPage=13,
  *     normalizationContext={"groups"={"missions:read"}},
  *     denormalizationContext={"groups"={"missions:write"}},
- *          collectionOperations={"get"={"normalization_context"={"groups"={"missions"}}},
+ *          collectionOperations={
+ *     "get",
  *     "post"
  *     },
  *     itemOperations={
@@ -41,14 +42,14 @@ class Missions
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     *@Groups({"missions:read","missions"})
+     *@Groups({"missions:read"})
      *
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"missions:read","missions","missions:write"})
+     * @Groups({"missions:read","missions:write"})
      *
      *
      */
@@ -56,27 +57,27 @@ class Missions
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"missions:read","missions","missions:write"})
+     * @Groups({"missions:read","missions:write"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"missions:read","missions","missions:write"})
+     * @Groups({"missions:read","missions:write"})
      *
      */
     private $codeName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"missions:read","missions","missions:write"})
+     * @Groups({"missions:read","missions:write"})
      *
      */
     private $country;
 
     /**
      * @ORM\Column(type="string", length=255)
-     *@Groups({"missions:read","missions","missions:write"})
+     *@Groups({"missions:read","missions:write"})
      *
      */
     private $missionType;
@@ -84,7 +85,7 @@ class Missions
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le statut de la mission est obligatoire")
-     *@Groups({"missions:read","missions","missions:write"})
+     *@Groups({"missions:read","missions:write"})
      */
     private $status;
 

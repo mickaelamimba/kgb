@@ -27,7 +27,7 @@ export default function useSidebar(){
                 icon: faUserGraduate
             },
             {
-                path:'/Admin/mission',
+                path:'/Admin/missions/1',
                 name:'Missions',
                 icon:faBriefcase
             }
@@ -43,7 +43,7 @@ export default function useSidebar(){
                 icon: faIdCard
             },
             {
-                path:'/Admin/stashs',
+                path:'/Admin/stashs/1',
                 name:'Planques',
                 icon:faTintSlash
             }

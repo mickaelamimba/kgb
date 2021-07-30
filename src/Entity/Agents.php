@@ -66,7 +66,7 @@ class Agents
     private $birthDate;
 
     /**
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(type="integer")
      * @Groups({"agents:read","agents:write","missions:read"})
      */
     private $indentificationCode;

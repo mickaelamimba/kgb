@@ -1,10 +1,11 @@
 
 import React from 'react';
 import BoxHeading from "../UI/BoxHeading/BoxHeading";
+import TargetLists from "./TargetLists";
 const Target=()=>{
     return(
         <BoxHeading title='Cibles'>
-            <h1>Target</h1>
+            <TargetLists/>
         </BoxHeading>
     )
 }
