@@ -1,13 +1,11 @@
 import React, {forwardRef} from "react";
 import {Box, Paragraph, Spinner,} from "theme-ui";
 import PropTypes from "prop-types";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPen, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 
 
-const DisplayTableUi = ({  tableHeadProps,isLoading, children })=>{
-    const pen =<FontAwesomeIcon icon={faPen} color='yellow' />
-    const trash = <FontAwesomeIcon icon={faTrashAlt} color='red'/>
+
+const DisplayTableUi = ({  tableHeadProps, children })=>{
+
     return(
         <React.Fragment>
             <Box mb={3} sx={{
@@ -25,7 +23,7 @@ const DisplayTableUi = ({  tableHeadProps,isLoading, children })=>{
                         backgroundColor: 'secondary'
 
                     },
-                    'th, td, span':{
+                    'th, td':{
                         padding:2,
                         textAlign:'center',
                     },
@@ -34,7 +32,7 @@ const DisplayTableUi = ({  tableHeadProps,isLoading, children })=>{
                     }
                 }
             }}>
-                {isLoading  === 'load' ?<Spinner/>:children?
+
                     <table>
 
                         <thead>
@@ -51,9 +49,9 @@ const DisplayTableUi = ({  tableHeadProps,isLoading, children })=>{
                             {children}
                         </tbody>
 
-                    </table>:null
+                    </table>
 
-                }
+
 
 
             </Box>
@@ -70,6 +68,7 @@ export default DisplayTableUi
 
 DisplayTableUi.prototype ={
     tableHeadProps : PropTypes.object,
-    isLoading : PropTypes.string
+    isLoading : PropTypes.string,
+    children : PropTypes.node
 }
 

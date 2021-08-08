@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- *     paginationItemsPerPage=13,
+ *     paginationEnabled=false,
  *     normalizationContext={"groups"={"missions:read"}},
  *     denormalizationContext={"groups"={"missions:write"}},
  *          collectionOperations={

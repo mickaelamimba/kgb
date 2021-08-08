@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
- *     paginationItemsPerPage=13,
+ *     paginationEnabled=false,
  *     normalizationContext={"groups"={"tatgets:read"}},
  *     denormalizationContext={"groups"={"tatgets:write"}},
  *      collectionOperations={

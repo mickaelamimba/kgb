@@ -14,6 +14,24 @@
     "missions": {
       "titleAdd":"Ajouter une Missions",
       "titleUpdate": "Modifier une Missions"
+    },
+    "specialties":{
+      "titleAdd":"Ajouter une Spécialité",
+      "titleUpdate": "Modifier une Spécialité"
+    },
+    "agents":{
+      "titleAdd":"Ajouter un Agent",
+      "titleUpdate": "Modifier un Agent"
+    }
+  },
+  "frontendTable": {
+    "missions":{
+      "title":"Titre",
+      "description":"Description",
+      "codeName":" Nom de code",
+      "country":"Pays",
+      "status":"Statut",
+      "action": "..."
     }
   },
   "table": {
@@ -64,17 +82,25 @@
       "firstName": "Prénom",
       "lastName":"Nom",
       "birthDate":"Date de naissance",
-      "indentificationCode":"Code d'identification",
+      "indentificationCode":"Code d'ientification",
       "nationality":"Nationalité",
       "specialties":"Spécialité",
       "action":"Action"
 
+    },
+    "specialties":{
+      "name": "Nom",
+      "action":"Action"
     }
   },
   "componentInfos":{
     "stashs":{
       "button":"Ajouter une planque",
       "headerTitle": "Planque"
+    },
+    "targets":{
+      "button":"Ajouter une Cible",
+      "headerTitle": "Cibles"
     },
     "agents": {
       "button":"Ajouter un agent",
@@ -87,6 +113,10 @@
     "contacts":{
       "button":"Ajouter un contact",
       "headerTitle": "Contacts"
+    },
+    "specialties":{
+      "button":"Ajouter une une Spécialité",
+      "headerTitle":"Spécialité"
     }
-  }
+      }
 }

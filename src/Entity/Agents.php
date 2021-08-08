@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
  * @ApiResource(
- *     paginationItemsPerPage=13,
+ *    paginationEnabled=false,
  *     normalizationContext={"groups"={"agents:read"},"enable_max_depth"=true},
  *     denormalizationContext={"groups"={"agents:write"}},
  *          collectionOperations={

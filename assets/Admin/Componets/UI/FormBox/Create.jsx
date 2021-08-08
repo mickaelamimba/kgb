@@ -2,7 +2,7 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 import CreateBox from "../CreateBox/CreateBox";
-import FormBox from "./FormBox";
+
 
 
 const Create =({ close,formTitleBtn,children })=>{
@@ -12,12 +12,7 @@ const Create =({ close,formTitleBtn,children })=>{
             handleClose={close}
             title={formTitleBtn}
         >
-            <FormBox
-                formInput={children}
-
-            />
-
-
+            {children}
 
         </CreateBox>
     )
@@ -25,12 +20,10 @@ const Create =({ close,formTitleBtn,children })=>{
 export default Create
 Create.defaultProps = {
     formTitleBtn:'Ajouter un Contacts',
-    boxTitle:'Ajouter'
+
 
 }
 Create.propTypes={
-    formInput : PropTypes.array,
     close : PropTypes.func.isRequired,
-    boxTitle: PropTypes.string,
     formTitleBtn :PropTypes.string,
 }

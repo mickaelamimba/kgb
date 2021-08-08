@@ -5,26 +5,25 @@ import theme from "./theme";
 
 import Layout from "./Componets/Layout";
 import{ThemeProvider} from"theme-ui"
-import Mission from "./Componets/Mission/Mission";
+import Mission from "./Pages/Mission/Mission";
 import HandelRoute from "./Componets/Route/HandelRoute";
-import OneById from "./Componets/Mission/OneById";
+import OneById from "./Pages/Mission/OneById";
 import {Route, Switch} from "react-router-dom";
 
 import Menu from "./Componets/Menu/Menu";
 import UnknownRout from "./Componets/Route/UnknownRout";
+import {QueryClient, QueryClientProvider} from "react-query";
+import {ReactQueryDevtools} from "react-query/devtools";
 
 
 
+const queryClient = new QueryClient()
 function App(){
     const routes =[
         {
             path:'/missions/:id',
             component : OneById
 
-        },
-        {
-            path:'*',
-            component: UnknownRout
         }
 
 
@@ -40,7 +39,7 @@ function App(){
 
         ]
    return(
-
+       <QueryClientProvider client={queryClient}>
        <ThemeProvider theme={theme}>
            <Switch>
            <Layout navBar={Menu(Lists)}>
@@ -54,10 +53,11 @@ function App(){
 
                        ))
                    }
-
+               <ReactQueryDevtools initialIsOpen={false} />
            </Layout>
            </Switch>
        </ThemeProvider>
+       </QueryClientProvider>
 
    )
 }
