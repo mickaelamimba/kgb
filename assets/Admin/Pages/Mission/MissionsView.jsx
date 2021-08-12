@@ -5,42 +5,40 @@ import React from 'react';
 import BoxHeading from "../../Componets/UI/BoxHeading/BoxHeading";
 import Configs from "../../Config/Config.json";
 
-import DisplayTableUi from "../../Componets/UI/TableUI/DisplayTableUi";
 import {useRouteMatch} from "react-router-dom";
 import Create from "../../Componets/UI/FormBox/Create";
 import FormMissions from "./FormMissions";
 import useMissionsCRUD from "../../Hooks/useMissionsCRUD";
-import Lists from "./Lists";
 import {useOpenModal} from "../../Context/OpenModalContext";
+import Table from "./Table";
+import TablesCard from "../../Componets/UI/TableUI/TablesCard";
 
-const Mission=()=>{
+const MissionsView=()=>{
     let match = useRouteMatch(['/Admin/missions/:id'])
     const modal =useOpenModal()
-const { handleAdde}=useMissionsCRUD()
+const {isError,isSuccess, handleAdde}=useMissionsCRUD()
+
     return(
         <BoxHeading title={Configs.componentInfos.missions.headerTitle}
                     handleOpenModal={modal.handleOpenModal}
                     btnTitle={Configs.componentInfos.missions.button}
+                    isError={isError}
+                    isSuccess={isSuccess}
         >
-        <DisplayTableUi
-            tableHeadProps={Configs.table.mission}
-        >
-        <Lists/>
-        </DisplayTableUi>
-            {modal.openModal ?
+            <TablesCard>
+                <Table/>
+            </TablesCard>
+
+
+            {modal.openModal &&
             <Create close={modal.handleOpenModal}>
                 <FormMissions
-                    title={Configs.formInfo.missions.titleAdd}
                     onSubmit={handleAdde}
+                    title={Configs.formInfo.missions.titleAdd}
+
                 />
 
-            </Create>: modal.openModalUpdate &&
-                <Create close={modal.handleOpenModalUpdate}>
-                    <FormMissions
-                        onSubmit={handleAdde}
-                     title={Configs.formInfo.missions.titleUpdate}/>
-
-                </Create>
+            </Create>
             }
 
 
@@ -49,4 +47,4 @@ const { handleAdde}=useMissionsCRUD()
         </BoxHeading >
     )
 }
-export default Mission
+export default MissionsView

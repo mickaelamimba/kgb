@@ -4,7 +4,7 @@ import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEye, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 const eye =<FontAwesomeIcon icon={faEye}  />
-const trash = <FontAwesomeIcon icon={faTrashAlt} color='red'/>
+const trash = <FontAwesomeIcon icon={faTrashAlt} />
 
 export const ColumnsSpecialties= memoize( (handleDelete,history) =>[
     { name: "ID",
@@ -18,16 +18,13 @@ export const ColumnsSpecialties= memoize( (handleDelete,history) =>[
 
     {
         name:'Action',
-        cell: (row) => <Button  onClick={()=>handleDelete(row.id)} id={row.id}>{trash}</Button>,
+        cell: (row) => <div>
+            <Button mr={2} variant='primaryBtn.delete'  onClick={()=>handleDelete(row.id)} id={row.id}>{trash}</Button>
+            <Button variant='primaryBtn.info'  onClick={()=>history.push(`/Admin/specialities/${row.id}/show/`)} id={row.id}>{eye}</Button>
+        </div>,
         ignoreRowClick: true,
         allowOverflow: true,
         button: true,
     },
-    {
 
-        cell: (row) => <Button  onClick={()=>history.push(`/Admin/specialities/${row.id}/show/`)} id={row.id}>{eye}</Button>,
-        ignoreRowClick: true,
-        allowOverflow: true,
-        button: true,
-    }
 ])

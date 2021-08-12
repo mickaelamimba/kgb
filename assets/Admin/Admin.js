@@ -6,22 +6,26 @@ import {ThemeProvider} from "theme-ui";
 import HandelRoute from "../js/Componets/Route/HandelRoute";
 
 import SpecialitesView from "./Pages/Specialite/SpecialitesView";
-import Mission from "./Pages/Mission/Mission";
-import Target from "./Pages/Target/Target";
+import MissionsView from "./Pages/Mission/MissionsView";
+import TargetsView from "./Pages/Target/TargetsView";
 import Layout from "./Componets/UI/Layout/Layout";
 import {Route, Switch, useLocation} from "react-router-dom";
 
 
 import Home from "./Pages/Home/Home";
 import ContactsView from "./Pages/Contact/ContactsView";
-import Stashs from "./Pages/Stashs/Stashs";
+import StashsView from "./Pages/Stashs/StashsView";
 import {QueryClient, QueryClientProvider} from "react-query";
 import { ReactQueryDevtools } from 'react-query/devtools'
 import {OpenModalProvider} from "./Context/OpenModalContext";
-import * as ShowAgent from "./Pages/Agents/Show";
+
 import AgentsView from "./Pages/Agents/AgentsView";
-import  ShowContact from "./Pages/Contact/ShowContact";
+import ShowAgent from "./Pages/Agents/ShowAgent";
 import ShowSpecialites from "./Pages/Specialite/ShowSpecialites";
+import ShowContact from "./Pages/Contact/ShowContact";
+import ShowMissions from "./Pages/Mission/ShowMissions";
+
+
 
 
 const queryClient = new QueryClient()
@@ -32,7 +36,7 @@ const Admin = () => {
         [
 
             {
-                path: '/Admin/agents/:id',
+                path: '/Admin/agents',
                 component: AgentsView
             },
             {
@@ -40,15 +44,15 @@ const Admin = () => {
                 component: ShowAgent
             },
             {
-                path: '/Admin/specialities/:id',
+                path: '/Admin/specialities',
                 component: SpecialitesView
             },
             {
-                path: '/Admin/specialities/:id',
+                path: '/Admin/specialities/:id/show/',
                 component: ShowSpecialites
             },
             {
-                path: '/Admin/contacts/:id',
+                path: '/Admin/contacts',
                 component: ContactsView
             },
             {
@@ -57,17 +61,22 @@ const Admin = () => {
             },
 
             {
-                path: '/Admin/missions/:id',
-                component: Mission
+                path: '/Admin/missions',
+                component: MissionsView
             }
             ,
             {
-                path: '/Admin/targets/:id',
-                component: Target
+                path: '/Admin/missions/:id/show/',
+                component: ShowMissions
+            }
+            ,
+            {
+                path: '/Admin/targets',
+                component: TargetsView
             },
             {
-                path: '/Admin/stashs/:id',
-                component: Stashs
+                path: '/Admin/stashs',
+                component: StashsView
             },
 
 
@@ -77,11 +86,13 @@ const Admin = () => {
 
 
     return (
+        <Switch location={location}>
         <QueryClientProvider client={queryClient}>
+
         <ThemeProvider theme={theme}>
+            <OpenModalProvider>
             <Layout>
-                <Switch location={location}>
-                    <OpenModalProvider>
+
 
                     <Route exact path ='/Admin'>
                         <Home />
@@ -95,13 +106,16 @@ const Admin = () => {
                         ))
                     }
 
-                    </OpenModalProvider>
-                </Switch>
+
+
+
                 <ReactQueryDevtools initialIsOpen={false} />
             </Layout>
+            </OpenModalProvider>
         </ThemeProvider>
-</QueryClientProvider>
 
+</QueryClientProvider>
+        </Switch>
 
     )
 }

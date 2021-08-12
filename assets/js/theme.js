@@ -46,8 +46,11 @@ const theme = {
         muted: "#e2e8f0",
         success: "#9ae6b4",
         info: "#63b3ed",
-        warning: "#faf089",
-        danger: "#feb2b2",
+        infoHover: "#4583b1",
+        warning: "#ecc322",
+        warningHover: "#b3a532",
+        danger: "#ff5252",
+        dangerHover: "#b42d2d",
         light: "#f7fafc",
         dark: "#2d3748",
         textMuted: "#718096",
@@ -123,24 +126,7 @@ const theme = {
             fontFamily: 'monospace',
             fontSize: 'inherit'
         },
-        table: {
-            width: '100%',
-            borderCollapse: 'separate',
-            borderSpacing: 0
-        },
-        th: {
-            textAlign: 'left',
-            borderBottomStyle: 'solid',
-            padding: '10px '
-        },
-        td: {
-            textAlign: 'left',
-            borderBottomStyle: 'solid',
-            padding: '10px ',
-        },
-        tr: {
-            padding: '10px ',
-        },
+
         img: {
             maxWidth: '100%'
         }
@@ -173,7 +159,7 @@ const theme = {
                 bg: 'rgba(27,48,58,0.49)',
             },
         },
-        simple:{
+        primaryBtn:{
             py: 2,
             px: 3,
             cursor: "pointer",
@@ -187,37 +173,27 @@ const theme = {
             "&:hover": {
                 backgroundColor: "primaryHover"
             },
-        },
-        edit:{
-            py: 2,
-            px: 3,
-            cursor: "pointer",
-            fontSize: "100%",
-            lineHeight: "inherit",
-            backgroundColor: "warning",
-            border: "none",
-            color: "white",
-            fontWeight: "bold",
-            borderRadius: "default",
-            "&:hover": {
-                backgroundColor: "primaryHover"
+            edit:{
+                backgroundColor: "warning",
+                "&:hover": {
+                    backgroundColor: "warningHover"
+                },
             },
-        },
-        delete:{
-            py: 2,
-            px: 3,
-            cursor: "pointer",
-            fontSize: "100%",
-            lineHeight: "inherit",
-            backgroundColor: "danger",
-            border: "none",
-            color: "white",
-            fontWeight: "bold",
-            borderRadius: "default",
-            "&:hover": {
-                backgroundColor: "primaryHover"
+            delete:{
+                backgroundColor: "danger",
+                "&:hover": {
+                    backgroundColor: "dangerHover"
+                },
             },
-        }
+            info:{
+                backgroundColor: "info",
+                "&:hover": {
+                    backgroundColor: "infoHover"
+                },
+            }
+        },
+
+
     },
 
     forms:{

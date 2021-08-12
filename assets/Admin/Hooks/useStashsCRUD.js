@@ -12,7 +12,7 @@ export default function useStashsCRUD(){
     const queryCache = useQueryClient()
 
 
-    const {mutateAsync:mutateAsyncAdde}= useMutation((payload)=>(
+    const {mutateAsync:mutateAsyncAdde,isError,isSuccess}= useMutation((payload)=>(
         Stashs.post(payload)
     ),{
         onSuccess: async()=>{
@@ -56,6 +56,8 @@ export default function useStashsCRUD(){
         handleModify,
         handleDelete,
         onSubmitUpdate,
+        isError,
+        isSuccess
 
 
     }

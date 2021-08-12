@@ -1,7 +1,14 @@
 {
   "formMessage": {
-    "nameRequired": "Le champ « Nom » est obligatoire. Veuillez saisir ce champ.",
-    "firstNameRequired": "Le champ « Prénom » est obligatoire. Veuillez saisir ce champ."
+    "lastNameRequired": "Le champ « Nom » est obligatoire. Veuillez saisir ce champ.",
+    "firstNameRequired": "Le champ « Prénom » est obligatoire. Veuillez saisir ce champ.",
+    "addressRequired":"Le champ « Adrese » est obligatoire veuillez saisir une address valide",
+    "birthDateRequired": "Le champ « Date de naissance » est obligatoire veuillez saisir saisir une date valide",
+    "nationalityRequired": "Veuillez saisir saisir votre nationaliter",
+    "countryRequired":"Veuillez saisir votre Pays",
+    "specialtiesRequired": "Veuillez indiquer vos spécialités",
+    "indentificationCodeRequired": "Veuillez saisir votre code d indentification ",
+    "codeNameRequired":"Veuillez saisir votre non de code  "
   },
   "submitErrors": {
     "error": "une erreur est survenue lore de l enregistrement",
@@ -60,16 +67,31 @@
       "action":"Action"
     },
     "missionType":[
-      "Surveillance",
-      "Assassinat",
-      " Infiltration"
+      {"value" :"Surveillance",
+        "label":"Surveillance"
+      },
+      {"value" :"Assassinat",
+        "label":"Assassinat"
+      },
+      {"value" :" Infiltration",
+        "label":" Infiltration"
+      }
+
+
     ],
     "status":[
-      "En préparation",
-      "En cours",
-     " Terminé",
-      "échec"
-
+      {"value" :"En préparation",
+        "label":"En préparation"
+      },
+      {"value" :"En cours",
+        "label":"En cours"
+      },
+      {"value" :"Terminé",
+        "label":"Terminé"
+      },
+      {"value" :"Échec",
+        "label":"Échec"
+      }
     ],
     "stashs": {
       "code": "Code",

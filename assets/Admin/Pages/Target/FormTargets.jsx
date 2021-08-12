@@ -1,27 +1,24 @@
 import * as yup from "yup";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
-import DisplayValidRequest from "../../Componets/UI/DisplayMessage/DisplayValidRequest";
-import Configs from "../../Config/Config.json";
-import DisplayError from "../../Componets/UI/DisplayMessage/DisplayError";
 import {Button, Flex} from "theme-ui";
 import FormInput from "../../Componets/UI/FormBox/FormInput";
 import FormSelectInput from "../../Componets/UI/FormBox/FormSelectInput";
 import Pays from "../../Nationality/Nationality";
 import React from "react";
+import Configs from "../../Config/Config.json";
 
 const FormTargets =()=>{
     const schema  =yup.object().shape({
-        firstName: yup.string().required(),
-        lastName: yup.string().required(),
-        birthDate : yup.date().required(),
-        codeName: yup.string().required(),
-        nationality: yup.string().required(),
+        firstName: yup.string().required(Configs.formMessage.firstNameRequired),
+        lastName: yup.string().required(Configs.formMessage.lastNameRequired),
+        birthDate : yup.date().max(new Date(), Configs.formMessage.birthDateRequired),
+        codeName: yup.string().required(Configs.formMessage.codeNameRequired),
+        nationality: yup.string().required(Configs.formMessage.nationalityRequired),
 
     })
 
-    const {register,handleSubmit, formState:{errors ,isSubmitSuccessful,
-        isSubmitted, isSubmitting, isValid, } }=useForm(
+    const {register,handleSubmit, formState:{errors,isSubmitting, } }=useForm(
 
         {
             mode:'onTouched',
@@ -31,12 +28,7 @@ const FormTargets =()=>{
 
     return(
         <form onSubmit={handleSubmit(onSubmit)}>
-            {
-                isSubmitted  && isSubmitSuccessful ? <DisplayValidRequest message={Configs.submitSuccess.success}/>: null
 
-            }{
-            isSubmitted && isValid ? isSubmitSuccessful ===false ?<DisplayError message={Configs.submitErrors.error}/>: null:null
-        }
             <Flex sx={{
                 justifyContent:'space-between',
                 alignItems: 'stretch'

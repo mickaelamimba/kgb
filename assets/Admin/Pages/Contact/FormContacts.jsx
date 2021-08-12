@@ -18,16 +18,17 @@ import FormSelectInput from "../../Componets/UI/FormBox/FormSelectInput";
 const FormContacts =({title, onSubmit,defaultProps})=>{
 
     const schema  =yup.object().shape({
-        firstName: yup.string().required(),
-        lastName: yup.string().required(),
-        birthDate : yup.date().required(),
-        codeName: yup.string().required(),
-        nationality: yup.string().required(),
+        firstName: yup.string().required(Configs.formMessage.firstNameRequired),
+        lastName: yup.string().required(Configs.formMessage.lastNameRequired),
+        birthDate : yup.date().required(Configs.formMessage.birthDateRequired),
+        codeName: yup.string().required(Configs.formMessage.codeNameRequired),
+        nationality: yup.string().required(Configs.formMessage.nationalityRequired),
 
     })
-
-    const {register,handleSubmit, formState:{errors ,isSubmitSuccessful,
-        isSubmitted, isSubmitting, isValid, } }=useForm(
+    const optionsNationality =Pays.map(({nationalite})=> {
+        return {value:nationalite,label:nationalite}
+    })
+    const {register,handleSubmit, control, formState:{errors , isSubmitting, } }=useForm(
 
         {
             mode:'onTouched',
@@ -38,15 +39,13 @@ const FormContacts =({title, onSubmit,defaultProps})=>{
 
     return(
         <form onSubmit={handleSubmit(onSubmit)}>
-            {
-                isSubmitted  && isSubmitSuccessful ? <DisplayValidRequest message={Configs.submitSuccess.success}/>: null
 
-            }{
-                isSubmitted && isValid ? isSubmitSuccessful ===false ?<DisplayError message={Configs.submitErrors.error}/>: null:null
-        }
            <Flex sx={{
-               justifyContent:'space-between',
-              alignItems: 'stretch'
+               justifyContent:'space-around',
+               'div':{
+                   flex:1 ,
+                   paddingLeft:2
+               }
 
            }}>
                <FormInput
@@ -59,7 +58,7 @@ const FormContacts =({title, onSubmit,defaultProps})=>{
            </Flex>
 
                 <FormInput
-                    label=' date de naissance' id='birthDate'
+                    label=' Date de naissance' id='birthDate'
                     errors={errors.birthDate?.message} type='date' name='birthDate'{...register('birthDate')}
                 />
                 <FormInput
@@ -68,9 +67,11 @@ const FormContacts =({title, onSubmit,defaultProps})=>{
             <FormSelectInput
                 label='Nationalité'
                 id='nationality'
+                name='nationality'
+                control={control}
                 errors={errors.nationality?.message}
-                {...register('nationality')}
-                options={Pays.map(pay => <option key={pay.id} value={pay.nationalite}> {pay.nationalite}</option>)}
+                data={optionsNationality }
+
 
             />
 

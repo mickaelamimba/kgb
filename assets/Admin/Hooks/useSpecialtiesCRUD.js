@@ -1,36 +1,55 @@
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import { Specialties} from "../Func/apiUrl";
 import {useState} from "react";
+import {useOpenModal} from "../Context/OpenModalContext";
 
 
 
 export default function useSpecialtiesCRUD(){
     const queryCache = useQueryClient()
 
-    const[updateId, setUpdateId]= useState(null)
-    const {mutateAsync:mutateAsyncAdde}= useMutation((payload)=>(
+    const {mutateAsync:mutateAsyncAdde,isError,isSuccess}= useMutation((payload)=>(
         Specialties.post(payload)
     ),{
         onSuccess: async()=>{
             await queryCache.invalidateQueries('Specialties')
         }
     })
-
+    const modal = useOpenModal()
     const handleAdde= async(data)=>{
        await mutateAsyncAdde(data)
+        modal.handleOpenModal()
+
     }
-
-
-    const handleModify =  (id)=>{
-        if(id){
-
+    const {mutateAsync:mutateAsyncUpdat}= useMutation(((payload)=> Specialties.update(payload)
+    ),{
+        onSuccess: async(data,variables)=>{
+            await queryCache.setQueryData(['Specialties', {id: variables.id}],data)
+            console.log('dta:',data, 'variables',variables)
         }
+    })
 
-        console.log(id)
+    const {mutateAsync:mutateAsyncUpdate}= useMutation(((payload)=> Specialties.update(payload)
+    ),{
+        onMutate:async (newSpecialties)=>{
+            await queryCache.cancelQueries(['Specialties', newSpecialties.id])
+            const previousSpecialties = queryCache.getQueryData(['Specialties', newSpecialties.id])
+            queryCache.setQueryData(['Specialties', newSpecialties.id], newSpecialties)
 
-        setUpdateId(id)
+            return { previousSpecialties, newSpecialties }
 
-    }
+        },
+        onError:(err, newSpecialties, context)=>{
+            queryCache.setQueryData(['Specialties', context.newSpecialties.id],
+                context.previousSpecialties)
+        },
+        onSettled:async(newSpecialties)=>{
+            await queryCache.invalidateQueries(['Specialties', newSpecialties.id])
+        }
+    })
+
+
+
     const {mutateAsync:mutateAsyncDelete,isLoading:deleteLoad}= useMutation((id)=>(
         Specialties.deletes(id)
     ),{
@@ -46,10 +65,10 @@ export default function useSpecialtiesCRUD(){
 
     return{
         handleAdde,
-        handleModify,
         handleDelete,
-        deleteLoad,
-        updateId
+        isError,
+        isSuccess,
+        mutateAsyncUpdate
 
     }
 }

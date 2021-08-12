@@ -1,0 +1,42 @@
+{% extends 'baseLogin.html.twig' %}
+
+{% block title %}Insciption{% endblock %}
+
+{% block body %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+
+
+    {{ form_start(registrationForm , {'attr': {'class': 'login-form'}}) }}
+    <div class="button-groups">
+        <h1>Insciption</h1>
+        <button>
+            <a href="{{ path('app_login') }}">S'identifier</a>
+
+        </button>
+    </div>
+
+    <div class="form-groups flex-row space-around">
+        {{ form_row(registrationForm.firstName,) }}
+        {{ form_row(registrationForm.lastname) }}
+    </div>
+    <div class="form-groups flex-row space-around">
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.plainPassword, {
+            label: 'Password',
+            placeholder:'Mots de passe'
+        }) }}
+    </div>
+
+
+
+
+
+        {{ form_row(registrationForm.agreeTerms) }}
+
+
+        <button type="submit" class="btn">S'inscrire</button>
+    {{ form_end(registrationForm) }}
+{% endblock %}

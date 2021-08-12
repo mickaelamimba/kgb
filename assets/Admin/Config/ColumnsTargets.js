@@ -1,12 +1,12 @@
-import React from 'react'
-import memoize from 'memoize-one';
-import {Button, Flex} from "theme-ui";
+import memoize from "memoize-one";
+import {Button} from "theme-ui";
+import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEye, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 const eye =<FontAwesomeIcon icon={faEye}  />
 const trash = <FontAwesomeIcon icon={faTrashAlt} />
 
-export const ColumnsAgents = memoize( (handleDelete,history) =>[
+export const ColumnsTargets= memoize( (handleDelete,history) =>[
     { name: "ID",
         selector: row => <div>{row.id}</div>,
         sortFunction: (a, b) => a.id - b.id
@@ -23,30 +23,25 @@ export const ColumnsAgents = memoize( (handleDelete,history) =>[
         selector: row => <div>{new Date(row.birthDate).toISOString().slice(0,10)}</div>,
         sortFunction: (a, b) => a.birthDate.localeCompare(b.birthDate)
     },
-    { name: "Code d'ientification",
-        selector: row => <div>{row.indentificationCode}</div> ,
-        sortFunction: (a, b) => a.indentificationCode - b.indentificationCode
+    {
+      name:'Nom de code'  ,
+        selector: row => <div>{row.codeName}</div>,
+        sortFunction: (a, b) => a.codeName.localeCompare(b.codeName)
     },
     { name: "Nationalité",
         selector:row => <div>{row.nationality}</div>,
         sortFunction: (a, b) => a.nationality.localeCompare(b.nationality)
     },
-    { name: "Spécialité",
-        selector:row => <Flex sx={{
-            flexDirection:'column'
-        }}>{row.agentSpecialties.map(x => <span key={x.id}>{x.name}</span>)}</Flex>,
-        sortFunction: (a,b) => a-b
-    },
+
     {
         name:'Action',
         cell: (row) => <div>
-            <Button mr={2} variant='primaryBtn.delete' onClick={()=>handleDelete(row.id)} id={row.id}>{trash}</Button>
-            <Button variant='primaryBtn.info' onClick={()=>history.push(`/Admin/agents/${row.id}/show/`)} id={row.id}>{eye}</Button>
-        </div> ,
+            <Button mr={2} variant='primaryBtn.delete'  onClick={()=>handleDelete(row.id)} id={row.id}>{trash}</Button>
+            <Button variant='primaryBtn.info'  onClick={()=>history.push(`/Admin/targets/${row.id}/show/`)} id={row.id}>{eye}</Button>
+        </div>,
         ignoreRowClick: true,
         allowOverflow: true,
         button: true,
     },
 
 ])
-

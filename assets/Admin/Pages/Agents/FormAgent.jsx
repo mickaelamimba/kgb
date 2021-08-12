@@ -5,26 +5,33 @@ import FormInput from "../../Componets/UI/FormBox/FormInput";
 import React from "react";
 import Pays from "../../Nationality/Nationality";
 import FormSelectInput from "../../Componets/UI/FormBox/FormSelectInput";
-import {Button,Switch} from "theme-ui";
+import {Button} from "theme-ui";
 import {useQuery} from "react-query";
 import {Specialties} from "../../Func/apiUrl";
+import Configs from "../../Config/Config.json";
 
 
 const FormAgent =({title,onSubmit, valueUpdate})=>{
 
-    const {data:specialties}= useQuery('Specialties',  ()=>Specialties.fetchAll())
+    const {data:specialties, isFetching}= useQuery('Specialties',  ()=>Specialties.fetchAll())
     const schema  =yup.object().shape({
-        firstName: yup.string().required(),
-        lastName: yup.string().required(),
-        birthDate : yup.date().required(),
-        indentificationCode: yup.number().required().positive().integer(),
-        nationality: yup.string().required(),
-        agentSpecialties: yup.array().required(),
+        firstName: yup.string().required(Configs.formMessage.firstNameRequired),
+        lastName: yup.string().required(Configs.formMessage.lastNameRequired),
+        birthDate : yup.date().max(new Date(), Configs.formMessage.birthDateRequired),
+        indentificationCode: yup.number().required(Configs.formMessage.indentificationCodeRequired).positive().integer(),
+        nationality: yup.string().required(Configs.formMessage.nationalityRequired),
+        agentSpecialties: yup.array().required(Configs.formMessage.specialtiesRequired),
+    })
+         const specialtiesOptions= specialties?.map(({id,name})=>{
+             return {value:`/api/specialties/${id}` ,label:name}
+         })
+
+    const optionsPays =Pays.map(({nationalite})=> {
+        return {value:nationalite,label:nationalite}
     })
 
 
-
-    const {register,handleSubmit, setValue , formState:{errors ,isSubmitSuccessful,
+    const {register,handleSubmit, setValue,  control, formState:{errors ,isSubmitSuccessful,
         isSubmitted, isSubmitting, isValid, } }=useForm(
 
         {
@@ -51,21 +58,21 @@ const FormAgent =({title,onSubmit, valueUpdate})=>{
             errors={errors.indentificationCode?.message} type='text' name='indentificationCode' placeholder="Code d'indentification "{...register('indentificationCode')}
         />
         <FormSelectInput
-            label='Nationalité'
-            id='nationality'
-            errors={errors.nationality?.message}
-            {...register('nationality')}
-            options={Pays.map(pay => <option key={pay.id} value={pay.nationalite}> {pay.nationalite}</option>)}
+            name='nationality' label='Nationalité' id='nationality' errors={errors.nationality?.message}
+            control={control}
+            data={optionsPays}
+
 
         />
-        {specialties?.map((specialtie)=>{
+        <FormSelectInput
+            name='agentSpecialties' label='Specialtiés' id='agentSpecialties' errors={errors.agentSpecialties?.message}
+            control={control}
+            data={specialtiesOptions}
+            isMulti
+            isLoading={isFetching}
 
-          return  <Switch key={specialtie.id}
-                          {...register('agentSpecialties')}
-                          value={`/api/specialties/${specialtie.id}`} label={specialtie.name}/>
-        })
 
-        }
+        />
 
         <Button mt={3} disabled={isSubmitting} >{title}</Button>
 

@@ -2,29 +2,30 @@ import React from'react'
 
 
 import {useQuery} from "react-query";
-import {Agents} from "../../Func/apiUrl";
+import { Stashs} from "../../Func/apiUrl";
 import {Flex, Spinner} from "theme-ui";
 
 
-import useAgentsCRUD from "../../Hooks/useAgentsCRUD";
+
 import {useHistory} from "react-router-dom";
 import DataTable from 'react-data-table-component';
-import {ColumnsAgents} from "../../Config/ColumnsAgents";
+
+
+import {ColumnsStashs} from "../../Config/ColumnsStashs";
+import useStashsCRUD from "../../Hooks/useStashsCRUD";
+
 
 
 
 
 const Table =()=>{
-    const {handleDelete}= useAgentsCRUD()
+    const {handleDelete}= useStashsCRUD()
 
     const history = useHistory()
-
-
-    const {data, isLoading, isError,}= useQuery('Agents',()=>Agents.fetchAll(),
+    const {data, isLoading, isError,}= useQuery('Stashs',()=>Stashs.fetchAll(),
 
     )
     if(isLoading){
-
         return<Flex sx={{justifyContent:'center', alignItems: 'center'}}><Spinner/></Flex>
     }
 
@@ -35,10 +36,14 @@ const Table =()=>{
     return(
         <React.Fragment>
             <DataTable
-                title="Agents"
-                columns={[...ColumnsAgents(handleDelete,history )]}
+                title="Missions"
+                columns={[...ColumnsStashs(handleDelete,history )]}
                 data={data}
                 pagination={true}
+                highlightOnHover={true}
+                pointerOnHover={true}
+                responsive={true}
+                loading={isLoading}
 
 
 

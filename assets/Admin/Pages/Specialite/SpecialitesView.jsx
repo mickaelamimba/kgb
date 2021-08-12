@@ -12,16 +12,27 @@ import FormSpecialtie from "./FormSpecialtie";
 
 import {useOpenModal} from "../../Context/OpenModalContext";
 import Table from "./Table";
+import TablesCard from "../../Componets/UI/TableUI/TablesCard";
+import useSpecialtiesCRUD from "../../Hooks/useSpecialtiesCRUD";
+
 const SpecialitesView=()=> {
 
     const modal = useOpenModal()
     let match = useRouteMatch(['/Admin/specialities/:id'])
+    const {handleAdde,isError,isSuccess}=useSpecialtiesCRUD()
+
 
     return (
         <BoxHeading title={Configs.componentInfos.specialties.headerTitle}
                     btnTitle={Configs.componentInfos.specialties.button}
-                    handleOpenModal={modal.handleOpenModal}>
-            <Table/>
+                    handleOpenModal={modal.handleOpenModal}
+                    isError={isError}
+                    isSuccess={isSuccess}
+        >
+            <TablesCard>
+                <Table/>
+            </TablesCard>
+
 
 
             {modal.openModal &&
@@ -29,10 +40,16 @@ const SpecialitesView=()=> {
             <Create
                 close={modal.handleOpenModal}
                 formTitleBtn={Configs.formInfo.specialties.titleAdd}
+
             >
-                <FormSpecialtie/>
+                <FormSpecialtie
+                    onSubmit={handleAdde}
+
+                />
             </Create>
             }
+
+
 
 
         </BoxHeading>

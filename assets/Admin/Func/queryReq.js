@@ -27,8 +27,8 @@ export default({ baseUrl})=>{
     }
 
     const update = async (payload)=>{
-        const {id, data}=payload
-        const response = await CustomAxios.put(`${baseUrl}/${id}`,data )
+        const {id, newData}=payload
+        const response = await CustomAxios.put(`${baseUrl}/${id}`,newData )
         return await response.data
     }
     const deletes =(id)=>{

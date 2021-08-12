@@ -6,7 +6,12 @@ const FormInput =forwardRef(({ label , id ,errors ,...inputProps},ref)=>{
    return <Box>
        {label ? <Label htmlFor={id}> {label} </Label> :null }
 
-        <Input mb={3} sx={{filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))'}}
+        <Input mb={3} sx={{
+            backgroundColor: 'hsl(0, 0%, 100%) ',
+            borderColor: "hsl(0, 0%, 80%)",
+            border:'1px solid',
+            borderRadius:4
+        }}
                ref={ref}
                {...inputProps}
         />

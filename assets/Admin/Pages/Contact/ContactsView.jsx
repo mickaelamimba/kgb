@@ -14,6 +14,8 @@ import {useOpenModal} from "../../Context/OpenModalContext";
 import useContactsCRUD from "../../Hooks/useContactsCRUD";
 import Table from "./Table";
 
+import TablesCard from "../../Componets/UI/TableUI/TablesCard";
+
 
 
 const ContactsView =()=>{
@@ -27,8 +29,11 @@ const ContactsView =()=>{
             title={Configs.componentInfos.contacts.headerTitle}
             btnTitle={Configs.componentInfos.contacts.button}
             handleOpenModal={modal.handleOpenModal} >
+    <TablesCard >
+
 
             <Table/>
+    </TablesCard>
 
             {modal.openModal?
                 <Create

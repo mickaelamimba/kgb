@@ -3,7 +3,7 @@ import React from'react'
 
 import {useQuery} from "react-query";
 import {Agents, Contacts} from "../../Func/apiUrl";
-import {Spinner} from "theme-ui";
+import {Flex, Spinner} from "theme-ui";
 
 
 import {useHistory} from "react-router-dom";
@@ -24,7 +24,8 @@ const Table =()=>{
 
     )
     if(isLoading){
-        return <Spinner/>
+
+        return<Flex sx={{justifyContent:'center', alignItems: 'center'}}><Spinner/></Flex>
     }
 
     if(isError){

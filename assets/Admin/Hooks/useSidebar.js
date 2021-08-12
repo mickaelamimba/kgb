@@ -1,14 +1,8 @@
-import {useState} from "react";
+
 import {faHome, faIdCard, faUserGraduate,faUserTie, faUserTag, faBriefcase, faTintSlash} from '@fortawesome/free-solid-svg-icons'
 
 export default function useSidebar(){
-    const [toggleMenu, setToggleMenu] =useState(false)
-    const onClick=()=>{
-        setToggleMenu(true)
-    }
-    const onClose=()=>{
-        setToggleMenu(false)
-    }
+
     const Lists =
         [
             {
@@ -17,37 +11,37 @@ export default function useSidebar(){
                 icon: faHome
             },
             {
-                path:'/Admin/agents/1',
+                path:'/Admin/agents',
                 name:'Agents',
                 icon: faUserTie
             },
             {
-                path:'/Admin/specialities/1',
+                path:'/Admin/specialities',
                 name:'Spécialités',
                 icon: faUserGraduate
             },
             {
-                path:'/Admin/missions/1',
+                path:'/Admin/missions',
                 name:'Missions',
                 icon:faBriefcase
             }
             ,
             {
-                path:'/Admin/targets/1',
+                path:'/Admin/targets',
                 name:'Cibles',
                 icon: faUserTag
             },
             {
-                path:'/Admin/contacts/1',
+                path:'/Admin/contacts',
                 name:'Contacts',
                 icon: faIdCard
             },
             {
-                path:'/Admin/stashs/1',
+                path:'/Admin/stashs',
                 name:'Planques',
                 icon:faTintSlash
             }
 
         ]
-    return{Lists, onClick,toggleMenu,onClose}
+    return{Lists}
 }

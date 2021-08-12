@@ -1,43 +1,45 @@
 import memoize from "memoize-one";
 import {Button, Flex} from "theme-ui";
 import React from "react";
-
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faEye, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
+const eye =<FontAwesomeIcon icon={faEye}  />
+const trash = <FontAwesomeIcon icon={faTrashAlt} />
 export const ColumnsContacts= memoize( (handleDelete,history) =>[
     { name: "ID",
         selector: row => <div>{row.id}</div>,
-        sortable: true
+        sortFunction: (a, b) => a.id - b.id
     },
     { name: "Prénom",
         selector: row => <div>{row.firstName}</div> ,
-        sortable: true
+        sortFunction: (a, b) => a.firstName.localeCompare(b.firstName)
     },
     { name: "Nom",
         selector: row => <div>{row.lastName}</div>,
-        sortable: true
+        sortFunction: (a, b) => a.lastName.localeCompare(b.lastName)
     },
     { name: "Date de naissance",
-        cell: row => <div>{row.birthDate}</div>
-        , sortable: true  },
+        selector: row => <div>{new Date(row.birthDate).toISOString().slice(0,10)}</div>
+        , sortFunction: (a, b) => a.birthDate.localeCompare(b.birthDate)
+    },
     { name: "Non de Code",
         selector: row => <div>{row.codeName}</div> ,
-        sortable: true
+        sortFunction: (a, b) => a.codeName.localeCompare(b.codeName)
     },
     { name: "Nationalité",
         selector:row => <div>{row.nationality}</div>,
-        sortable: true
+        sortFunction: (a, b) => a.nationality.localeCompare(b.nationality)
     },
     {
         name:'Action',
-        cell: (row) => <Button  onClick={()=>handleDelete(row.id)} id={row.id}>Action</Button>,
+        cell: (row) => <div>
+            <Button mr={2} variant='primaryBtn.delete'  onClick={()=>handleDelete(row.id)} id={row.id}>{trash}</Button>
+            <Button variant='primaryBtn.info'  onClick={()=>history.push(`/Admin/contacts/${row.id}/show/`)} id={row.id}>{eye}</Button>
+        </div>,
+
         ignoreRowClick: true,
         allowOverflow: true,
         button: true,
     },
-    {
 
-        cell: (row) => <Button  onClick={()=>history.push(`/Admin/contacts/${row.id}/show/`)} id={row.id}>Modifier</Button>,
-        ignoreRowClick: true,
-        allowOverflow: true,
-        button: true,
-    }
 ])

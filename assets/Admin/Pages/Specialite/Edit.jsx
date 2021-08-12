@@ -1,17 +1,19 @@
-import {useQuery} from "react-query";
-import {Specialties} from "../../Func/apiUrl";
+
 import CreateBox from "../../Componets/UI/CreateBox/CreateBox";
 import FormSpecialtie from "./FormSpecialtie";
 import React from "react";
+import Configs from "../../Config/Config.json";
 
-const Edit=({ close,id,formTitleBtn})=>{
-   const {data}= useQuery(['Specialties',id],  ()=>Specialties.oneById(id))
+const Edit=({ close,defaultValues, onSubmit})=>{
+
     return(
         <CreateBox
             handleClose={close}
-            title={formTitleBtn}
+            title={Configs.formInfo.specialties.titleUpdate}
         >
-            <FormSpecialtie />
+            <FormSpecialtie
+                onSubmit={onSubmit}
+                defaultData={defaultValues} />
         </CreateBox>
     )
 }

@@ -10,6 +10,7 @@ import {useOpenModal} from "../../Context/OpenModalContext";
 
 import useAgentsCRUD from "../../Hooks/useAgentsCRUD";
 import Table from "./Table";
+import TablesCard from "../../Componets/UI/TableUI/TablesCard";
 
 
 
@@ -26,8 +27,11 @@ const AgentsView =()=>{
             handleOpenModal={modal.handleOpenModal}
             btnTitle={Configs.componentInfos.agents.button}
         >
-            <Table
-            />
+            <TablesCard>
+                <Table
+                />
+            </TablesCard>
+
 
             { modal.openModal ?
                 <Create

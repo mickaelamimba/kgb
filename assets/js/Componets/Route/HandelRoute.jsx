@@ -8,10 +8,13 @@ const HandelRoute = (route)=>{
     return(
 
         <Route
-            exact path={route.path}
+           exact path={route.path}
                render={props=>(
                    <route.component{...props} />
+
                )}
+
+
         />
     )
 }

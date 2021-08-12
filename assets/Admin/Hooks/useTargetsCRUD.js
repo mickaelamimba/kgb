@@ -1,5 +1,6 @@
 import {useMutation, useQueryClient} from "react-query";
 import { Targets} from "../Func/apiUrl";
+import {useOpenModal} from "../Context/OpenModalContext";
 
 export default function useTargetsCRUD() {
 
@@ -10,16 +11,18 @@ export default function useTargetsCRUD() {
 
 
 
-    const {mutateAsync:mutateAsyncAdde}= useMutation((payload)=>(
+    const {mutateAsync:mutateAsyncAdde, isError,isSuccess}= useMutation((payload)=>(
         Targets.post(payload)
     ),{
         onSuccess: async()=>{
             await queryCache.invalidateQueries('Targets')
         }
     })
-
+    const modal = useOpenModal()
     const handleAdde= async(data)=>{
         await mutateAsyncAdde(data)
+        modal.handleOpenModal()
+
     }
 
 
@@ -49,7 +52,9 @@ export default function useTargetsCRUD() {
     return {
         handleDelete,
         handleModify,
-        handleAdde
+        handleAdde,
+        isError,
+        isSuccess
     }
 
 }

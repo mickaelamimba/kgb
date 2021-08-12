@@ -2,25 +2,21 @@ import React from'react'
 
 
 import {useQuery} from "react-query";
-import {Agents} from "../../Func/apiUrl";
+import { Missions} from "../../Func/apiUrl";
 import {Flex, Spinner} from "theme-ui";
 
 
-import useAgentsCRUD from "../../Hooks/useAgentsCRUD";
+
 import {useHistory} from "react-router-dom";
 import DataTable from 'react-data-table-component';
-import {ColumnsAgents} from "../../Config/ColumnsAgents";
-
-
-
+import useMissionsCRUD from "../../Hooks/useMissionsCRUD";
+import {ColumnsMissions} from "../../Config/ColumnsMissions";
 
 const Table =()=>{
-    const {handleDelete}= useAgentsCRUD()
+    const {handleDelete}= useMissionsCRUD()
 
     const history = useHistory()
-
-
-    const {data, isLoading, isError,}= useQuery('Agents',()=>Agents.fetchAll(),
+    const {data, isLoading, isError,}= useQuery('Missions',()=>Missions.fetchAll(),
 
     )
     if(isLoading){
@@ -35,10 +31,14 @@ const Table =()=>{
     return(
         <React.Fragment>
             <DataTable
-                title="Agents"
-                columns={[...ColumnsAgents(handleDelete,history )]}
+                title="Missions"
+                columns={[...ColumnsMissions(handleDelete,history )]}
                 data={data}
                 pagination={true}
+                highlightOnHover={true}
+                pointerOnHover={true}
+                responsive={true}
+                loading={isLoading}
 
 
 

@@ -3,6 +3,7 @@ const OpenModalContext = createContext(undefined)
 const OpenModalProvider =({children})=>{
     const [openModalUpdate, setOpenModalUpdate]=useState(false)
     const [openModal, setOpenModal]=useState(false)
+    const [toggleMenu,setToggleMenu]=useState(false)
     const [update, setUpdate] = useState(false)
     const [create, setCreate] = useState(false)
     return(
@@ -11,6 +12,7 @@ const OpenModalProvider =({children})=>{
             openModal,
             update,
             create,
+            toggleMenu,
             handleOpenModal:()=>{
                 setCreate(!create)
                 setOpenModal(!openModal)
@@ -18,6 +20,9 @@ const OpenModalProvider =({children})=>{
             handleOpenModalUpdate:()=>{
                 setUpdate(!update)
                 setOpenModalUpdate(!openModalUpdate)
+            },
+            handleToggleMenu:()=>{
+                setToggleMenu(!toggleMenu)
             }
 
 

@@ -17,8 +17,8 @@ const  FormStashs =({title,onSubmit, valueUpdate})=>{
     const {errorFetch,isLoading}= useStashsCRUD()
     const schema  =yup.object().shape({
         code:yup.number().required().positive().integer(),
-        address: yup.string().required(),
-        country:yup.string().required(),
+        address: yup.string().required(Configs.formMessage.addressRequired),
+        country:yup.string().required(Configs.formMessage.countryRequired),
         type:yup.string().required()
 
     })

@@ -20,7 +20,7 @@ const ShowContact =()=>{
     const {handleModify,mutateAsyncDelete}= useAgentsCRUD()
     const handleDelete = async(data)=>{
         await mutateAsyncDelete(data)
-        history.push(`/Admin/contacts/1`)
+        history.push(`/Admin/contacts`)
     }
     const modal =useOpenModal()
 
@@ -72,7 +72,7 @@ const ShowContact =()=>{
                 <div>
                     <dt>Action</dt>
                     <div>
-                        <dd><Button onClick={()=>history.push(`/Admin/contacts/1`)}>Retour</Button></dd>
+                        <dd><Button onClick={()=>history.push(`/Admin/contacts`)}>Retour</Button></dd>
                         <dd><Button onClick={modal.handleOpenModalUpdate}>Modifier {pen} </Button></dd>
                         <dd><Button onClick={()=>handleDelete(id)} bg='danger'>Suprimer {trash}</Button></dd>
                     </div>

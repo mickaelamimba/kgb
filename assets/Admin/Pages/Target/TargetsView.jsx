@@ -3,26 +3,34 @@ import React from 'react';
 import BoxHeading from "../../Componets/UI/BoxHeading/BoxHeading";
 
 import Configs from "../../Config/Config.json";
-import DisplayTableUi from "../../Componets/UI/TableUI/DisplayTableUi";
+
 import {useOpenModal} from "../../Context/OpenModalContext";
-import Lists from "./Lists";
+
 import Create from "../../Componets/UI/FormBox/Create";
 import FormContacts from "../Contact/FormContacts";
 import useTargetsCRUD from "../../Hooks/useTargetsCRUD";
 import {useRouteMatch} from "react-router-dom";
-const Target=()=>{
+import Table from "./Table";
+import TablesCard from "../../Componets/UI/TableUI/TablesCard";
+
+const TargetsView=()=>{
     let match = useRouteMatch(['/Admin/targets/:id'])
     const modal =useOpenModal()
-    const {handleAdde}= useTargetsCRUD()
+    const {handleAdde, isError,isSuccess}= useTargetsCRUD()
     return(
         <BoxHeading title={Configs.componentInfos.targets.headerTitle}
                     btnTitle={Configs.componentInfos.targets.button}
-                    handleOpenModal={modal.handleOpenModal} >
-            <DisplayTableUi
-                tableHeadProps={Configs.table.duplicateValue}
-            >
-                <Lists/>
-            </DisplayTableUi>
+                    handleOpenModal={modal.handleOpenModal}
+                    isError={isError}
+                    isSuccess={isSuccess}
+        >
+
+
+            <TablesCard>
+                <Table/>
+            </TablesCard>
+
+
             {modal.openModal?
                 <Create
                     close={modal.handleOpenModal}
@@ -39,4 +47,4 @@ const Target=()=>{
         </BoxHeading>
     )
 }
-export default Target
+export default TargetsView

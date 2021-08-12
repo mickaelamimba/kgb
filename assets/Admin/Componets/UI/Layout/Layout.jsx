@@ -5,21 +5,23 @@ import NaveItem from "../Sidebar/NaveItem";
 import useSidebar from "../../../Hooks/useSidebar";
 import {Link} from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {useOpenModal} from "../../../Context/OpenModalContext";
 
 
 const Layout =({children})=>{
-   const {Lists,onClick,toggleMenu,onClose}= useSidebar()
+    const modal =useOpenModal()
+   const {Lists}= useSidebar()
     return(
         <React.Fragment>
             <Heading as='header'>
-                <MenuButton aria-label="Toggle Menu" onClick={onClick} />
-                <Sidebar toggle={toggleMenu} onClose={onClose}>
+                <MenuButton aria-label="Toggle Menu" onClick={modal.handleToggleMenu} />
+                <Sidebar toggle={modal.toggleMenu} onClose={modal.handleToggleMenu}>
                     <NaveItem>
                         {Lists.map(({path,name , icon},i)=>{
                            return <Box key={i} as='li' sx={{
                                position: 'relative',
                                cursor: 'pointer',
-                               fontSize: '2em',
+                               fontSize: '1.6em',
                                padding: '15px 30px',
                                transition: 'all 250ms',
 
@@ -36,7 +38,7 @@ const Layout =({children})=>{
 
                                <FontAwesomeIcon icon={icon} />
 
-                               <Link onClick={onClose} to={path}>{name}</Link>
+                               <Link onClick={modal.handleToggleMenu} to={path}>{name}</Link>
                             </Box>
                         })}
                     </NaveItem>
