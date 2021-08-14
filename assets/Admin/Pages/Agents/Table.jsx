@@ -20,7 +20,7 @@ const Table =()=>{
     const history = useHistory()
 
 
-    const {data, isLoading, isError,}= useQuery('Agents',()=>Agents.fetchAll(),
+    const {data, isLoading, isError,}= useQuery('Agents',Agents.fetchAll,
 
     )
     if(isLoading){

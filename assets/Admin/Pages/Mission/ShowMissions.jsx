@@ -2,21 +2,23 @@ import React from 'react'
 import {useHistory, useParams, useRouteMatch} from "react-router-dom";
 import {Box, Button, Spinner} from "theme-ui";
 import {useQuery} from "react-query";
-import {Agents, Missions} from "../../Func/apiUrl";
+import { Missions} from "../../Func/apiUrl";
 import {useOpenModal} from "../../Context/OpenModalContext";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPen, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
+
+
 import Configs from "../../Config/Config.json";
 import ShowBox from "../../Componets/UI/ShowBox/ShowBox";
+import useMissionsCRUD from "../../Hooks/useMissionsCRUD";
+import Edit from "./Edit";
 
 const ShowMissions=()=>{
- const pen = <FontAwesomeIcon icon={faPen}/>
- const trash = <FontAwesomeIcon icon={faTrashAlt} color='red'/>
+
  const{id} = useParams()
  const history = useHistory()
- const {data:{...mission}, isLoading, isError} = useQuery(['Mission', id], () => Missions.oneById(id))
+ const {data:{...mission}, isLoading, isError} = useQuery(['Missions', id], () => Missions.oneById(id))
  let match = useRouteMatch(['/Admin/missions/:id/show/'])
  const modal = useOpenModal()
+    const {isUpdate,isUpdateSuccess,isUpdateError,mutateAsyncUpdate}= useMissionsCRUD()
  const handleDelete =(id)=>{
   console.log(id)
  }
@@ -26,13 +28,27 @@ const ShowMissions=()=>{
    ...infosMission,
    endDate: endDate !== undefined && new Date(endDate).toISOString().slice(0, 10),
    startDate: startDate !== undefined && new Date(startDate).toISOString().slice(0, 10),
-   stashs: stashs !== undefined && stashs.code,
-   specialties:specialties !== undefined &&  specialties.name
+   stashs: stashs !== undefined && stashs.code, specialties:specialties !== undefined &&  specialties.name
+  }
+  const defaultValues={
+     ...arrayOfMission,
+      agents:agents !== undefined && agents.map(agent => {
+        return  `/api/agents/${agent.id}`
+      }),
+      contacts:contacts !== undefined && contacts.map(contact => `/api/contacts/${contact.id}`),
+      targets:targets !== undefined &&targets.map(target=> `/api/targets/${target.id}`),
   }
 
 
  const missions =[]
- console.log(agents)
+
+const  handleModify = async(data)=>{
+     await mutateAsyncUpdate({
+         id: id,
+         newId: data
+     })
+
+}
  return(
      <ShowBox path='missions'
               deleteId={id}
@@ -95,12 +111,14 @@ const ShowMissions=()=>{
         })
 
        }
-
-
-
-
-
-
+         {
+             modal.openModalUpdate&&
+             <Edit
+                 close={modal.handleOpenModalUpdate}
+                 defaultValues={defaultValues}
+                 onSubmit={handleModify}
+             />
+         }
 
      </ShowBox>
  )

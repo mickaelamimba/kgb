@@ -19,7 +19,7 @@ const Lists =()=>{
 
     let variant
 
-    status === 'En préparation' ? variant='cards.preparation' : status === 'en cours' ? variant='cards.progress' :
+    status === 'En préparation' ? variant='cards.preparation' : status === 'en cours' ? 'cards.progress' :
     status === 'terminé' ? variant='cards.finished' :
     status === 'échec' ? variant='cards.failure' :variant='cards'
 

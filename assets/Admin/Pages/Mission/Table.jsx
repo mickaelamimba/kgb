@@ -27,7 +27,7 @@ const Table =()=>{
     if(isError){
         return <p>Error</p>
     }
-    console.log(data)
+
     return(
         <React.Fragment>
             <DataTable

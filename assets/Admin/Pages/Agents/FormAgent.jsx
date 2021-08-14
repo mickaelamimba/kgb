@@ -13,7 +13,7 @@ import Configs from "../../Config/Config.json";
 
 const FormAgent =({title,onSubmit, valueUpdate})=>{
 
-    const {data:specialties, isFetching}= useQuery('Specialties',  ()=>Specialties.fetchAll())
+    const {data:specialties, isFetching}= useQuery('Specialties',  Specialties.fetchAll)
     const schema  =yup.object().shape({
         firstName: yup.string().required(Configs.formMessage.firstNameRequired),
         lastName: yup.string().required(Configs.formMessage.lastNameRequired),

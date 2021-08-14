@@ -1,7 +1,7 @@
 import React, { useState} from "react";
 import {useMutation, useQueryClient} from "react-query";
-import {Agents} from "../Func/apiUrl";
-import {useOpenModal} from "../Context/OpenModalContext";
+import {Agents, Specialties} from "../Func/apiUrl";
+
 
 
 
@@ -21,18 +21,30 @@ export default function useAgentsCRUD(){
     const handleAdde= async(data)=>{
         await mutateAsyncAdde(data)
     }
+    const {mutateAsync:mutateAsyncUpdate,isLoading:isUpdate, isSuccess:isUpdateSuccess, isError:isUpdateError}= useMutation(((payload)=> Agents.update(payload)
+    ),{
+        onMutate:async (newAgents)=>{
+            await queryCache.cancelQueries(['Agents', newAgents.id])
+            const previousAgents = queryCache.getQueryData(['Agents', newAgents.id])
+            queryCache.setQueryData(['Agents', newAgents.id], newAgents)
 
+            return { previousAgents, newAgents }
 
-    const handleModify =  (id)=>{
-        if(id){
-
+        },
+        onError:(err, newAgents, context)=>{
+            queryCache.setQueryData(['Agents', context.newAgents.id],
+                context.previousAgents)
+        },
+        onSettled: async(newAgents)=>{
+            await queryCache.invalidateQueries(['Agents', newAgents.id])
         }
+        ,
+        onSuccess: async()=>{
+            await queryCache.invalidateQueries(['Agents'])
+        }
+    })
 
-        console.log(id)
 
-
-
-    }
     const {mutateAsync:mutateAsyncDelete,isLoading:deleteLoad}= useMutation((id)=>(
         Agents.deletes(id)
     ),{
@@ -48,8 +60,11 @@ export default function useAgentsCRUD(){
 
     return {
         handleDelete,
-        handleModify,
         handleAdde,
-        mutateAsyncDelete
+        mutateAsyncDelete,
+        mutateAsyncUpdate,
+        isUpdate,
+        isUpdateSuccess,
+        isUpdateError
     }
 }

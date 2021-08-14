@@ -136,16 +136,20 @@ const theme = {
         boxShadow: '0 0 8px rgba(0, 0, 0, 0.125)',
         preparation:{
             boxShadow: '0 0 8px rgba(245,248,4,0.38)',
+            backgroundColor: 'rgba(245,248,4,0.38)'
 
         },
         progress:{
             boxShadow: '0 0 8px rgba(248,130,4,0.27)',
+            backgroundColor: 'rgba(248,130,4,0.27)'
         },
         finished:{
             boxShadow: '0 0 8px rgba(106,248,4,0.27)',
+            backgroundColor: 'rgba(106,248,4,0.27)'
         },
         failure:{
             boxShadow: '0 0 8px rgba(248,4,4,0.27)',
+            backgroundColor: 'rgba(248,4,4,0.27)'
         }
 
     },

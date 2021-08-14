@@ -19,7 +19,7 @@ const Table =()=>{
     const {handleDelete}= useSpecialtiesCRUD()
 
     const history = useHistory()
-    const {data, isLoading, isError,}= useQuery('Specialties',()=>Specialties.fetchAll(),
+    const {data, isLoading, isError,}= useQuery('Specialties',Specialties.fetchAll,
 
     )
     if(isLoading){

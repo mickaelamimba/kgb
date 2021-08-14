@@ -7,13 +7,15 @@ import Layout from "./Componets/Layout";
 import{ThemeProvider} from"theme-ui"
 import Mission from "./Pages/Mission/Mission";
 import HandelRoute from "./Componets/Route/HandelRoute";
-import OneById from "./Pages/Mission/OneById";
-import {Route, Switch} from "react-router-dom";
+
+import {Redirect, Route, Switch} from "react-router-dom";
 
 import Menu from "./Componets/Menu/Menu";
 import UnknownRout from "./Componets/Route/UnknownRout";
 import {QueryClient, QueryClientProvider} from "react-query";
 import {ReactQueryDevtools} from "react-query/devtools";
+import ShowMission from "./Pages/Mission/ShowMission";
+
 
 
 
@@ -22,7 +24,7 @@ function App(){
     const routes =[
         {
             path:'/missions/:id',
-            component : OneById
+            component : ShowMission
 
         }
 
@@ -39,13 +41,16 @@ function App(){
 
         ]
    return(
+       <Switch>
+
        <QueryClientProvider client={queryClient}>
        <ThemeProvider theme={theme}>
-           <Switch>
+
            <Layout navBar={Menu(Lists)}>
                <Route exact  path='/' >
                <Mission/>
                </Route>
+
                    {
 
                        routes.map((route,i)=>(
@@ -54,10 +59,17 @@ function App(){
                        ))
                    }
                <ReactQueryDevtools initialIsOpen={false} />
+               <Route exact  path='/404' >
+               <UnknownRout/>
+                   <Redirect from='*' to='/404' />
+                </Route>
+
+
            </Layout>
-           </Switch>
+
        </ThemeProvider>
        </QueryClientProvider>
+       </Switch>
 
    )
 }

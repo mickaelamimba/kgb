@@ -29,7 +29,7 @@ export default function useSpecialtiesCRUD(){
         }
     })
 
-    const {mutateAsync:mutateAsyncUpdate}= useMutation(((payload)=> Specialties.update(payload)
+    const {mutateAsync:mutateAsyncUpdate,isLoading:isUpdate}= useMutation(((payload)=> Specialties.update(payload)
     ),{
         onMutate:async (newSpecialties)=>{
             await queryCache.cancelQueries(['Specialties', newSpecialties.id])
@@ -43,8 +43,12 @@ export default function useSpecialtiesCRUD(){
             queryCache.setQueryData(['Specialties', context.newSpecialties.id],
                 context.previousSpecialties)
         },
-        onSettled:async(newSpecialties)=>{
+        onSettled: async(newSpecialties)=>{
             await queryCache.invalidateQueries(['Specialties', newSpecialties.id])
+        }
+        ,
+        onSuccess: async()=>{
+            await queryCache.invalidateQueries(['Specialties'])
         }
     })
 
@@ -68,7 +72,9 @@ export default function useSpecialtiesCRUD(){
         handleDelete,
         isError,
         isSuccess,
-        mutateAsyncUpdate
+        mutateAsyncUpdate,
+        isUpdate,
+        mutateAsyncDelete
 
     }
 }

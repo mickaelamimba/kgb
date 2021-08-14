@@ -1,5 +1,5 @@
 import {useMutation, useQueryClient} from "react-query";
-import { Missions} from "../Func/apiUrl";
+import {Missions, Specialties} from "../Func/apiUrl";
 
 export default function useMissionsCRUD() {
 
@@ -21,18 +21,31 @@ export default function useMissionsCRUD() {
     const handleAdde= async(data)=>{
         await mutateAsyncAdde(data)
     }
+    const {mutateAsync:mutateAsyncUpdate,isLoading:isUpdate, isSuccess:isUpdateSuccess, isError:isUpdateError}= useMutation(((payload)=> Missions.update(payload)
+    ),{
+        onMutate:async (newMissions)=>{
+            await queryCache.cancelQueries(['Missions', newMissions.id])
+            const previousMissions = queryCache.getQueryData(['Missions', newMissions.id])
+            queryCache.setQueryData(['Missions', newMissions.id], newMissions)
 
+            return { previousMissions, newMissions }
 
-    const handleModify =  (id)=>{
-        if(id){
-
+        },
+        onError:(err, newMissions, context)=>{
+            queryCache.setQueryData(['Missions', context.newMissions.id],
+                context.previousMissions)
+        },
+        onSettled: async(newMissions)=>{
+            await queryCache.invalidateQueries(['Missions', newMissions.id])
         }
+        ,
+        onSuccess: async()=>{
+            await queryCache.invalidateQueries(['Missions'])
+        }
+    })
 
-        console.log(id)
 
 
-
-    }
     const {mutateAsync:mutateAsyncDelete,isLoading:deleteLoad}= useMutation((id)=>(
         Missions.deletes(id)
     ),{
@@ -48,8 +61,11 @@ export default function useMissionsCRUD() {
 
     return {
         handleDelete,
-        handleModify,
-        handleAdde
+        handleAdde,
+        mutateAsyncUpdate,
+        isUpdate,
+        isUpdateSuccess,
+        isUpdateError
     }
 
 }

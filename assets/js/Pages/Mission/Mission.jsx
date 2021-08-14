@@ -4,6 +4,8 @@ import Lists from "./Lists";
 import {Box, Grid, Image, Input, Spinner} from "theme-ui";
 import DisplayTableUi from "../../Componets/UI/TableUI/DisplayTableUi";
 import Configs from "../../../Admin/Config/Config.json";
+import Table from "./Table";
+import TablesCard from "../../../Admin/Componets/UI/TableUI/TablesCard";
 
 
 
@@ -53,28 +55,13 @@ function Mission (){
             <circle id="Ellipse_4" data-name="Ellipse 4" cx="6" cy="6" r="6" transform="translate(61.922 357.273)" fill="#e5e5e5"/>
             <path id="Tracé_17" data-name="Tracé 17" d="M989.838,770.849h-299a1,1,0,0,1,0-2h299a1,1,0,0,1,0,2Z" transform="translate(-209.162 -128.895)" fill="#cbcbcb"/>
         </Image>
-            <Box  as='form'   sx={{
-                width:185
-            }}>
-
-                <Input type="search"
-                       name="mission"
-                       placeholder='Recherche'
-
-                       mb={3}
-
-                />
-            </Box>
-        <DisplayTableUi
-            tableHeadProps={Configs.frontendTable.missions}
-        >
-
-
-    <Lists/>
+            <TablesCard>
 
 
 
-        </DisplayTableUi>
+
+            <Table/>
+            </TablesCard>
         </React.Fragment>
     )
 
