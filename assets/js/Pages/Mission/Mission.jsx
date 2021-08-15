@@ -1,9 +1,8 @@
 import React from 'react'
 
-import Lists from "./Lists";
-import {Box, Grid, Image, Input, Spinner} from "theme-ui";
-import DisplayTableUi from "../../Componets/UI/TableUI/DisplayTableUi";
-import Configs from "../../../Admin/Config/Config.json";
+
+import { Image, } from "theme-ui";
+
 import Table from "./Table";
 import TablesCard from "../../../Admin/Componets/UI/TableUI/TablesCard";
 

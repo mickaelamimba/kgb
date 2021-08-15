@@ -24,6 +24,7 @@ import ShowAgent from "./Pages/Agents/ShowAgent";
 import ShowSpecialites from "./Pages/Specialite/ShowSpecialites";
 import ShowContact from "./Pages/Contact/ShowContact";
 import ShowMissions from "./Pages/Mission/ShowMissions";
+import UnknownRout from "../js/Componets/Route/UnknownRout";
 
 
 
@@ -34,26 +35,18 @@ const Admin = () => {
     const location = useLocation()
     const routes =
         [
-
+            {
+                path: '/Admin/agents/:id/show/',
+                component: ShowAgent
+            },
             {
                 path: '/Admin/agents',
                 component: AgentsView
             },
+
             {
-                 path: '/Admin/agents/:id/show/',
-                component: ShowAgent
-            },
-            {
-                path: '/Admin/specialities',
+                path: ['/Admin/specialities','/Admin/specialities/:id/show/'],
                 component: SpecialitesView
-            },
-            {
-                path: '/Admin/specialities/:id/show/',
-                component: ShowSpecialites
-            },
-            {
-                path: '/Admin/contacts',
-                component: ContactsView
             },
             {
                 path: '/Admin/contacts/:id/show/',
@@ -61,15 +54,21 @@ const Admin = () => {
             },
 
             {
-                path: '/Admin/missions',
-                component: MissionsView
-            }
-            ,
+                path: '/Admin/contacts',
+                component: ContactsView
+            },
             {
                 path: '/Admin/missions/:id/show/',
                 component: ShowMissions
             }
             ,
+
+            {
+                path: '/Admin/missions',
+                component: MissionsView
+            }
+            ,
+
             {
                 path: '/Admin/targets',
                 component: TargetsView
@@ -78,6 +77,11 @@ const Admin = () => {
                 path: '/Admin/stashs',
                 component: StashsView
             },
+            {
+                path:'*',
+                component : UnknownRout
+
+            }
 
 
 
@@ -86,14 +90,13 @@ const Admin = () => {
 
 
     return (
-        <Switch location={location}>
+
         <QueryClientProvider client={queryClient}>
 
         <ThemeProvider theme={theme}>
             <OpenModalProvider>
             <Layout>
-
-
+                <Switch>
                     <Route exact path ='/Admin'>
                         <Home />
                     </Route>
@@ -105,17 +108,15 @@ const Admin = () => {
 
                         ))
                     }
+                </Switch>
 
-
-
-
-                <ReactQueryDevtools initialIsOpen={false} />
             </Layout>
             </OpenModalProvider>
         </ThemeProvider>
+            <ReactQueryDevtools initialIsOpen={false} />
 
 </QueryClientProvider>
-        </Switch>
+
 
     )
 }

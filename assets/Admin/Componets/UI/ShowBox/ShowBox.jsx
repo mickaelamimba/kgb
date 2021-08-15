@@ -1,10 +1,11 @@
-import {Box, Button} from "theme-ui";
+import {Box, Button, Flex,Grid} from "theme-ui";
 import React from "react";
 import PropTypes from "prop-types";
 import {useOpenModal} from "../../../Context/OpenModalContext";
 import {useHistory} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPen, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
+
 
 const ShowBox =({children,handleDelete,path,deleteId})=>{
     const pen = <FontAwesomeIcon icon={faPen}/>
@@ -18,29 +19,49 @@ const ShowBox =({children,handleDelete,path,deleteId})=>{
             boxShadow:'0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
             borderRadius:4,
             'dl':{
-                borderRightWidth:'calc(1px * 0)',
-                borderLeftWidth:'calc(1px * calc(1 - 0))',
                 'div':{
-                    display:'grid',
+                    display:['block','grid'],
                     gap:1,
                     gridTemplateColumns: 'repeat(3,minmax(0,1fr))',
-                    paddingBottom:2
+                    paddingTop:2,
+                    paddingBottom:2,
+                    borderTopWidth: 'calc(1px * calc(1 - 0))',
+                    borderBottomWidth: 'calc(1px * 0)',
+                    borderStyle:[0, "solid"],
+                    borderRight:0,
+                    borderLeft:0,
+
+                    borderColor:'rgba(138,141,145,0.59)'
+                },
+                'dt':{
+                    color:' rgba(107,114,128,1)',
+                    fontWeight: 500,
+
                 }
             }
         }}>
             {children}
 
-            <dl>
-                <Box mt={5}>
-                    <dt>Action</dt>
-                    <div>
-                        <dd><Button onClick={()=>history.push(`/Admin/${path}`)}>Retour</Button></dd>
-                        <dd><Button variant='primaryBtn.edit'  onClick={modal.handleOpenModalUpdate}>Modifier {pen} </Button></dd>
-                        <dd><Button variant='primaryBtn.delete' onClick={()=>handleDelete(deleteId)} bg='danger'>Suprimer {trash}</Button></dd>
-                    </div>
+            <Box>
+                <Grid columns={[2,3,2]} as='nav' mt={5} sx={{
+                    width:'100%',
+                    alignItems:"center",
+                    justifyContent:"center",
+                }}>
+                    <h5>Action</h5>
+                    <Grid gap={3} width={[200,100,'8rem']} columns={[1,3,3]} as='ul' sx={{
+                        justifyContent:"space-around",
+                        'li':{
+                            listStyleType:'none'
+                        }
+                    }}>
+                        <li><Button onClick={()=>history.push(`/Admin/${path}`)}>Retour</Button></li>
+                        <li><Button variant='primaryBtn.edit'  onClick={modal.handleOpenModalUpdate}>Modifier {pen} </Button></li>
+                        <li><Button variant='primaryBtn.delete' onClick={()=>handleDelete(deleteId)} bg='danger'>Suprimer {trash}</Button></li>
+                    </Grid>
 
-                </Box>
-            </dl>
+                </Grid>
+            </Box>
         </Box>
     )
 }

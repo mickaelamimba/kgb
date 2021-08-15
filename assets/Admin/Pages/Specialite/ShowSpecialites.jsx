@@ -15,6 +15,7 @@ const ShowSpecialites =()=>{
     const history = useHistory()
  const {data, isLoading, isError} = useQuery(['Specialties', id], () => Specialties.oneById(id))
  let match = useRouteMatch('/Admin/specialities/:id/show/')
+    console.log(match)
     const {mutateAsyncUpdate, isUpdate,mutateAsyncDelete}=useSpecialtiesCRUD()
     const modal = useOpenModal()
     const handleDelete = async (data) => {

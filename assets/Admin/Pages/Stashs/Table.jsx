@@ -13,6 +13,7 @@ import DataTable from 'react-data-table-component';
 
 import {ColumnsStashs} from "../../Config/ColumnsStashs";
 import useStashsCRUD from "../../Hooks/useStashsCRUD";
+import {customStyles} from "../../../js/customStyles";
 
 
 
@@ -44,6 +45,7 @@ const Table =()=>{
                 pointerOnHover={true}
                 responsive={true}
                 loading={isLoading}
+                customStyles={customStyles}
 
 
 

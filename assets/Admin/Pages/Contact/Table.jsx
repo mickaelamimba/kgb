@@ -11,6 +11,7 @@ import DataTable from 'react-data-table-component';
 
 import useContactsCRUD from "../../Hooks/useContactsCRUD";
 import {ColumnsContacts} from "../../Config/ColumnsContacts";
+import {customStyles} from "../../../js/customStyles";
 
 
 
@@ -42,6 +43,7 @@ const Table =()=>{
                 highlightOnHover={true}
                 pointerOnHover={true}
                 responsive={true}
+                customStyles={customStyles}
 
 
 

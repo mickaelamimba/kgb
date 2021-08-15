@@ -9,6 +9,7 @@ import DataTable, {createTheme} from 'react-data-table-component';
 
 import useSpecialtiesCRUD from "../../Hooks/useSpecialtiesCRUD";
 import {ColumnsSpecialties} from "../../Config/ColumsSpecialties";
+import {customStyles} from "../../../js/customStyles";
 
 
 
@@ -41,6 +42,7 @@ const Table =()=>{
                 highlightOnHover={true}
                 pointerOnHover={true}
                 responsive={true}
+                customStyles={customStyles}
 
 
 

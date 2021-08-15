@@ -11,6 +11,7 @@ import {useHistory} from "react-router-dom";
 import DataTable from 'react-data-table-component';
 import useMissionsCRUD from "../../Hooks/useMissionsCRUD";
 import {ColumnsMissions} from "../../Config/ColumnsMissions";
+import {customStyles} from "../../../js/customStyles";
 
 const Table =()=>{
     const {handleDelete}= useMissionsCRUD()
@@ -39,6 +40,7 @@ const Table =()=>{
                 pointerOnHover={true}
                 responsive={true}
                 loading={isLoading}
+                customStyles={customStyles}
 
 
 

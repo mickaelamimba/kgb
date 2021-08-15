@@ -12,6 +12,7 @@ import DataTable , { createTheme } from 'react-data-table-component';
 import {Missions} from "../../../Admin/Func/apiUrl";
 import {ColumnsMissionsFront} from "../../../Admin/Config/ColumnsMissionsFront";
 import Search from "../../Componets/UI/Search/Search";
+import {customStyles} from "../../customStyles";
 
 
 const Table =()=>{
@@ -30,26 +31,7 @@ const Table =()=>{
 
 
     })
-    const customStyles={
-        headCells:{
-            style:{
-                background:'hsla(222,67%,88%,0.43)'
-            }
-        },
-        rows:{
-            style:{
-                '&:nth-of-type(even)':{
-                    backgroundColor:'hsla(0,1%,60%,0.34)'
-                }
 
-
-
-            }
-        }
-
-
-
-    }
 
 
     const history = useHistory()
