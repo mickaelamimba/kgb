@@ -17,6 +17,7 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
+
     },
     "dependencies": {
         "@api-platform/api-doc-parser": "^0.12.0",
