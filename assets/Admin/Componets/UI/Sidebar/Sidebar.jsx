@@ -3,7 +3,7 @@ import {Box, Close} from "theme-ui";
 
 const Sidebar =({children,toggle, onClose})=>{
     return(
-        <Box sx={{
+        <Box as='menu' sx={{
             position:'fixed',
             zIndex:'4',
             overflow: 'auto',
@@ -22,7 +22,7 @@ const Sidebar =({children,toggle, onClose})=>{
             
             <Box as='nav' sx={{
                 position: 'relative',
-                top: '50%',
+                top: ['45%','35%','50%'],
                 transform: 'translateY(-50%)',
 
             }}>

@@ -14,7 +14,7 @@ const Layout =({children})=>{
     return(
         <React.Fragment>
             <Heading as='header'>
-                <MenuButton aria-label="Toggle Menu" onClick={modal.handleToggleMenu} />
+                <MenuButton  aria-label="Toggle Menu" onClick={modal.handleToggleMenu} />
                 <Sidebar toggle={modal.toggleMenu} onClose={modal.handleToggleMenu}>
                     <NaveItem>
                         {Lists.map(({path,name , icon},i)=>{
@@ -44,7 +44,7 @@ const Layout =({children})=>{
                     </NaveItem>
                 </Sidebar>
             </Heading>
-            <Container p={4}>
+            <Container >
                 <main>
                     {children}
                 </main>

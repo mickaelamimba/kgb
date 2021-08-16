@@ -1,5 +1,5 @@
 const theme = {
-    breakpoints: ['40em', '48em', '64em','80em'],
+    breakpoints: ['33em','40em', '56em', '64em'],
     space: [
         0,
         4,
@@ -132,6 +132,16 @@ const theme = {
         }
 
     },
+    layout:{
+        container:{
+            center: true,
+            maxWidth:[540,768,'100%'],
+            width:['100%','100%','100%'],
+            minHeight: '100vh',
+            paddingRight:[15],
+            paddingLeft:[15],
+        }
+    },
     cards:{
         boxShadow: '0 0 8px rgba(0, 0, 0, 0.125)',
         preparation:{
@@ -155,6 +165,8 @@ const theme = {
     },
 
     buttons: {
+
+
         primary: {
             fontWeight: 'bold',
             color: 'white',
