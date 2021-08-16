@@ -15,7 +15,9 @@ function Layout({navBar,children}){
             <HeaderWrapper>
                 {navBar}
             </HeaderWrapper>
-            <Container p={4} >
+            <Container sx={{
+                maxWidth:1024,
+            }}  >
             <main>
                 {children}
             </main>
