@@ -8,6 +8,8 @@ import {Box, Flex, Spinner} from "theme-ui";
 import Edit from "./Edit";
 import {useOpenModal} from "../../Context/OpenModalContext";
 import useSpecialtiesCRUD from "../../Hooks/useSpecialtiesCRUD";
+import Configs from "../../Config/Config.json";
+import ShowBoxChild from "../../Componets/UI/ShowBox/ShowBoxChild";
 
 const ShowSpecialites =()=>{
 
@@ -24,36 +26,28 @@ const ShowSpecialites =()=>{
     }
 
     const handleModify=async(data)=>{
-     try {
-         const newVar = await mutateAsyncUpdate({
+     const newVar = await mutateAsyncUpdate({
                  id:id,
                  newData: data,
              }
          )
-         console.log(newVar)
-        }catch (e){
-         console.log(e)
-     }finally {
-         console.log('done')
-     }
 
     modal.handleOpenModalUpdate()
     }
-    if (isUpdate){
+    if (isUpdate||isLoading){
         return<Flex sx={{justifyContent:'center', alignItems: 'center'}}><Spinner/></Flex>
     }
  return(
      <ShowBox
          path='specialities'
-         deleteId={id}
          handleDelete={handleDelete}
      >
-         <dl>
-             <Box>
-                 <dt>Specialiter</dt>
-                 <dd>{data?.name}</dd>
-             </Box>
-         </dl>
+         <ShowBoxChild
+             config={Configs.table.specialties}
+             arrayData={data}
+
+         />
+
          {modal.openModalUpdate&&
          <Edit
              onSubmit={handleModify}

@@ -1,6 +1,6 @@
 import React from 'react'
 import {useHistory, useParams, useRouteMatch} from "react-router-dom";
-import {Box, Button, Spinner} from "theme-ui";
+import {Box, Button, Flex, Grid, Spinner} from "theme-ui";
 import {useQuery} from "react-query";
 import { Missions} from "../../Func/apiUrl";
 import {useOpenModal} from "../../Context/OpenModalContext";
@@ -10,6 +10,8 @@ import Configs from "../../Config/Config.json";
 import ShowBox from "../../Componets/UI/ShowBox/ShowBox";
 import useMissionsCRUD from "../../Hooks/useMissionsCRUD";
 import Edit from "./Edit";
+import ShowBoxChild from "../../Componets/UI/ShowBox/ShowBoxChild";
+import ShowBoxArray from "../../Componets/UI/ShowBox/ShowBoxArray";
 
 const ShowMissions=()=>{
 
@@ -50,68 +52,39 @@ const  handleModify = async(data)=>{
      })
     modal.handleOpenModalUpdate()
 }
+    if (isUpdate||isLoading){
+        return<Flex sx={{justifyContent:'center', alignItems: 'center'}}><Spinner/></Flex>
+    }
  return(
      <ShowBox path='missions'
-              deleteId={id}
               handleDelete={handleDelete}
      >
-      <dl>
-       {isLoading&& <Spinner/>}
-        {missions}
-      </dl>
-          {agents?.map(({firstName, lastName},i)=>{
-           return(
-               <div key={i}>
-                   <h3>Agents</h3>
-                   <ul>
-                       <li> {firstName }  {lastName}</li>
-                   </ul>
-               </div>
+         <ShowBoxChild
+             config={Configs.table.mission}
+             arrayData={arrayOfMission}
 
-          )
-          })}
-         {contacts?.map(({firstName, lastName},i)=>{
-             return(
-                 <div key={i}>
-                     <h3>Contact</h3>
-                     <ul>
-                         <li> {firstName }  {lastName}</li>
-                     </ul>
-                 </div>
+         />
+         <Grid as='dl' width={'auto'} columns={[1,2,3]}>
+             <ShowBoxArray
+                 title='Agents'
+                 arrayData={agents}
+                 config={Configs.table.agents}
 
-             )
-         })}
-         {targets?.map(({firstName, lastName},i)=>{
-             return(
-                 <div key={i}>
-                     <h3>Cibles</h3>
-                     <ul>
-                         <li> {firstName }  {lastName}</li>
-                     </ul>
-                 </div>
+             />
+             <ShowBoxArray
+                 title='Contact'
+                 arrayData={contacts}
+                 config={Configs.table.duplicateValue}
 
-             )
-         })}
+             />
+             <ShowBoxArray
+                 title='Cible'
+                 arrayData={targets}
+                 config={Configs.table.duplicateValue}
+             />
+         </Grid>
 
 
-       {
-        Object.entries(arrayOfMission).map(([key,value])=>{
-
-         Object.entries(Configs.table.mission).map(([labels,labelValue],i)=>{
-           if(key === labels){
-
-            missions.push(
-                <div key={i}>
-                 <dt>{labelValue}</dt>
-                 <dd>{value}</dd>
-                </div>
-            )
-           }
-         })
-
-        })
-
-       }
          {
              modal.openModalUpdate&&
              <Edit

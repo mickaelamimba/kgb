@@ -1,27 +1,32 @@
 import React from "react";
 
-const ShowBoxChild =(arrayData,config)=>{
+const ShowBoxChild =({arrayData, config})=>{
+    let result =[]
+
     return(
         <React.Fragment>
+
+            <dl>
+                {result}
+            </dl>
             {
 
                 Object.entries(arrayData).map(([key,value])=>{
                     Object.entries(config).map(([labels,labelValue],i)=>{
-                        console.log(arrayData,':', config)
                         if(key === labels){
+                            result.push(
 
-                            return(
-
-                                <dl key={i}>
+                                <div key={i}>
 
                                     <dt>{labelValue}</dt>
                                     <dd>{value}</dd>
-                                </dl>
+                                </div>
                             )
                         }
                     })
                 })
             }
+
         </React.Fragment>
 
 

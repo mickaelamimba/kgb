@@ -41,6 +41,13 @@
       "action": "..."
     }
   },
+  "status":{
+    "preparation": "En préparation",
+    "progress": "En cours",
+    "finished": "Terminé",
+    "failure": "Échec"
+
+  },
   "table": {
     "duplicateValue":{
       "firstName": "Prénom",

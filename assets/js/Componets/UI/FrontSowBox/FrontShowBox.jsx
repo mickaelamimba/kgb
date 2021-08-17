@@ -1,6 +1,8 @@
 import React from 'react'
 import {Box, Button, Grid} from "theme-ui";
-const FrontShowBox =(children)=>{
+import {useHistory} from "react-router-dom";
+const FrontShowBox =({path,children})=>{
+    const history = useHistory()
     return(
         <Box sx={{
             padding:3,
@@ -44,7 +46,7 @@ const FrontShowBox =(children)=>{
                             listStyleType:'none'
                         }
                     }}>
-                        <li><Button onClick={()=>history.push(`/${path}`)}>Retour</Button></li>
+                        <li><Button onClick={()=>history.push(`${path}`)}>Retour</Button></li>
                     </Grid>
 
                 </Grid>

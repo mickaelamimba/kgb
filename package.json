@@ -17,7 +17,6 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
-
     },
     "dependencies": {
         "@api-platform/api-doc-parser": "^0.12.0",
@@ -30,10 +29,12 @@
         "@material-ui/icons": "^4.11.2",
         "axios": "^0.21.1",
         "babel-plugin-macros": "^3.1.0",
+        "chart.js": "^3.5.0",
         "feather-icons": "^4.28.0",
         "prop-types": "^15.7.2",
         "ra-data-simple-rest": "^3.16.0",
         "react": "^17.0.2",
+        "react-chartjs-2": "^3.0.4",
         "react-data-table-component": "^7.0.0-rc2",
         "react-dom": "^17.0.2",
         "react-hook-form": "^7.12.0",

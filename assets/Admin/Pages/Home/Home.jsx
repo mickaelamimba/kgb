@@ -1,28 +1,91 @@
-import React from 'react';
-import BoxHeading from "../../Componets/UI/BoxHeading/BoxHeading";
-import {Box} from "theme-ui";
-import Card from "../../Componets/UI/Card/Card";
+import React, {useState} from 'react';
+import {Doughnut} from "react-chartjs-2";
+import DataTable from 'react-data-table-component';
+import {Box, Flex, Grid, Heading, Spinner} from "theme-ui";
+
+import {statusDoughnut} from "./statusDoughnut";
+import {ColumnsMissionsHome} from "../../Config/ColumnsMissionsHome";
+import {useHistory} from "react-router-dom";
+import {customStyles} from "../../../js/customStyles";
+import Search from "../../../js/Componets/UI/Search/Search";
+
+
+
+
 
 const Home =()=>{
+    const history = useHistory()
+const{data,mission,isLoading}=statusDoughnut()
+    const [searchText, setSearchText]=useState('')
+    const [searchColumns, setSearchColumns]=useState(['specialties','title', 'status','id','missionType','country'])
+    const handleSearch=(e)=>{
+        let text = e.target.value
+        setSearchText(text)
+    }
 
+
+
+    if (isLoading){
+        return<Flex sx={{justifyContent:'center', alignItems: 'center'}}><Spinner/></Flex>
+    }
+    document.title='KGB-Admin'
     return (
-        <BoxHeading  title='Home'>
-            <Box sx={{
-                display:'flex',
-                justifyContent:"space-between",
-                flexWrap:'wrap',
-                width:700
-            }
-            }>
-                <Card title='Agents' counter='12'path='agents'/>
-                <Card title='Spécialités' counter='3' path='specialite'/>
-                <Card title='Contacts' counter='19' path='contact'/>
-                <Card title='Missions' counter='3' path='mission'/>
-                <Card title='Cibles' counter='30' path='targets'/>
-                <Card title='Planques' counter='9' path='stashs'/>
-            </Box>
+        <React.Fragment>
 
-        </BoxHeading>
+
+            <Heading mb={3} as='h1' sx={{
+                textAlign:'center',
+                mb:4,
+            }} > KGB-Admin</Heading>
+            <Grid sx={{
+                boxShadow:'0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+                p:2,
+                borderRadius:4,
+                justifyContent:['center','space-between'],
+                alignItems:'center',
+            }} gap={2} columns={[1,1,'1fr 2fr']}>
+                <Box mb={3} sx={{
+                    mx:'auto',
+                    boxShadow:'0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+                    p:3
+                }}>
+                    <Doughnut
+                        data={data}/>
+                </Box>
+                <Box sx={{
+                    p:3,
+                    boxShadow:'0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)'
+                }}>
+                    <DataTable
+                        title="Mission "
+                        columns={[...ColumnsMissionsHome(history )]}
+                        data={mission.filter((rows)=>
+                            searchColumns.some(
+                                (column)=>
+                                    rows[column].toString().toLowerCase().indexOf(searchText.toLowerCase())>-1
+
+                            )
+
+                        )}
+                        pagination={true}
+                        highlightOnHover={true}
+                        pointerOnHover={true}
+                        responsive={true}
+                        customStyles={customStyles}
+                        subHeader
+                        subHeaderComponent={<Search searchText={searchText} handleSearch={handleSearch}/>}
+
+                    />
+                </Box>
+
+
+            </Grid>
+
+
+
+
+        </React.Fragment>
+
     )
 }
 

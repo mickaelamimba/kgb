@@ -55,10 +55,6 @@ function Mission (){
             <path id="Tracé_17" data-name="Tracé 17" d="M989.838,770.849h-299a1,1,0,0,1,0-2h299a1,1,0,0,1,0,2Z" transform="translate(-209.162 -128.895)" fill="#cbcbcb"/>
         </Image>
             <TablesCard>
-
-
-
-
             <Table/>
             </TablesCard>
         </React.Fragment>
