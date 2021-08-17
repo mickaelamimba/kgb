@@ -1,5 +1,5 @@
 const theme = {
-    breakpoints: ['33em','40em', '56em', '64em'],
+    breakpoints: ['40em', '56em', '64em'],
     space: [
         0,
         4,
@@ -131,6 +131,11 @@ const theme = {
             maxWidth: '100%'
         }
 
+    },
+    alerts:{
+        success:{
+            bg:'success'
+        }
     },
     layout:{
         container:{

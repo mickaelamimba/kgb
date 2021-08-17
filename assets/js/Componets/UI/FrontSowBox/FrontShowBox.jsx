@@ -1,17 +1,6 @@
-import {Box, Button, Flex,Grid} from "theme-ui";
-import React from "react";
-import PropTypes from "prop-types";
-import {useOpenModal} from "../../../Context/OpenModalContext";
-import {useHistory} from "react-router-dom";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPen, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
-
-
-const ShowBox =({children,handleDelete,path})=>{
-    const pen = <FontAwesomeIcon icon={faPen}/>
-    const trash = <FontAwesomeIcon icon={faTrashAlt} />
-    const modal = useOpenModal()
-    const history = useHistory()
+import React from 'react'
+import {Box, Button, Grid} from "theme-ui";
+const FrontShowBox =(children)=>{
     return(
         <Box sx={{
             padding:3,
@@ -55,9 +44,7 @@ const ShowBox =({children,handleDelete,path})=>{
                             listStyleType:'none'
                         }
                     }}>
-                        <li><Button onClick={()=>history.push(`/Admin/${path}`)}>Retour</Button></li>
-                        <li><Button variant='primaryBtn.edit'  onClick={modal.handleOpenModalUpdate}>Modifier {pen} </Button></li>
-                        <li><Button variant='primaryBtn.delete' onClick={handleDelete} bg='danger'>Suprimer {trash}</Button></li>
+                        <li><Button onClick={()=>history.push(`/${path}`)}>Retour</Button></li>
                     </Grid>
 
                 </Grid>
@@ -65,7 +52,4 @@ const ShowBox =({children,handleDelete,path})=>{
         </Box>
     )
 }
-export default ShowBox
-ShowBox.propTypes = {
-    children : PropTypes.node,
-}
+export default FrontShowBox

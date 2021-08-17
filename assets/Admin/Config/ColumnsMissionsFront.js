@@ -38,7 +38,7 @@ export const ColumnsMissionsFront= memoize( (history) =>[
         selector: row => <Box  sx={{
             padding:1,
             borderRadius:9,
-            variant:row.status === 'En préparation' ? 'cards.preparation':row.status ==='échec' ? 'cards.failure':row.status === 'en cours' ? 'cards.progress' :
+            variant:row.status === 'En préparation' ? 'cards.preparation':row.status ==='échec' ? 'cards.failure':row.status === 'En cours' ? 'cards.progress' :
                 row.status === 'Terminé' ? 'cards.finished' :''
         }}>{row.status} { } </Box>,
         sortFunction: (a, b) => a.status.localeCompare(b.status)

@@ -27,7 +27,6 @@ export default function useAgentsCRUD(){
             await queryCache.cancelQueries(['Agents', newAgents.id])
             const previousAgents = queryCache.getQueryData(['Agents', newAgents.id])
             queryCache.setQueryData(['Agents', newAgents.id], newAgents)
-
             return { previousAgents, newAgents }
 
         },
@@ -54,6 +53,7 @@ export default function useAgentsCRUD(){
     })
     const handleDelete= async(id)=>{
         await  mutateAsyncDelete(id)
+
     }
 
 
@@ -65,6 +65,7 @@ export default function useAgentsCRUD(){
         mutateAsyncUpdate,
         isUpdate,
         isUpdateSuccess,
-        isUpdateError
+        isUpdateError,
+        deleteLoad
     }
 }

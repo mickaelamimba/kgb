@@ -3,7 +3,7 @@ import React, { useState} from 'react'
 
 import {useQuery} from "react-query";
 
-import { Flex, Spinner} from "theme-ui";
+import {Flex, Progress, Spinner} from "theme-ui";
 
 
 
@@ -32,8 +32,6 @@ const Table =()=>{
 
     })
 
-
-
     const history = useHistory()
 
     if(isLoading){
@@ -47,6 +45,7 @@ const Table =()=>{
 
     return(
         <React.Fragment>
+
             <DataTable
                 title="Missions"
                 columns={[...ColumnsMissionsFront(history)]}
@@ -65,7 +64,6 @@ const Table =()=>{
                 loading={isLoading}
                 subHeader
                 subHeaderComponent={<Search searchText={searchText} handleSearch={handleSearch}/>}
-
                 customStyles={customStyles}
 
 

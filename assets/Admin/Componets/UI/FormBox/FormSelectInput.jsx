@@ -14,7 +14,8 @@ const FormSelectInput =(({ label , id ,errors , name,data, control,...options})=
                     render={({ field })=><ReactSelect
 
                         {...field}
-                        value={
+
+                       value={
                             field.value!== undefined ?Array.isArray(field.value)?
                                 data.filter(({ value }) => field.value.includes(value) ):
                                 data.filter(({ value }) => value === field.value):''

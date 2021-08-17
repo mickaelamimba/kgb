@@ -1,5 +1,5 @@
 import {useHistory, useParams, useRouteMatch} from "react-router-dom";
-import React from 'react'
+import React,{useState} from 'react'
 
 import {useQuery} from "react-query";
 import {Agents} from "../../Func/apiUrl";
@@ -8,13 +8,28 @@ import useAgentsCRUD from "../../Hooks/useAgentsCRUD";
 import Edit from "../Agents/Edit";
 import {useOpenModal} from "../../Context/OpenModalContext";
 import ShowBox from "../../Componets/UI/ShowBox/ShowBox";
+import {Alert, Close, Flex, Spinner} from "theme-ui";
 
 const ShowAgent = () => {
     const {id} = useParams()
+    const modal = useOpenModal()
     const history = useHistory()
     let match = useRouteMatch(['/Admin/agents/:id/show/'])
+    const { mutateAsyncDelete,mutateAsyncUpdate,deleteLoad,isUpdate,isUpdateSuccess} = useAgentsCRUD()
 
-    const {data: {...agent}, isLoading, isError} = useQuery(['Agents', id], () => Agents.oneById(id))
+    const handleDelete = async () => {
+        history.push(`/Admin/agents`)
+        await mutateAsyncDelete(id)
+
+
+
+
+    }
+
+
+            const {data: {...agent}, isLoading, isError} = useQuery(['Agents', id], () => Agents.oneById(id))
+
+
 
     const {agentSpecialties,birthDate, ...pros }=agent
     const dataAgent=
@@ -29,20 +44,38 @@ const ShowAgent = () => {
 
         }
 
-    const {handleModify, mutateAsyncDelete} = useAgentsCRUD()
-    const handleDelete = async (data) => {
-        await mutateAsyncDelete(data)
-        history.push(`/Admin/agents`)
+    const handleModify=async(data)=>{
+
+            const newVar = await mutateAsyncUpdate({
+                    id:id,
+                    newData: data,
+                }
+            )
+
+        modal.handleOpenModalUpdate()
     }
-    const modal = useOpenModal()
+    if (isUpdate){
+        return<Flex sx={{justifyContent:'center', alignItems: 'center'}}><Spinner/></Flex>
+    }
 
 
-    const defaultValues = {}
+    const [hidden,setHidden]=useState(true)
 
     return (
+
+        <React.Fragment>
+
+            {isUpdateSuccess&&hidden&&
+            <Alert my={2}  variant='success'>
+                mise a jour effecté avec sucsses!
+                <Close onClick={()=>setHidden(!hidden)} ml="auto" mr={-2} />
+            </Alert>
+            }
+
+
         <ShowBox
             path='agents'
-            deleteId={id}
+
             handleDelete={handleDelete}
 
         >
@@ -76,12 +109,16 @@ const ShowAgent = () => {
                 {/*{Object.values(specialties).map(x => <li key={x.id}>{x.name}</li>)}*/}
             </ul>
 
-            {modal.openModalUpdate && <Edit defaultProps={dataAgent} close={modal.handleOpenModalUpdate}/>
+            {modal.openModalUpdate && <Edit
+                defaultProps={dataAgent}
+                onSubmit={handleModify}
+                close={modal.handleOpenModalUpdate}/>
 
             }
 
 
         </ShowBox>
+        </React.Fragment>
 
     )
 }

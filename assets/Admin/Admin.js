@@ -25,6 +25,8 @@ import ShowSpecialites from "./Pages/Specialite/ShowSpecialites";
 import ShowContact from "./Pages/Contact/ShowContact";
 import ShowMissions from "./Pages/Mission/ShowMissions";
 import UnknownRout from "../js/Componets/Route/UnknownRout";
+import ShowTargets from "./Pages/Target/ShowTargets";
+import ShowStashs from "./Pages/Stashs/ShowStashs";
 
 
 
@@ -32,7 +34,7 @@ import UnknownRout from "../js/Componets/Route/UnknownRout";
 const queryClient = new QueryClient()
 
 const Admin = () => {
-    const location = useLocation()
+
     const routes =
         [
             {
@@ -43,9 +45,13 @@ const Admin = () => {
                 path: '/Admin/agents',
                 component: AgentsView
             },
+            {
+                path: '/Admin/specialities/:id/show/',
+                component: ShowSpecialites
+            },
 
             {
-                path: ['/Admin/specialities','/Admin/specialities/:id/show/'],
+                path: '/Admin/specialities',
                 component: SpecialitesView
             },
             {
@@ -68,14 +74,25 @@ const Admin = () => {
                 component: MissionsView
             }
             ,
+            {
+                path: '/Admin/targets/:id/show/',
+                component: ShowTargets
+            },
 
             {
                 path: '/Admin/targets',
                 component: TargetsView
             },
             {
+                path: '/Admin/stashs/:id/show/',
+                component: ShowStashs
+            },
+            {
                 path: '/Admin/stashs',
                 component: StashsView
+            },
+            {
+                path:'/logout',
             },
             {
                 path:'*',

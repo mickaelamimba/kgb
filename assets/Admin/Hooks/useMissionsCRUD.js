@@ -1,5 +1,5 @@
 import {useMutation, useQueryClient} from "react-query";
-import {Missions, Specialties} from "../Func/apiUrl";
+import {Missions} from "../Func/apiUrl";
 
 export default function useMissionsCRUD() {
 
@@ -27,7 +27,6 @@ export default function useMissionsCRUD() {
             await queryCache.cancelQueries(['Missions', newMissions.id])
             const previousMissions = queryCache.getQueryData(['Missions', newMissions.id])
             queryCache.setQueryData(['Missions', newMissions.id], newMissions)
-
             return { previousMissions, newMissions }
 
         },
@@ -37,6 +36,7 @@ export default function useMissionsCRUD() {
         },
         onSettled: async(newMissions)=>{
             await queryCache.invalidateQueries(['Missions', newMissions.id])
+            console.log(newMissions)
         }
         ,
         onSuccess: async()=>{

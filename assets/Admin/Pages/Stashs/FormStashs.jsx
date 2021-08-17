@@ -5,7 +5,7 @@ import FormInput from "../../Componets/UI/FormBox/FormInput";
 import React from "react";
 import FormSelectInput from "../../Componets/UI/FormBox/FormSelectInput";
 import Pays from "../../Nationality/Nationality";
-import {Button, Spinner} from "theme-ui";
+import {Button} from "theme-ui";
 
 import DisplayValidRequest from "../../Componets/UI/DisplayMessage/DisplayValidRequest";
 import Configs from "../../Config/Config.json";
@@ -22,7 +22,7 @@ const  FormStashs =({title,onSubmit, valueUpdate})=>{
         type:yup.string().required()
 
     })
-    const {register,handleSubmit, setValue , formState:{errors ,isSubmitSuccessful,
+    const {register,handleSubmit, setValue ,control, formState:{errors ,isSubmitSuccessful,
         isSubmitted, isSubmitting, isValid, } }=useForm(
 
         {
@@ -32,6 +32,9 @@ const  FormStashs =({title,onSubmit, valueUpdate})=>{
             defaultValues : valueUpdate
         }
     )
+    const optionsPays =Pays.map(({libelle})=> {
+        return {value:libelle,label:libelle}
+    })
     const displaySumitEvent =  ()=>{
 
         if (isSubmitted) {
@@ -57,11 +60,12 @@ const  FormStashs =({title,onSubmit, valueUpdate})=>{
                 errors={errors.address?.message} type='text' name='code' placeholder='Adrese'{...register('address')}
             />
             <FormSelectInput
+                name='country'
                 label='Pays'
                 id='country'
+                control={control}
                 errors={errors.country?.message}
-                {...register('country')}
-                options={Pays.map(pay => <option key={pay.id} value={pay.libelle}> {pay.libelle}</option>)}
+                data={optionsPays}
 
             />
             <FormInput

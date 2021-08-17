@@ -1,17 +1,16 @@
-
 import React from "react";
-import {Divider} from "theme-ui";
 
-
-
-export const dlArrayFormat=(array,arrayOdata, config)=>{
+const ShowBoxChild =(arrayData,config)=>{
     return(
         <React.Fragment>
             {
-                Object.entries(arrayOdata).map(([key,value])=>{
+
+                Object.entries(arrayData).map(([key,value])=>{
                     Object.entries(config).map(([labels,labelValue],i)=>{
+                        console.log(arrayData,':', config)
                         if(key === labels){
-                            array.push(
+
+                            return(
 
                                 <dl key={i}>
 
@@ -29,3 +28,4 @@ export const dlArrayFormat=(array,arrayOdata, config)=>{
     )
 
 }
+export default ShowBoxChild

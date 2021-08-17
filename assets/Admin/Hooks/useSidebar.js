@@ -1,5 +1,5 @@
 
-import {faHome, faIdCard, faUserGraduate,faUserTie, faUserTag, faBriefcase, faTintSlash} from '@fortawesome/free-solid-svg-icons'
+import {faHome, faIdCard, faUserGraduate,faUserTie, faUserTag, faBriefcase, faTintSlash,faOutdent} from '@fortawesome/free-solid-svg-icons'
 
 export default function useSidebar(){
 
@@ -40,6 +40,12 @@ export default function useSidebar(){
                 path:'/Admin/stashs',
                 name:'Planques',
                 icon:faTintSlash
+            }
+            ,
+            {
+                path:'/logout',
+                name:'Déconnexion',
+                icon:faOutdent
             }
 
         ]

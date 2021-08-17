@@ -1,14 +1,14 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {useForm, Controller} from "react-hook-form";
+import {useForm} from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Button} from "theme-ui";
 import * as yup from "yup";
 import Pays from "../../Nationality/Nationality";
 import FormInput from "../../Componets/UI/FormBox/FormInput";
-import {useQuery} from "react-query";
+import { useQuery} from "react-query";
 import {Agents, Contacts, Targets, Stashs, Specialties} from "../../Func/apiUrl";
 import FormSelectInput from "../../Componets/UI/FormBox/FormSelectInput";
 import FormTextarea from "../../Componets/UI/FormBox/FormTextarea";
@@ -18,6 +18,7 @@ import Configs from "../../Config/Config.json";
 
 
 const FormMissions =({title,onSubmit,defaultData})=>{
+
     yup.addMethod(yup.mixed, 'targetsVerify',function(messages,id){
         return this.test('targetsVerify',messages, function(value){
             let errors
@@ -61,13 +62,13 @@ const FormMissions =({title,onSubmit,defaultData})=>{
             if(specialties&&agents){
                 let errors = yup.array().required('veuillez selectioner vos agents')
             agentsData?.map(({id,agentSpecialties})=>{
-               let agentsId =`api/agents/${id}`
+               let agentsId =`/api/agents/${id}`
                     agents.value.map((val)=>{
                         if(val === agentsId){
                             agentSpecialties.map((specialty)=>{
-                                let specialtyId =`api/specialties/${specialty.id}`
+                                let specialtyId =`/api/specialties/${specialty.id}`
                                 if(specialtyId === specialties){
-                                    console.log(specialty)
+
 
                                 }
 
@@ -93,7 +94,7 @@ const FormMissions =({title,onSubmit,defaultData})=>{
                 Pays.map((paysItem)=>{
                     if(paysItem.libelle === country){
                         contactsData?.map(({id,nationality})=>{
-                            let contactsId =`api/contacts/${id}`
+                            let contactsId =`/api/contacts/${id}`
                             if(contacts.value){
                                 contacts.value.map((valueId)=>{
                                     if(valueId === contactsId && nationality!== paysItem.nationalite ) {
@@ -128,12 +129,12 @@ const FormMissions =({title,onSubmit,defaultData})=>{
             if(agents && targets){
              let errors 
                 agentsData?.map((agent)=>{
-                    let agentId = `api/agents/${agent.id}`
+                    let agentId = `/api/agents/${agent.id}`
                     agents.map((agentSelectedId)=>{
                         if(agentId === agentSelectedId){
                             targetsData?.map((target)=>{
                                 if(target.nationality === agent.nationality){
-                                    let targetId =`api/targets/${target.id}`
+                                    let targetId =`/api/targets/${target.id}`
 
                                     return errors = yup.array().of(yup.string()).targetsVerify('la ou les cibles ne peuvent pas avoir la même nationalité que le ou les agents',targetId)
                                 }
@@ -155,26 +156,25 @@ const FormMissions =({title,onSubmit,defaultData})=>{
 
 
 
-
     const {data:SpecialtiesData}= useQuery('Specialties',Specialties.fetchAll,)
     const specialtiesOptions =  SpecialtiesData?.map(({id,name})=>{
-        return { value:`api/specialties/${id}`, label:`${name}`}
+        return { value:`/api/specialties/${id}`, label:`${name}`}
     })
     const {data:stahsData}= useQuery('Stashs',Stashs.fetchAll,)
     const stahsOptions =  stahsData?.map(({id,code})=>{
-        return { value:`api/stashs/${id}`, label:code}
+        return { value:`/api/stashs/${id}`, label:code}
     })
     const {data:targetsData}= useQuery('Targets',Targets.fetchAll,)
     const targetsOptions =  targetsData?.map(({id,firstName, lastName})=>{
-        return { value:`api/targets/${id}`, label: `${firstName} ${lastName}` }
+        return { value:`/api/targets/${id}`, label: `${firstName} ${lastName}` }
     })
     const {data:contactsData}= useQuery('Contacts',Contacts.fetchAll,)
     const contactsOptions =  contactsData?.map(({id,firstName, lastName,nationality})=>{
-        return { value:`api/contacts/${id}`, label:`${firstName} ${lastName} - ${nationality}`}
+        return { value:`/api/contacts/${id}`, label:`${firstName} ${lastName} - ${nationality}`}
     })
     const {data:agentsData,isFetching:agentFetching}= useQuery('Agents',Agents.fetchAll,)
-    const agentsOptions =  agentsData?.map(({id,firstName, lastName, nationality})=>{
-     return { value:`api/agents/${id}`, label:`${firstName} ${lastName} `}
+    const agentsOptions =  agentsData?.map(({id,firstName, lastName})=>{
+     return { value:`/api/agents/${id}`, label:`${firstName} ${lastName} `}
  })
   const statusOptions =Configs.table.status
     const missionTypeOptions =Configs.table.missionType
@@ -280,12 +280,12 @@ const FormMissions =({title,onSubmit,defaultData})=>{
 export default FormMissions
 FormMissions.defaultProps = {
     title: 'Ajouter',
-    defaultData:{}
+    defaultData:''
 }
 
 FormMissions.propTypes ={
     title : PropTypes.string.isRequired,
     onSubmit : PropTypes.func.isRequired,
-    defaultData : PropTypes.object
+    //defaultData : PropTypes.object
 
 }

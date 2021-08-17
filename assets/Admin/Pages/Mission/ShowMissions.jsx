@@ -28,26 +28,27 @@ const ShowMissions=()=>{
    ...infosMission,
    endDate: endDate !== undefined && new Date(endDate).toISOString().slice(0, 10),
    startDate: startDate !== undefined && new Date(startDate).toISOString().slice(0, 10),
-   stashs: stashs !== undefined && stashs.code, specialties:specialties !== undefined &&  specialties.name
+   stashs: stashs !== undefined && stashs.code,
+   specialties:specialties !== undefined &&  specialties.name
   }
   const defaultValues={
-     ...arrayOfMission,
-      agents:agents !== undefined && agents.map(agent => {
-        return  `/api/agents/${agent.id}`
-      }),
-      contacts:contacts !== undefined && contacts.map(contact => `/api/contacts/${contact.id}`),
-      targets:targets !== undefined &&targets.map(target=> `/api/targets/${target.id}`),
-  }
+      ...arrayOfMission,
+      agents:agents?.map(agent => `/api/agents/${agent.id}`),
+      contacts:contacts?.map(contact => `/api/contacts/${contact.id}`),
+      targets:targets?.map(target=> `/api/targets/${target.id}`),
+      specialties:`/api/specialties/${specialties?.id}`,
+      stashs:`/api/stashs/${stashs?.id}`,
 
+  }
 
  const missions =[]
 
 const  handleModify = async(data)=>{
      await mutateAsyncUpdate({
          id: id,
-         newId: data
+         newData: data
      })
-
+    modal.handleOpenModalUpdate()
 }
  return(
      <ShowBox path='missions'
