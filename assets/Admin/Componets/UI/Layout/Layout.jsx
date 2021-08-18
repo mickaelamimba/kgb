@@ -6,41 +6,35 @@ import useSidebar from "../../../Hooks/useSidebar";
 import {Link} from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {useOpenModal} from "../../../Context/OpenModalContext";
+import {faOutdent, faAlignJustify} from "@fortawesome/free-solid-svg-icons";
 
 
 const Layout =({children})=>{
     const modal =useOpenModal()
    const {Lists}= useSidebar()
+
+
     return(
         <React.Fragment>
             <Heading as='header'>
                 <MenuButton  aria-label="Toggle Menu" onClick={modal.handleToggleMenu} />
+
                 <Sidebar toggle={modal.toggleMenu} onClose={modal.handleToggleMenu}>
                     <NaveItem>
                         {Lists.map(({path,name , icon},i)=>{
                            return <Box key={i} as='li' sx={{
-                               position: 'relative',
-                               cursor: 'pointer',
-                               fontSize: '1.6em',
-                               padding: '15px 30px',
-                               transition: 'all 250ms',
 
-                               '&:hover':{
-                                   padding:' 15px 45px',
-                                   backgroundColor: 'primaryMuted'
-                               },
-                               'a':{
-                                   color:'background',
-                                   textDecoration:'none',
-                                   paddingLeft:12
-                               }
                            }}>
 
                                <FontAwesomeIcon icon={icon} />
 
+
                                <Link onClick={modal.handleToggleMenu} to={path}>{name}</Link>
+
+
                             </Box>
                         })}
+                         <li > <FontAwesomeIcon icon={faOutdent} /> <a href="/logout">Déconnexion</a></li>
                     </NaveItem>
                 </Sidebar>
             </Heading>

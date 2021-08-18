@@ -27,6 +27,8 @@ import ShowMissions from "./Pages/Mission/ShowMissions";
 import UnknownRout from "../js/Componets/Route/UnknownRout";
 import ShowTargets from "./Pages/Target/ShowTargets";
 import ShowStashs from "./Pages/Stashs/ShowStashs";
+import {AlertContextProvider} from "./Context/AlertContext";
+
 
 
 
@@ -112,6 +114,7 @@ const Admin = () => {
 
         <ThemeProvider theme={theme}>
             <OpenModalProvider>
+                <AlertContextProvider>
             <Layout>
                 <Switch>
                     <Route exact path ='/Admin'>
@@ -128,6 +131,7 @@ const Admin = () => {
                 </Switch>
 
             </Layout>
+                </AlertContextProvider>
             </OpenModalProvider>
         </ThemeProvider>
             <ReactQueryDevtools initialIsOpen={false} />

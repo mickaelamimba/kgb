@@ -10,6 +10,7 @@ import {useOpenModal} from "../../Context/OpenModalContext";
 import useSpecialtiesCRUD from "../../Hooks/useSpecialtiesCRUD";
 import Configs from "../../Config/Config.json";
 import ShowBoxChild from "../../Componets/UI/ShowBox/ShowBoxChild";
+import {useAlert} from "../../Context/AlertContext";
 
 const ShowSpecialites =()=>{
 
@@ -18,8 +19,9 @@ const ShowSpecialites =()=>{
  const {data, isLoading, isError} = useQuery(['Specialties', id], () => Specialties.oneById(id))
  let match = useRouteMatch('/Admin/specialities/:id/show/')
 
-    const {mutateAsyncUpdate, isUpdate,mutateAsyncDelete}=useSpecialtiesCRUD()
+    const {mutateAsyncUpdate, isUpdate,mutateAsyncDelete,isUpdateSuccess,isUpdateError}=useSpecialtiesCRUD()
     const modal = useOpenModal()
+    const {AlertBox,handleCloseAlert}=useAlert()
     const handleDelete = async (data) => {
         await mutateAsyncDelete(data)
         history.push(`/Admin/specialities`)
@@ -38,6 +40,15 @@ const ShowSpecialites =()=>{
         return<Flex sx={{justifyContent:'center', alignItems: 'center'}}><Spinner/></Flex>
     }
  return(
+     <React.Fragment>
+         {isUpdateSuccess||isUpdateError?
+             <AlertBox
+                 messages={isUpdateSuccess?Configs.submitSuccess.successUpdate:
+                     isUpdateError ?Configs.submitErrors.errorUpdate:null}
+                 handleCloseAlert={handleCloseAlert}
+                 variant={isUpdateSuccess?'success':isUpdateError ?'danger':null}
+             />:null
+         }
      <ShowBox
          path='specialities'
          handleDelete={handleDelete}
@@ -57,6 +68,7 @@ const ShowSpecialites =()=>{
          }
 
      </ShowBox>
+     </React.Fragment>
 
  )
 }

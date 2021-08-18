@@ -44,7 +44,8 @@ const theme = {
         primaryHover: "#2c5282",
         secondary: "#718096",
         muted: "#e2e8f0",
-        success: "#9ae6b4",
+        success: "#33e76d",
+        successText: "#013312",
         info: "#63b3ed",
         infoHover: "#4583b1",
         warning: "#ecc322",
@@ -133,8 +134,17 @@ const theme = {
 
     },
     alerts:{
+
         success:{
-            bg:'success'
+            bg:'success',
+            color:'successText',
+            my: 4,
+
+
+        },
+        danger:{
+            bg:'danger',
+            my: 4,
         }
     },
     layout:{

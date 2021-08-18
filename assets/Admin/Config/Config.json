@@ -12,10 +12,12 @@
   },
   "submitErrors": {
     "error": "une erreur est survenue lore de l enregistrement",
+    "errorUpdate": "une erreur est survenue lore de la mise a joure",
     "deleteValue": "Etes-vous sûr(e) de vouloir supprimer ce(s) élément(s)"
   },
   "submitSuccess": {
-    "success":"les donnes son enregistrement avec success"
+    "success":"les donnes son enregistrement avec success",
+    "successUpdate":"Mise à jour éffectuée  avec success"
   },
   "formInfo": {
     "missions": {

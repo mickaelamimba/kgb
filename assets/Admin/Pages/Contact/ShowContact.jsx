@@ -10,16 +10,17 @@ import {useOpenModal} from "../../Context/OpenModalContext";
 import ShowBox from "../../Componets/UI/ShowBox/ShowBox";
 import Configs from "../../Config/Config.json";
 import ShowBoxChild from "../../Componets/UI/ShowBox/ShowBoxChild";
+import {useAlert} from "../../Context/AlertContext";
 
 const ShowContact =()=>{
     const{id} = useParams()
     const history = useHistory()
+    const {AlertBox,handleCloseAlert}=useAlert()
     let match = useRouteMatch(['/Admin/contacts/:id/show/'])
-    const pen = <FontAwesomeIcon icon={faPen} />
-    const trash = <FontAwesomeIcon icon={faTrashAlt} color='red'/>
+
     const {data:{...contact}, isLoading, isError}= useQuery(['Contacts',id],  ()=>Contacts.oneById(id))
 
-    const {handleModify,mutateAsyncDelete}= useAgentsCRUD()
+    const {handleModify,mutateAsyncDelete,isUpdateSuccess,isUpdateError}= useAgentsCRUD()
     const handleDelete = async(data)=>{
         await mutateAsyncDelete(data)
         history.push(`/Admin/contacts`)
@@ -36,6 +37,15 @@ const ShowContact =()=>{
     }
 
     return(
+        <React.Fragment>
+            {isUpdateSuccess||isUpdateError?
+                <AlertBox
+                    messages={isUpdateSuccess?Configs.submitSuccess.successUpdate:
+                        isUpdateError ?Configs.submitErrors.errorUpdate:null}
+                    handleCloseAlert={handleCloseAlert}
+                    variant={isUpdateSuccess?'success':isUpdateError ?'danger':null}
+                />:null
+            }
         <ShowBox path='contacts'>
             <ShowBoxChild
                 config={Configs.table.duplicateValue}
@@ -49,6 +59,7 @@ const ShowContact =()=>{
 
 
         </ShowBox>
+        </React.Fragment>
 
     )
 }

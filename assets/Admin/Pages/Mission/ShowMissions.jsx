@@ -12,6 +12,7 @@ import useMissionsCRUD from "../../Hooks/useMissionsCRUD";
 import Edit from "./Edit";
 import ShowBoxChild from "../../Componets/UI/ShowBox/ShowBoxChild";
 import ShowBoxArray from "../../Componets/UI/ShowBox/ShowBoxArray";
+import {useAlert} from "../../Context/AlertContext";
 
 const ShowMissions=()=>{
 
@@ -19,6 +20,7 @@ const ShowMissions=()=>{
  const history = useHistory()
  const {data:{...mission}, isLoading, isError} = useQuery(['Missions', id], () => Missions.oneById(id))
  let match = useRouteMatch(['/Admin/missions/:id/show/'])
+    const {AlertBox,handleCloseAlert}=useAlert()
  const modal = useOpenModal()
     const {isUpdate,isUpdateSuccess,isUpdateError,mutateAsyncUpdate}= useMissionsCRUD()
  const handleDelete =(id)=>{
@@ -56,6 +58,22 @@ const  handleModify = async(data)=>{
         return<Flex sx={{justifyContent:'center', alignItems: 'center'}}><Spinner/></Flex>
     }
  return(
+     <React.Fragment>
+         {isUpdateSuccess||isUpdateError?
+             <AlertBox
+             messages={isUpdateSuccess?Configs.submitSuccess.successUpdate:
+                 isUpdateError ?Configs.submitErrors.errorUpdate:null}
+             handleCloseAlert={handleCloseAlert}
+             variant={isUpdateSuccess?'success':isUpdateError ?'danger':null}
+             />:null
+         }
+
+
+
+
+
+
+
      <ShowBox path='missions'
               handleDelete={handleDelete}
      >
@@ -95,6 +113,7 @@ const  handleModify = async(data)=>{
          }
 
      </ShowBox>
+     </React.Fragment>
  )
 }
 export default ShowMissions

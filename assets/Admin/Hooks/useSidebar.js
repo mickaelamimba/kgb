@@ -42,11 +42,7 @@ export default function useSidebar(){
                 icon:faTintSlash
             }
             ,
-            {
-                path:'/logout',
-                name:'Déconnexion',
-                icon:faOutdent
-            }
+
 
         ]
     return{Lists}

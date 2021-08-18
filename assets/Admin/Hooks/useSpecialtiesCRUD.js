@@ -21,15 +21,8 @@ export default function useSpecialtiesCRUD(){
         modal.handleOpenModal()
 
     }
-    const {mutateAsync:mutateAsyncUpdat}= useMutation(((payload)=> Specialties.update(payload)
-    ),{
-        onSuccess: async(data,variables)=>{
-            await queryCache.setQueryData(['Specialties', {id: variables.id}],data)
-            console.log('dta:',data, 'variables',variables)
-        }
-    })
 
-    const {mutateAsync:mutateAsyncUpdate,isLoading:isUpdate}= useMutation(((payload)=> Specialties.update(payload)
+    const {mutateAsync:mutateAsyncUpdate,isLoading:isUpdate, isSuccess:isUpdateSuccess, isError:isUpdateError}= useMutation(((payload)=> Specialties.update(payload)
     ),{
         onMutate:async (newSpecialties)=>{
             await queryCache.cancelQueries(['Specialties', newSpecialties.id])
@@ -74,7 +67,9 @@ export default function useSpecialtiesCRUD(){
         isSuccess,
         mutateAsyncUpdate,
         isUpdate,
-        mutateAsyncDelete
+        mutateAsyncDelete,
+        isUpdateSuccess,
+        isUpdateError,
 
     }
 }
