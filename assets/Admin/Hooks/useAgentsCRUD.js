@@ -1,6 +1,6 @@
-import React, { useState} from "react";
+import React from "react";
 import {useMutation, useQueryClient} from "react-query";
-import {Agents, Specialties} from "../Func/apiUrl";
+import {Agents} from "../Func/apiUrl";
 
 
 
@@ -10,7 +10,7 @@ export default function useAgentsCRUD(){
 
 
 
-    const {mutateAsync:mutateAsyncAdde}= useMutation((payload)=>(
+    const {mutateAsync:mutateAsyncAdde,isSuccess,isError}= useMutation((payload)=>(
         Agents.post(payload)
     ),{
         onSuccess: async()=>{
@@ -66,6 +66,7 @@ export default function useAgentsCRUD(){
         isUpdate,
         isUpdateSuccess,
         isUpdateError,
-        deleteLoad
+        isError,
+        isSuccess
     }
 }

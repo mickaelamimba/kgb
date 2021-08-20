@@ -21,14 +21,18 @@ import TablesCard from "../../Componets/UI/TableUI/TablesCard";
 const ContactsView =()=>{
     let match = useRouteMatch(['/Admin/contacts/:id'])
     const modal =useOpenModal()
-    const {handleAdde}=useContactsCRUD()
+    const {handleAdde,isError,isSuccess}=useContactsCRUD()
+    document.title='Contacts'
 
 
     return(
         <BoxHeading
             title={Configs.componentInfos.contacts.headerTitle}
             btnTitle={Configs.componentInfos.contacts.button}
-            handleOpenModal={modal.handleOpenModal} >
+            handleOpenModal={modal.handleOpenModal}
+            isError={isError}
+            isSuccess={isSuccess}
+        >
     <TablesCard >
 
 

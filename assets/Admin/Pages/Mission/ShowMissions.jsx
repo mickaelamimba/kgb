@@ -1,6 +1,6 @@
 import React from 'react'
 import {useHistory, useParams, useRouteMatch} from "react-router-dom";
-import {Box, Button, Flex, Grid, Spinner} from "theme-ui";
+import { Flex, Grid, Spinner} from "theme-ui";
 import {useQuery} from "react-query";
 import { Missions} from "../../Func/apiUrl";
 import {useOpenModal} from "../../Context/OpenModalContext";
@@ -12,19 +12,22 @@ import useMissionsCRUD from "../../Hooks/useMissionsCRUD";
 import Edit from "./Edit";
 import ShowBoxChild from "../../Componets/UI/ShowBox/ShowBoxChild";
 import ShowBoxArray from "../../Componets/UI/ShowBox/ShowBoxArray";
-import {useAlert} from "../../Context/AlertContext";
 
 const ShowMissions=()=>{
 
+    const modal = useOpenModal()
  const{id} = useParams()
  const history = useHistory()
- const {data:{...mission}, isLoading, isError} = useQuery(['Missions', id], () => Missions.oneById(id))
+ const {data:{...mission}, isLoading, isError} = useQuery(['Missions', id], () => Missions.oneById(id),{
+     enabled:modal.enabled
+ })
  let match = useRouteMatch(['/Admin/missions/:id/show/'])
-    const {AlertBox,handleCloseAlert}=useAlert()
- const modal = useOpenModal()
-    const {isUpdate,isUpdateSuccess,isUpdateError,mutateAsyncUpdate}= useMissionsCRUD()
- const handleDelete =(id)=>{
-  console.log(id)
+const {isUpdate,isUpdateSuccess,isUpdateError,mutateAsyncUpdate,mutateAsyncDelete}= useMissionsCRUD()
+ const handleDelete = async()=>{
+     modal.handleEnabled()
+     await mutateAsyncDelete(id)
+     history.push(`/Admin/missions`)
+
  }
   const {endDate,startDate,agents,contacts,targets,stashs,specialties,...infosMission}= mission
  const arrayOfMission =
@@ -45,8 +48,6 @@ const ShowMissions=()=>{
 
   }
 
- const missions =[]
-
 const  handleModify = async(data)=>{
      await mutateAsyncUpdate({
          id: id,
@@ -59,23 +60,10 @@ const  handleModify = async(data)=>{
     }
  return(
      <React.Fragment>
-         {isUpdateSuccess||isUpdateError?
-             <AlertBox
-             messages={isUpdateSuccess?Configs.submitSuccess.successUpdate:
-                 isUpdateError ?Configs.submitErrors.errorUpdate:null}
-             handleCloseAlert={handleCloseAlert}
-             variant={isUpdateSuccess?'success':isUpdateError ?'danger':null}
-             />:null
-         }
-
-
-
-
-
-
-
      <ShowBox path='missions'
               handleDelete={handleDelete}
+              isUpdateSuccess={isUpdateSuccess}
+              isUpdateError={isUpdateError}
      >
          <ShowBoxChild
              config={Configs.table.mission}

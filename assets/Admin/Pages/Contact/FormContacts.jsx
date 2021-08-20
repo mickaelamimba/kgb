@@ -12,15 +12,16 @@ import DisplayError from "../../Componets/UI/DisplayMessage/DisplayError";
 import Configs from "../../Config/Config.json";
 import FormInput from "../../Componets/UI/FormBox/FormInput";
 import FormSelectInput from "../../Componets/UI/FormBox/FormSelectInput";
+import FormAgent from "../Agents/FormAgent";
 
 
 
-const FormContacts =({title, onSubmit,defaultProps})=>{
+const FormContacts =({title, onSubmit,valueUpdate})=>{
 
     const schema  =yup.object().shape({
         firstName: yup.string().required(Configs.formMessage.firstNameRequired),
         lastName: yup.string().required(Configs.formMessage.lastNameRequired),
-        birthDate : yup.date().required(Configs.formMessage.birthDateRequired),
+        birthDate : yup.date().max(new Date(), Configs.formMessage.birthDateRequired),
         codeName: yup.string().required(Configs.formMessage.codeNameRequired),
         nationality: yup.string().required(Configs.formMessage.nationalityRequired),
 
@@ -28,12 +29,12 @@ const FormContacts =({title, onSubmit,defaultProps})=>{
     const optionsNationality =Pays.map(({nationalite})=> {
         return {value:nationalite,label:nationalite}
     })
-    const {register,handleSubmit, control, formState:{errors , isSubmitting, } }=useForm(
+    const {register,handleSubmit, control, formState:{errors , isSubmitting } }=useForm(
 
         {
             mode:'onTouched',
             resolver: yupResolver(schema),
-        defaultValues:defaultProps,}
+        defaultValues:valueUpdate,}
     )
 
 
@@ -80,6 +81,10 @@ const FormContacts =({title, onSubmit,defaultProps})=>{
     )
 }
 export default FormContacts
+FormContacts.defaultProps = {
+    title: 'Ajouter',
+    valueUpdate: '',
+}
 
 FormContacts.propTypes ={
     title : PropTypes.string.isRequired,

@@ -18,7 +18,7 @@ const FormAgent =({title,onSubmit, valueUpdate})=>{
         firstName: yup.string().required(Configs.formMessage.firstNameRequired),
         lastName: yup.string().required(Configs.formMessage.lastNameRequired),
         birthDate : yup.date().max(new Date(), Configs.formMessage.birthDateRequired),
-        indentificationCode: yup.number().required(Configs.formMessage.indentificationCodeRequired).positive().integer(),
+        indentificationCode: yup.number().required().positive(Configs.formMessage.indentificationCodeRequired).integer(),
         nationality: yup.string().required(Configs.formMessage.nationalityRequired),
         agentSpecialties: yup.array().required(Configs.formMessage.specialtiesRequired),
     })

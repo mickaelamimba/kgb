@@ -16,6 +16,7 @@ import TablesCard from "../../Componets/UI/TableUI/TablesCard";
 import useSpecialtiesCRUD from "../../Hooks/useSpecialtiesCRUD";
 
 const SpecialitesView=()=> {
+    document.title='Specialité'
 
     const modal = useOpenModal()
     let match = useRouteMatch(['/Admin/specialities/:id'])

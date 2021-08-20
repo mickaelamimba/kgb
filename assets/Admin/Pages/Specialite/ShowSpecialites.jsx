@@ -15,15 +15,18 @@ import {useAlert} from "../../Context/AlertContext";
 const ShowSpecialites =()=>{
 
  const{id} = useParams()
+    const modal = useOpenModal()
     const history = useHistory()
- const {data, isLoading, isError} = useQuery(['Specialties', id], () => Specialties.oneById(id))
+ const {data, isLoading, isError} = useQuery(['Specialties', id], () => Specialties.oneById(id),{
+     enabled:modal.enabled
+ })
  let match = useRouteMatch('/Admin/specialities/:id/show/')
 
     const {mutateAsyncUpdate, isUpdate,mutateAsyncDelete,isUpdateSuccess,isUpdateError}=useSpecialtiesCRUD()
-    const modal = useOpenModal()
-    const {AlertBox,handleCloseAlert}=useAlert()
-    const handleDelete = async (data) => {
-        await mutateAsyncDelete(data)
+
+    const handleDelete = async () => {
+        modal.handleEnabled()
+        await mutateAsyncDelete(id)
         history.push(`/Admin/specialities`)
     }
 
@@ -41,17 +44,11 @@ const ShowSpecialites =()=>{
     }
  return(
      <React.Fragment>
-         {isUpdateSuccess||isUpdateError?
-             <AlertBox
-                 messages={isUpdateSuccess?Configs.submitSuccess.successUpdate:
-                     isUpdateError ?Configs.submitErrors.errorUpdate:null}
-                 handleCloseAlert={handleCloseAlert}
-                 variant={isUpdateSuccess?'success':isUpdateError ?'danger':null}
-             />:null
-         }
      <ShowBox
          path='specialities'
          handleDelete={handleDelete}
+         isUpdateSuccess={isUpdateSuccess}
+         isUpdateError={isUpdateError}
      >
          <ShowBoxChild
              config={Configs.table.specialties}

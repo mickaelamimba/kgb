@@ -31,6 +31,14 @@
     "agents":{
       "titleAdd":"Ajouter un Agent",
       "titleUpdate": "Modifier un Agent"
+    },
+    "stashs":{
+      "titleAdd":"Ajouter une Planque",
+      "titleUpdate": "Modifier une Planque"
+    },
+    "targets":{
+      "titleAdd":"Ajouter une Cible",
+      "titleUpdate": "Modifier une Cible"
     }
   },
   "frontendTable": {

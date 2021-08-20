@@ -5,15 +5,28 @@ import {useOpenModal} from "../../../Context/OpenModalContext";
 import {useHistory} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPen, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
+import Configs from "../../../Config/Config.json";
+import {useAlert} from "../../../Context/AlertContext";
 
 
-const ShowBox =({children,handleDelete,path})=>{
+const ShowBox =({children,handleDelete,path,isUpdateSuccess,isUpdateError})=>{
     const pen = <FontAwesomeIcon icon={faPen}/>
     const trash = <FontAwesomeIcon icon={faTrashAlt} />
     const modal = useOpenModal()
     const history = useHistory()
+    const {AlertBox,handleCloseAlert}=useAlert()
+
     return(
-        <Box sx={{
+        <React.Fragment>
+            {isUpdateSuccess||isUpdateError?
+                <AlertBox
+                    messages={isUpdateSuccess?Configs.submitSuccess.successUpdate:
+                        isUpdateError ?Configs.submitErrors.errorUpdate:null}
+                    handleCloseAlert={handleCloseAlert}
+                    variant={isUpdateSuccess?'success':isUpdateError ?'danger':null}
+                />:null
+            }
+        <Box as='section' sx={{
             padding:3,
             borderTop:'gray',
             boxShadow:'0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
@@ -63,6 +76,7 @@ const ShowBox =({children,handleDelete,path})=>{
                 </Grid>
             </Box>
         </Box>
+        </React.Fragment>
     )
 }
 export default ShowBox

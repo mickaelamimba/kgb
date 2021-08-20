@@ -10,7 +10,7 @@ export default function useMissionsCRUD() {
 
 
 
-    const {mutateAsync:mutateAsyncAdde}= useMutation((payload)=>(
+    const {mutateAsync:mutateAsyncAdde,isError,isSuccess}= useMutation((payload)=>(
         Missions.post(payload)
     ),{
         onSuccess: async()=>{
@@ -65,7 +65,9 @@ export default function useMissionsCRUD() {
         mutateAsyncUpdate,
         isUpdate,
         isUpdateSuccess,
-        isUpdateError
+        isUpdateError,
+        isError,
+        isSuccess
     }
 
 }

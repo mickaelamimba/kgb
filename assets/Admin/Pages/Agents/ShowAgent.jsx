@@ -9,28 +9,27 @@ import Edit from "../Agents/Edit";
 import {useOpenModal} from "../../Context/OpenModalContext";
 import ShowBox from "../../Componets/UI/ShowBox/ShowBox";
 import {Alert, Close, Flex, Spinner} from "theme-ui";
+import {useAlert} from "../../Context/AlertContext";
+import Configs from "../../Config/Config.json";
+import ShowBoxChild from "../../Componets/UI/ShowBox/ShowBoxChild";
 
 const ShowAgent = () => {
     const {id} = useParams()
     const modal = useOpenModal()
     const history = useHistory()
     let match = useRouteMatch(['/Admin/agents/:id/show/'])
-    const { mutateAsyncDelete,mutateAsyncUpdate,deleteLoad,isUpdate,isUpdateSuccess} = useAgentsCRUD()
+    const { mutateAsyncDelete,mutateAsyncUpdate,deleteLoad,isUpdate,isUpdateSuccess,isUpdateError} = useAgentsCRUD()
+    const {data: {...agent}, isLoading, isError} = useQuery(['Agents', id], () => Agents.oneById(id),{
+        enabled:modal.enabled
+    })
 
     const handleDelete = async () => {
-        history.push(`/Admin/agents`)
+        modal.handleEnabled()
         await mutateAsyncDelete(id)
-
-
+        history.push(`/Admin/agents`)
 
 
     }
-
-
-            const {data: {...agent}, isLoading, isError} = useQuery(['Agents', id], () => Agents.oneById(id))
-
-
-
     const {agentSpecialties,birthDate, ...pros }=agent
     const dataAgent=
         {
@@ -54,57 +53,26 @@ const ShowAgent = () => {
 
         modal.handleOpenModalUpdate()
     }
-    if (isUpdate){
+    if (isUpdate||isLoading){
         return<Flex sx={{justifyContent:'center', alignItems: 'center'}}><Spinner/></Flex>
     }
-
-
-    const [hidden,setHidden]=useState(true)
 
     return (
 
         <React.Fragment>
-
-            {isUpdateSuccess&&hidden&&
-            <Alert my={2}  variant='success'>
-                mise a jour effecté avec sucsses!
-                <Close onClick={()=>setHidden(!hidden)} ml="auto" mr={-2} />
-            </Alert>
-            }
-
-
         <ShowBox
             path='agents'
-
             handleDelete={handleDelete}
+            isUpdateSuccess={isUpdateSuccess}
+            isUpdateError={isUpdateError}
 
         >
-            <dl>
-                <div>
-                    <dt>Pernom</dt>
-                    <dd>{agent?.firstName}</dd>
-                </div>
-                <div>
-                    <dt>Non</dt>
-                    <dd>{agent?.lastName}</dd>
-                </div>
-                <div>
-                    <dt>Date de Naissonse</dt>
-                    <dd>{agent?.birthDate}</dd>
-                </div>
-                <div>
-                    <dt>Code d identification</dt>
-                    <dd>{agent?.indentificationCode}</dd>
-                </div>
-                <div>
-                    <dt>Nationaliter</dt>
-                    <dd>{agent?.nationality}</dd>
-                </div>
+            <ShowBoxChild
+                config={Configs.table.agents}
+                arrayData={agent}
 
-            </dl>
-            <div>
-                <h3>Specialiter</h3>
-            </div>
+            />
+
             <ul>
                 {/*{Object.values(specialties).map(x => <li key={x.id}>{x.name}</li>)}*/}
             </ul>

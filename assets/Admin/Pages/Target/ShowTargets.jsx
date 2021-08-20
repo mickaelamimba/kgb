@@ -7,24 +7,69 @@ import {useOpenModal} from "../../Context/OpenModalContext";
 import {Flex, Spinner} from "theme-ui";
 import Configs from "../../Config/Config.json";
 import ShowBoxChild from "../../Componets/UI/ShowBox/ShowBoxChild";
+import Edit from "./Edit";
+import useTargetsCRUD from "../../Hooks/useTargetsCRUD";
 const ShowTargets =()=>{
+    document.title='Planques'
     let match = useRouteMatch('/Admin/targets/:id/show/')
+    const{isUpdate,isUpdateSuccess,isUpdateError,mutateAsyncUpdate}=useTargetsCRUD()
     const{id} = useParams()
     const history = useHistory()
-    const {data, isLoading, isError} = useQuery(['Targets', id], () => Targets.oneById(id))
     const modal = useOpenModal()
-    if (isLoading){
+    const {data:{...targets}, isLoading, isError} = useQuery(['Targets', id], () => Targets.oneById(id),{
+        enabled:modal.enabled
+    })
+    const {birthDate,...infoTargets}=targets
+    const parseContact={
+        ...infoTargets,
+        birthDate:birthDate&& new Date(birthDate).toISOString().slice(0,10)
+    }
+
+    const handleDelete= async()=>{
+        modal.handleEnabled()
+        await mutateAsyncDelete(id)
+        history.push(`/Admin/targets`)
+
+    }
+    const handleModify=async(data)=>{
+        const newVar = await mutateAsyncUpdate({
+                id:id,
+                newData: data,
+            }
+        )
+
+        modal.handleOpenModalUpdate()
+    }
+
+    if (isUpdate||isLoading){
         return<Flex sx={{justifyContent:'center', alignItems: 'center'}}><Spinner/></Flex>
     }
     return(
-        <ShowBox path='targets'>
+        <React.Fragment>
+
+        <ShowBox path='targets'
+                 isUpdateError={isUpdateError}
+                 isUpdateSuccess={isUpdateSuccess}
+                 handleDelete={handleDelete}
+
+        >
             <ShowBoxChild
                 config={Configs.table.duplicateValue}
-                arrayData={data}
+                arrayData={parseContact}
+
+            />
+            {modal.openModalUpdate&&
+            <Edit
+                close={modal.handleOpenModalUpdate}
+                onSubmit={handleModify}
+                defaultValues={parseContact}
 
             />
 
+            }
+
         </ShowBox>
+        </React.Fragment>
     )
 
 }

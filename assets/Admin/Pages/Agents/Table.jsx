@@ -36,7 +36,6 @@ const Table =()=>{
     return(
         <React.Fragment>
             <DataTable
-                title="Agents"
                 columns={[...ColumnsAgents(handleDelete,history )]}
                 data={data}
                 pagination={true}
@@ -44,9 +43,6 @@ const Table =()=>{
                 pointerOnHover={true}
                 responsive={true}
                 customStyles={customStyles}
-
-
-
 
             />
         </React.Fragment>

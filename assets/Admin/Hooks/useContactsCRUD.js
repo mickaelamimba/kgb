@@ -3,10 +3,10 @@ import {Contacts} from "../Func/apiUrl";
 import {useMutation, useQueryClient} from "react-query";
 
 
-export default function useContactsCRUD(options){
+export default function useContactsCRUD(){
     const queryCache = useQueryClient()
 
-    const {mutateAsync:mutateAsyncAdde}= useMutation((payload)=>(
+    const {mutateAsync:mutateAsyncAdde,isError,isSuccess}= useMutation((payload)=>(
         Contacts.post(payload)
     ),{
         onSuccess: async()=>{
@@ -35,9 +35,30 @@ export default function useContactsCRUD(options){
 
 
   }
-    const handleModify =()=>{
 
-    }
+    const {mutateAsync:mutateAsyncUpdate,isLoading:isUpdate, isSuccess:isUpdateSuccess, isError:isUpdateError}= useMutation(((payload)=> Contacts.update(payload)
+    ),{
+        onMutate:async (newContacts)=>{
+            await queryCache.cancelQueries(['Contacts', newContacts.id])
+            const previousContacts = queryCache.getQueryData(['Contacts', newContacts.id])
+            queryCache.setQueryData(['Contacts', newContacts.id], newContacts)
+
+            return { previousContacts, newContacts }
+
+        },
+        onError:(err, newContacts, context)=>{
+            queryCache.setQueryData(['Contacts', context.newContacts.id],
+                context.previousContacts)
+        },
+        onSettled: async(newContacts)=>{
+            await queryCache.invalidateQueries(['Contacts', newContacts.id])
+        }
+        ,
+        onSuccess: async()=>{
+            await queryCache.invalidateQueries(['Contacts'])
+        }
+    })
+
 
 
 
@@ -45,7 +66,12 @@ export default function useContactsCRUD(options){
     return{
         handleAdde,
         handleDelete,
-        handleModify,
+        mutateAsyncUpdate,
+        isUpdate,
+        isUpdateSuccess,
+        isUpdateError,
+        isError,
+        isSuccess
 
 
     }

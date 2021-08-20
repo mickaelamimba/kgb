@@ -1,59 +1,71 @@
 import {useHistory, useParams, useRouteMatch} from "react-router-dom";
-import React from'react'
+import React, {useState} from 'react'
 import {useQuery} from "react-query";
 import { Contacts} from "../../Func/apiUrl";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTrashAlt,faPen} from "@fortawesome/free-solid-svg-icons";
-import useAgentsCRUD from "../../Hooks/useAgentsCRUD";
+
+
 import Edit from "./Edit";
 import {useOpenModal} from "../../Context/OpenModalContext";
 import ShowBox from "../../Componets/UI/ShowBox/ShowBox";
 import Configs from "../../Config/Config.json";
 import ShowBoxChild from "../../Componets/UI/ShowBox/ShowBoxChild";
 import {useAlert} from "../../Context/AlertContext";
+import {Flex, Spinner} from "theme-ui";
+import useContactsCRUD from "../../Hooks/useContactsCRUD";
 
 const ShowContact =()=>{
+    const modal =useOpenModal()
     const{id} = useParams()
     const history = useHistory()
-    const {AlertBox,handleCloseAlert}=useAlert()
     let match = useRouteMatch(['/Admin/contacts/:id/show/'])
+    const  handleModify = async(data)=>{
+        await mutateAsyncUpdate({
+            id: id,
+            newData: data
+        })
+        modal.handleOpenModalUpdate()
+    }
 
-    const {data:{...contact}, isLoading, isError}= useQuery(['Contacts',id],  ()=>Contacts.oneById(id))
-
-    const {handleModify,mutateAsyncDelete,isUpdateSuccess,isUpdateError}= useAgentsCRUD()
-    const handleDelete = async(data)=>{
-        await mutateAsyncDelete(data)
+    const {data:{...contact}, isLoading, isError}= useQuery(['Contacts',id],  ()=>Contacts.oneById(id),{
+        enabled: modal.enabled
+    })
+        const {birthDate,...infoContact}=contact
+    const parseContact={
+        ...infoContact,
+        birthDate:birthDate&& new Date(birthDate).toISOString().slice(0,10)
+    }
+    const {mutateAsyncUpdate,mutateAsyncDelete,isUpdateSuccess,isUpdateError,isUpdate}= useContactsCRUD()
+    const handleDelete = async()=>{
+       modal.handleEnabled()
+        await mutateAsyncDelete(id)
         history.push(`/Admin/contacts`)
     }
-    const modal =useOpenModal()
 
-    const defaultValues = {
-        firstName:contact?.firstName,
-        lastName:contact?.lastName,
-        birthDate: contact?.birthDate,
-        codeName: contact?.codeName,
-        nationality: contact?.nationality,
 
+
+    if (isUpdate||isLoading){
+        return<Flex sx={{justifyContent:'center', alignItems: 'center'}}><Spinner/></Flex>
     }
 
     return(
         <React.Fragment>
-            {isUpdateSuccess||isUpdateError?
-                <AlertBox
-                    messages={isUpdateSuccess?Configs.submitSuccess.successUpdate:
-                        isUpdateError ?Configs.submitErrors.errorUpdate:null}
-                    handleCloseAlert={handleCloseAlert}
-                    variant={isUpdateSuccess?'success':isUpdateError ?'danger':null}
-                />:null
-            }
-        <ShowBox path='contacts'>
+        <ShowBox path='contacts'
+                 handleDelete={handleDelete}
+                 isUpdateSuccess={isUpdateSuccess}
+                 isUpdateError={isUpdateError}
+        >
             <ShowBoxChild
                 config={Configs.table.duplicateValue}
-                arrayData={contact}
+                arrayData={parseContact}
 
             />
 
-            { modal.openModalUpdate&&<Edit defaultProps={defaultValues} close={modal.handleOpenModalUpdate}/>
+            { modal.openModalUpdate&&
+            <Edit
+                defaultValues={parseContact}
+                close={modal.handleOpenModalUpdate}
+                onSubmit={handleModify}
+            />
 
             }
 

@@ -5,7 +5,7 @@ import {Flex, Spinner} from "theme-ui";
 
 
 import {useHistory} from "react-router-dom";
-import DataTable, {createTheme} from 'react-data-table-component';
+import DataTable from 'react-data-table-component';
 
 import useSpecialtiesCRUD from "../../Hooks/useSpecialtiesCRUD";
 import {ColumnsSpecialties} from "../../Config/ColumsSpecialties";
@@ -35,7 +35,6 @@ const Table =()=>{
     return(
         <React.Fragment>
             <DataTable
-                title="Specialité "
                 columns={[...ColumnsSpecialties(handleDelete,history )]}
                 data={data}
                 pagination={true}

@@ -4,6 +4,7 @@ const OpenModalProvider =({children})=>{
     const [openModalUpdate, setOpenModalUpdate]=useState(false)
     const [openModal, setOpenModal]=useState(false)
     const [toggleMenu,setToggleMenu]=useState(false)
+    const [enabled, setEnabled]=useState(true)
     const [update, setUpdate] = useState(false)
     const [create, setCreate] = useState(false)
     return(
@@ -13,6 +14,10 @@ const OpenModalProvider =({children})=>{
             update,
             create,
             toggleMenu,
+            enabled,
+            handleEnabled:()=>{
+                setEnabled(!enabled)
+            },
             handleOpenModal:()=>{
                 setCreate(!create)
                 setOpenModal(!openModal)

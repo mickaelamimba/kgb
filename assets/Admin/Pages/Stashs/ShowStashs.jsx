@@ -7,20 +7,44 @@ import {useOpenModal} from "../../Context/OpenModalContext";
 import ShowBoxChild from "../../Componets/UI/ShowBox/ShowBoxChild";
 import Configs from "../../Config/Config.json";
 import {Flex, Spinner} from "theme-ui";
+import Edit from "./Edit";
+import useStashsCRUD from "../../Hooks/useStashsCRUD";
 
 const ShowStashs=()=>{
+    const modal = useOpenModal()
     let match = useRouteMatch('/Admin/stashs/:id/show/')
+    const{isUpdate,isUpdateSuccess,isUpdateError,mutateAsyncUpdate,mutateAsyncDelete}= useStashsCRUD()
     const{id} = useParams()
     const history = useHistory()
-    const {data, isLoading, isError} = useQuery(['Stashs', id], () => Stashs.oneById(id))
-    const modal = useOpenModal()
+    const {data, isLoading, isError} = useQuery(['Stashs', id], () => Stashs.oneById(id),{
+        enabled:modal.enabled
+    })
 
+    const handleDelete= async()=>{
+        modal.handleEnabled()
+        await mutateAsyncDelete(id)
+        history.push(`/Admin/stashs`)
+    }
+    const handleModify=async(data)=>{
+        const newVar = await mutateAsyncUpdate({
+                id:id,
+                newData: data,
+            }
+        )
 
-    if (isLoading){
+        modal.handleOpenModalUpdate()
+    }
+
+    if (isUpdate||isLoading){
         return<Flex sx={{justifyContent:'center', alignItems: 'center'}}><Spinner/></Flex>
     }
     return(
-        <ShowBox path='stashs'>
+        <React.Fragment>
+        <ShowBox path='stashs'
+                 isUpdateSuccess={isUpdateSuccess}
+                 isUpdateError={isUpdateError}
+                 handleDelete={handleDelete}
+        >
 
             <ShowBoxChild
 
@@ -28,8 +52,18 @@ const ShowStashs=()=>{
                 arrayData={data}
 
             />
+            {modal.openModalUpdate&&
+                <Edit
+                    close={modal.handleOpenModalUpdate}
+                    onSubmit={handleModify}
+                    defaultValues={data}
+
+                />
+
+            }
 
         </ShowBox>
+        </React.Fragment>
     )
 }
 export default ShowStashs

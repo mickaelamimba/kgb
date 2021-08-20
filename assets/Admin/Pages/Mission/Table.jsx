@@ -32,7 +32,6 @@ const Table =()=>{
     return(
         <React.Fragment>
             <DataTable
-                title="Missions"
                 columns={[...ColumnsMissions(handleDelete,history )]}
                 data={data}
                 pagination={true}

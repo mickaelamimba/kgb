@@ -12,6 +12,7 @@ import Table from "./Table";
 import TablesCard from "../../Componets/UI/TableUI/TablesCard";
 import {useOpenModal} from "../../Context/OpenModalContext";
 const StashsView =()=>{
+    document.title='Cibles'
     let match = useRouteMatch(['/Admin/stashs/:id'])
     const {handleAdde, isError,isSuccess}= useStashsCRUD()
     const modal =useOpenModal()

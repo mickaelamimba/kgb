@@ -1,5 +1,5 @@
 import {useMutation, useQueryClient} from "react-query";
-import { Targets} from "../Func/apiUrl";
+import {Specialties, Targets} from "../Func/apiUrl";
 import {useOpenModal} from "../Context/OpenModalContext";
 
 export default function useTargetsCRUD() {
@@ -25,17 +25,6 @@ export default function useTargetsCRUD() {
 
     }
 
-
-    const handleModify =  (id)=>{
-        if(id){
-
-        }
-
-        console.log(id)
-
-
-
-    }
     const {mutateAsync:mutateAsyncDelete,isLoading:deleteLoad}= useMutation((id)=>(
         Targets.deletes(id)
     ),{
@@ -46,15 +35,40 @@ export default function useTargetsCRUD() {
     const handleDelete= async(id)=>{
         await  mutateAsyncDelete(id)
     }
+    const {mutateAsync:mutateAsyncUpdate,isLoading:isUpdate, isSuccess:isUpdateSuccess, isError:isUpdateError}= useMutation(((payload)=> Targets.update(payload)
+    ),{
+        onMutate:async (newTargets)=>{
+            await queryCache.cancelQueries(['Targets', newTargets.id])
+            const previousTargets = queryCache.getQueryData(['Targets', newTargets.id])
+            queryCache.setQueryData(['Stashs', newTargets.id], newTargets)
+
+            return { previousTargets, newTargets }
+
+        },
+        onError:(err, newTargets, context)=>{
+            queryCache.setQueryData(['Targets', context.newTargets.id],
+                context.previousStashs)
+        },
+        onSettled: async(newTargets)=>{
+            await queryCache.invalidateQueries(['Targets', newTargets.id])
+        }
+        ,
+        onSuccess: async()=>{
+            await queryCache.invalidateQueries(['Targets'])
+        }
+    })
 
 
 
     return {
         handleDelete,
-        handleModify,
         handleAdde,
         isError,
-        isSuccess
+        isSuccess,
+        mutateAsyncUpdate,
+        isUpdate,
+        isUpdateSuccess,
+        isUpdateError,
     }
 
 }

@@ -67,9 +67,10 @@ export default function useSpecialtiesCRUD(){
         isSuccess,
         mutateAsyncUpdate,
         isUpdate,
-        mutateAsyncDelete,
         isUpdateSuccess,
         isUpdateError,
+        mutateAsyncDelete,
+
 
     }
 }

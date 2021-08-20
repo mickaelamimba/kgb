@@ -17,15 +17,18 @@ import TablesCard from "../../Componets/UI/TableUI/TablesCard";
 
 
 const AgentsView =()=>{
+    document.title='Agents'
     let match = useRouteMatch(['/Admin/agents/:id'])
     const modal =useOpenModal()
-    const {handleAdde}=useAgentsCRUD()
+    const {handleAdde,isError,isSuccess}=useAgentsCRUD()
 
     return (
         <BoxHeading
             title={Configs.componentInfos.agents.headerTitle}
             handleOpenModal={modal.handleOpenModal}
             btnTitle={Configs.componentInfos.agents.button}
+            isError={isError}
+            isSuccess={isSuccess}
         >
             <TablesCard>
                 <Table

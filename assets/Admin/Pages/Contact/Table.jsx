@@ -18,7 +18,7 @@ import {customStyles} from "../../../js/customStyles";
 
 
 const Table =()=>{
-    const {handleModify,handleDelete}= useContactsCRUD()
+    const {handleDelete}= useContactsCRUD()
 
     const history = useHistory()
     const {data, isLoading, isError,}= useQuery('Contacts',()=>Contacts.fetchAll(),
@@ -32,11 +32,10 @@ const Table =()=>{
     if(isError){
         return <p>Error</p>
     }
-    console.log(data)
+
     return(
         <React.Fragment>
             <DataTable
-                title="Contact"
                 columns={[...ColumnsContacts(handleDelete,history )]}
                 data={data}
                 pagination={true}

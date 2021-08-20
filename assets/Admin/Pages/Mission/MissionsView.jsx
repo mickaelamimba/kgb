@@ -14,6 +14,7 @@ import Table from "./Table";
 import TablesCard from "../../Componets/UI/TableUI/TablesCard";
 
 const MissionsView=()=>{
+    document.title='Missions'
     let match = useRouteMatch(['/Admin/missions/:id'])
     const modal =useOpenModal()
 const {isError,isSuccess, handleAdde}=useMissionsCRUD()

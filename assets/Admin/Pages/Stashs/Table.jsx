@@ -33,11 +33,10 @@ const Table =()=>{
     if(isError){
         return <p>Error</p>
     }
-    console.log(data)
+
     return(
         <React.Fragment>
             <DataTable
-                title="Missions"
                 columns={[...ColumnsStashs(handleDelete,history )]}
                 data={data}
                 pagination={true}

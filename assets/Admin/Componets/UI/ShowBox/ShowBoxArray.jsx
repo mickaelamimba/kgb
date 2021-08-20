@@ -13,11 +13,15 @@ const ShowBoxArray=({config,arrayData, title})=>{
 
             }}>
                 <h3>{title}</h3>
+
                 {items}
 
 
-                {  arrayData.map((data,k)=>{
-                    console.log(data)
+
+                {arrayData.map((data)=>{
+                    if(arrayData.length >= 2){
+                        items.push(< Divider key={Math.random()}/>)
+                    }
                     Object.entries(data).map(([itemKey, item])=>{
 
 
@@ -26,17 +30,16 @@ const ShowBoxArray=({config,arrayData, title})=>{
 
                             if(labels === itemKey){
                                 items.push(
+
                                     <Grid as='section' gap={2} columns={[1,2]} key={Math.random()}>
                                         <dt>{labelValue}</dt>
                                         <dd>{item}</dd>
 
                                     </Grid>
-
                                 )
 
-
-
                             }
+
 
                         })
 

@@ -14,16 +14,15 @@ import useStashsCRUD from "../../Hooks/useStashsCRUD";
 
 
 const  FormStashs =({title,onSubmit, valueUpdate})=>{
-    const {errorFetch,isLoading}= useStashsCRUD()
-    const schema  =yup.object().shape({
+
+    const schema = yup.object().shape({
         code:yup.number().required().positive().integer(),
         address: yup.string().required(Configs.formMessage.addressRequired),
         country:yup.string().required(Configs.formMessage.countryRequired),
         type:yup.string().required()
 
     })
-    const {register,handleSubmit, setValue ,control, formState:{errors ,isSubmitSuccessful,
-        isSubmitted, isSubmitting, isValid, } }=useForm(
+    const {register,handleSubmit,control, formState:{errors , isSubmitting } }=useForm(
 
         {
             mode:'onTouched',
@@ -35,24 +34,10 @@ const  FormStashs =({title,onSubmit, valueUpdate})=>{
     const optionsPays =Pays.map(({libelle})=> {
         return {value:libelle,label:libelle}
     })
-    const displaySumitEvent =  ()=>{
 
-        if (isSubmitted) {
-            if( isLoading){
-                if ( isSubmitSuccessful) {
-                    return <DisplayValidRequest message={Configs.submitSuccess.success}/>
-                } else if ( isSubmitted  && errorFetch) {
-                    return <DisplayError message={Configs.submitErrors.error}/>
-                }
-            }
-
-        }
-
-
-    }
     return(
         <form onSubmit={handleSubmit(onSubmit)}>
-            {displaySumitEvent()}
+
             <FormInput
                 errors={errors.code?.message} type='number' name='code' placeholder='Code'{...register('code')}
             />
