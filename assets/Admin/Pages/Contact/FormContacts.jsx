@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {useForm} from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-import {Button, Flex} from "theme-ui";
+import {Button, Flex, Grid} from "theme-ui";
 import * as yup from "yup";
 import Pays from "../../Nationality/Nationality";
 
@@ -41,14 +41,7 @@ const FormContacts =({title, onSubmit,valueUpdate})=>{
     return(
         <form onSubmit={handleSubmit(onSubmit)}>
 
-           <Flex sx={{
-               justifyContent:'space-around',
-               'div':{
-                   flex:1 ,
-                   paddingLeft:2
-               }
-
-           }}>
+           <Grid columns={[1,2]}>
                <FormInput
                    errors={errors.firstName?.message} type='text' name='firstName' placeholder='prénom'{...register('firstName')}
                />
@@ -56,25 +49,29 @@ const FormContacts =({title, onSubmit,valueUpdate})=>{
                    errors={errors.lastName?.message} type='text' name='lastName' placeholder='Nom'{...register('lastName')}
                />
 
-           </Flex>
+           </Grid>
+            <Grid columns={[1,2]}>
+                <FormSelectInput
+                    label='Nationalité'
+                    id='nationality'
+                    name='nationality'
+                    control={control}
+                    errors={errors.nationality?.message}
+                    data={optionsNationality }
 
+
+                />
                 <FormInput
                     label=' Date de naissance' id='birthDate'
                     errors={errors.birthDate?.message} type='date' name='birthDate'{...register('birthDate')}
                 />
+            </Grid>
+
+
                 <FormInput
                     errors={errors.codeName?.message} type='text' name='codeName' placeholder='Nom de Code'{...register('codeName')}
                 />
-            <FormSelectInput
-                label='Nationalité'
-                id='nationality'
-                name='nationality'
-                control={control}
-                errors={errors.nationality?.message}
-                data={optionsNationality }
 
-
-            />
 
             <Button disabled={isSubmitting} >{title}</Button>
         </form>

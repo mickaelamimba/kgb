@@ -12,7 +12,9 @@ const Edit=({ close, defaultProps,onSubmit})=>{
         >
             <FormAgent
                 onSubmit={onSubmit}
-                valueUpdate={defaultProps} />
+                valueUpdate={defaultProps}
+                title='Modifier'
+            />
         </CreateBox>
     )
 }

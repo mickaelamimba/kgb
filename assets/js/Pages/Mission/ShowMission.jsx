@@ -5,7 +5,7 @@ import {useQuery} from "react-query";
 import {Missions} from "../../../Admin/Func/apiUrl";
 import {Flex, Grid, Spinner} from "theme-ui";
 import Configs from "../../../Admin/Config/Config.json";
-import {formatsDate} from "../../../Admin/Func/formtsDate";
+import {formatDateInArray, formatsDate, globalRegex, patt} from "../../../Admin/Func/formtsDate";
 
 import FrontShowBox from "../../Componets/UI/FrontSowBox/FrontShowBox";
 import ShowBoxChild from "../../../Admin/Componets/UI/ShowBox/ShowBoxChild";
@@ -15,14 +15,14 @@ const ShowMission =()=>{
     let match = useRouteMatch('/missions/:id')
     const {id}=useParams()
     const {data:{...mission}, isLoading, isError}= useQuery(['Missions',id],  ()=>Missions.oneById(id))
-    const {endDate,startDate,agents,contacts,targets,stashs,specialties,...infosMission}= mission
+    formatDateInArray(mission)
+    const {agents,contacts,targets,stashs,specialties,...infosMission}= mission
     const arrayOfMission =
         {
             ...infosMission,
-            endDate: endDate !== undefined && formatsDate(endDate),
-            startDate: startDate !== undefined && formatsDate(startDate),
             stashs: stashs !== undefined && stashs.code, specialties:specialties !== undefined &&  specialties.name
         }
+
     if(isLoading){
 
         return<Flex sx={{justifyContent:'center', alignItems: 'center'}}><Spinner/></Flex>

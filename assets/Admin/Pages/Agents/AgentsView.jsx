@@ -36,19 +36,18 @@ const AgentsView =()=>{
             </TablesCard>
 
 
-            { modal.openModal ?
+            { modal.openModal &&
                 <Create
                     close={modal.handleOpenModal}
+                    formTitleBtn={Configs.formInfo.agents.titleAdd}
 
                 >
-                    {
-                        modal.openModal &&  !modal.update ?  <FormAgent
-                            onSubmit={handleAdde}
-                        />: null
-                    }
 
+                    <FormAgent
+                        onSubmit={handleAdde}
+                    />
 
-                </Create>: null
+                </Create>
             }
 
 

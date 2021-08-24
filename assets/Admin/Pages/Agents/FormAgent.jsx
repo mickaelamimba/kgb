@@ -5,7 +5,7 @@ import FormInput from "../../Componets/UI/FormBox/FormInput";
 import React from "react";
 import Pays from "../../Nationality/Nationality";
 import FormSelectInput from "../../Componets/UI/FormBox/FormSelectInput";
-import {Button} from "theme-ui";
+import {Button, Grid} from "theme-ui";
 import {useQuery} from "react-query";
 import {Specialties} from "../../Func/apiUrl";
 import Configs from "../../Config/Config.json";
@@ -31,8 +31,7 @@ const FormAgent =({title,onSubmit, valueUpdate})=>{
     })
 
 
-    const {register,handleSubmit, setValue,  control, formState:{errors ,isSubmitSuccessful,
-        isSubmitted, isSubmitting, isValid, } }=useForm(
+    const {register,handleSubmit, control, formState:{errors , isSubmitting } }=useForm(
 
         {
             mode:'onTouched',
@@ -44,26 +43,30 @@ const FormAgent =({title,onSubmit, valueUpdate})=>{
 
     return(
     <form onSubmit={handleSubmit(onSubmit)}>
-        <FormInput
-            errors={errors.firstName?.message} type='text' name='firstName' placeholder='prénom'{...register('firstName')}
-        />
-        <FormInput
-            errors={errors.lastName?.message} type='text' name='lastName' placeholder='Nom'{...register('lastName')}
-        />
-        <FormInput
-            label=' Date de naissance' id='birthDate'
-            errors={errors.birthDate?.message} type='date' name='birthDate'{...register('birthDate')}
-        />
-        <FormInput
-            errors={errors.indentificationCode?.message} type='text' name='indentificationCode' placeholder="Code d'indentification "{...register('indentificationCode')}
-        />
-        <FormSelectInput
-            name='nationality' label='Nationalité' id='nationality' errors={errors.nationality?.message}
-            control={control}
-            data={optionsPays}
+        <Grid sx={{
+            alignItems:'center'
+        }} columns={[1,2]}>
+            <FormInput
+                errors={errors.firstName?.message} type='text' name='firstName' placeholder='prénom'{...register('firstName')}
+            />
+            <FormInput
+                errors={errors.lastName?.message} type='text' name='lastName' placeholder='Nom'{...register('lastName')}
+            />
+            <FormInput
+                label=' Date de naissance' id='birthDate'
+                errors={errors.birthDate?.message} type='date' name='birthDate'{...register('birthDate')}
+            />
+
+            <FormSelectInput
+                name='nationality' label='Nationalité' id='nationality' errors={errors.nationality?.message}
+                control={control}
+                data={optionsPays}
 
 
-        />
+            />
+
+
+        </Grid>
         <FormSelectInput
             name='agentSpecialties' label='Specialtiés' id='agentSpecialties' errors={errors.agentSpecialties?.message}
             control={control}
@@ -73,6 +76,10 @@ const FormAgent =({title,onSubmit, valueUpdate})=>{
 
 
         />
+        <FormInput
+            errors={errors.indentificationCode?.message} type='text' name='indentificationCode' placeholder="Code d'indentification "{...register('indentificationCode')}
+        />
+
 
         <Button mt={3} disabled={isSubmitting} >{title}</Button>
 

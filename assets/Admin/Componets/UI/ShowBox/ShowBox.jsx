@@ -1,23 +1,25 @@
-import {Box, Button, Flex,Grid} from "theme-ui";
+import {Box, Button, Flex, Grid, Heading} from "theme-ui";
 import React from "react";
 import PropTypes from "prop-types";
 import {useOpenModal} from "../../../Context/OpenModalContext";
 import {useHistory} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPen, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
+import {faPen, faTrashAlt,faList} from "@fortawesome/free-solid-svg-icons";
 import Configs from "../../../Config/Config.json";
 import {useAlert} from "../../../Context/AlertContext";
 
 
-const ShowBox =({children,handleDelete,path,isUpdateSuccess,isUpdateError})=>{
+const ShowBox =({children,handleDelete,path,isUpdateSuccess,isUpdateError,headerTitle})=>{
     const pen = <FontAwesomeIcon icon={faPen}/>
     const trash = <FontAwesomeIcon icon={faTrashAlt} />
+    const list = <FontAwesomeIcon icon={faList}/>
     const modal = useOpenModal()
     const history = useHistory()
     const {AlertBox,handleCloseAlert}=useAlert()
 
     return(
         <React.Fragment>
+
             {isUpdateSuccess||isUpdateError?
                 <AlertBox
                     messages={isUpdateSuccess?Configs.submitSuccess.successUpdate:
@@ -26,7 +28,7 @@ const ShowBox =({children,handleDelete,path,isUpdateSuccess,isUpdateError})=>{
                     variant={isUpdateSuccess?'success':isUpdateError ?'danger':null}
                 />:null
             }
-        <Box as='section' sx={{
+        <Box mt={3} as='section' sx={{
             padding:3,
             borderTop:'gray',
             boxShadow:'0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
@@ -53,6 +55,7 @@ const ShowBox =({children,handleDelete,path,isUpdateSuccess,isUpdateError})=>{
                 }
             }
         }}>
+            <Heading mb={3} as='h2'>{list} {` Détail ${headerTitle}`}</Heading>
             {children}
 
             <Box>
@@ -80,6 +83,13 @@ const ShowBox =({children,handleDelete,path,isUpdateSuccess,isUpdateError})=>{
     )
 }
 export default ShowBox
+ShowBox.defaultProps = {
+    headerTitle: ''
+}
 ShowBox.propTypes = {
+    headerTitle : PropTypes.string,
+    path: PropTypes.string,
+    isUpdateError : PropTypes.bool,
+    isUpdateSuccess: PropTypes.bool,
     children : PropTypes.node,
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-import { Image, } from "theme-ui";
+import {Heading, Image,} from "theme-ui";
 
 import Table from "./Table";
 import TablesCard from "../../../Admin/Componets/UI/TableUI/TablesCard";
@@ -10,10 +10,11 @@ import TablesCard from "../../../Admin/Componets/UI/TableUI/TablesCard";
 
 
 function Mission (){
-
+document.title='KGB APP'
 
     return(
         <React.Fragment>
+            <Heading mb={3} as='h1'>KGB APP</Heading>
         <Image as='svg' sx={{
             position :'absolute',
             zIndex : -2,

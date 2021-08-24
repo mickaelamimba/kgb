@@ -14,6 +14,7 @@ import Table from "./Table";
 import TablesCard from "../../Componets/UI/TableUI/TablesCard";
 
 const TargetsView=()=>{
+    document.title='Cibles'
     let match = useRouteMatch(['/Admin/targets/:id'])
     const modal =useOpenModal()
     const {handleAdde, isError,isSuccess}= useTargetsCRUD()
@@ -34,6 +35,7 @@ const TargetsView=()=>{
             {modal.openModal?
                 <Create
                     close={modal.handleOpenModal}
+                    formTitleBtn={Configs.formInfo.targets.titleAdd}
                 >
                     <FormContacts
                         onSubmit={handleAdde}

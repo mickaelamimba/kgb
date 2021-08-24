@@ -32,10 +32,12 @@ const {isError,isSuccess, handleAdde}=useMissionsCRUD()
 
 
             {modal.openModal &&
-            <Create close={modal.handleOpenModal}>
+            <Create close={modal.handleOpenModal}
+                    formTitleBtn={Configs.formInfo.missions.titleAdd}
+            >
                 <FormMissions
                     onSubmit={handleAdde}
-                    title={Configs.formInfo.missions.titleAdd}
+
 
                 />
 

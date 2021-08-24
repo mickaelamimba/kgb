@@ -10,11 +10,14 @@ const Edit=({ close,defaultValues, onSubmit})=>{
     return(
         <CreateBox
             handleClose={close}
-            title={Configs.formInfo.specialties.titleUpdate}
+            title={Configs.formInfo.missions.titleUpdate}
         >
             <FormMissions
                 onSubmit={onSubmit}
-                defaultData={defaultValues} />
+                defaultData={defaultValues}
+                title='Modifier'
+            />
+
         </CreateBox>
     )
 }

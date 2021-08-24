@@ -44,6 +44,7 @@ const ShowStashs=()=>{
                  isUpdateSuccess={isUpdateSuccess}
                  isUpdateError={isUpdateError}
                  handleDelete={handleDelete}
+                 headerTitle="d'une planque"
         >
 
             <ShowBoxChild

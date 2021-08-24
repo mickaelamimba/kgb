@@ -1,19 +1,21 @@
 import React from 'react';
-import {Button} from "theme-ui";
+import {Box, Button} from "theme-ui";
 import {Redirect, useHistory} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faHome} from "@fortawesome/free-solid-svg-icons";
 const MenuItem =({children})=>{
     const history = useHistory()
-
+     const home=   <FontAwesomeIcon icon={faHome} />
 
     return(
-        <nav>
+        <Box as='nav' p={2}>
             <Redirect to={location}/>
-            <Button variant='simple' onClickCapture={()=>history.push('/')} mr={2}>Home</Button>
+            <Button variant='simple' onClickCapture={()=>history.push('/')} mr={2}>{home}</Button>
             <ul>
                 {children}
             </ul>
 
-        </nav>
+        </Box>
     )
 }
 export default MenuItem

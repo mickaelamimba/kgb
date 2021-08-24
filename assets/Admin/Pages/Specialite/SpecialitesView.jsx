@@ -29,6 +29,7 @@ const SpecialitesView=()=> {
                     handleOpenModal={modal.handleOpenModal}
                     isError={isError}
                     isSuccess={isSuccess}
+
         >
             <TablesCard>
                 <Table/>

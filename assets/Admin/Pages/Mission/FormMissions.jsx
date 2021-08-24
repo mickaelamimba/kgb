@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {useForm} from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Button} from "theme-ui";
+import {Button, Grid} from "theme-ui";
 import * as yup from "yup";
 import Pays from "../../Nationality/Nationality";
 import FormInput from "../../Componets/UI/FormBox/FormInput";
@@ -23,7 +23,7 @@ const FormMissions =({title,onSubmit,defaultData})=>{
         return this.test('targetsVerify',messages, function(value){
             let errors
             value.map((v)=>{
-                if(v === id || v !== id){
+                if(v === id){
                     return errors= this.createError({
                         message:messages
                     })
@@ -49,6 +49,24 @@ const FormMissions =({title,onSubmit,defaultData})=>{
         })
 
     })
+    yup.addMethod(yup.mixed, 'agentSpecialtyVerify',function(messages,id){
+        return this.test('agentSpecialtyVerify',messages, function(value){
+            let errors
+            let testValue =[]
+            console.log(value)
+            value.map((v)=>{
+
+                if(v === id){
+                    return errors= this.createError({
+                        message:messages
+                    })
+                }
+
+            })
+            return errors
+        })
+
+    })
     const schema  =yup.object().shape({
         title: yup.string().required(),
         description: yup.string().required(),
@@ -57,36 +75,14 @@ const FormMissions =({title,onSubmit,defaultData})=>{
             .required(Configs.formMessage.countryRequired),
         missionType: yup.string().required(),
         status: yup.string().required(),
-        specialties:  yup.string().required(),
-        agents: yup.array().when('specialties',(specialties,schema,agents)=>{
-            if(specialties&&agents){
-                let errors = yup.array().required('veuillez selectioner vos agents')
-            agentsData?.map(({id,agentSpecialties})=>{
-               let agentsId =`/api/agents/${id}`
-                    agents.value.map((val)=>{
-                        if(val === agentsId){
-                            agentSpecialties.map((specialty)=>{
-                                let specialtyId =`/api/specialties/${specialty.id}`
-                                if(specialtyId === specialties){
-
-
-                                }
-
-
-                            })
-
-                        }
-                    })
-
-
-
-
-            return errors
-            })
-
-
+        specialties: yup.string().when('agents',(agents,schema,specialties)=>{
+            let errors = yup.string().required('veuillez selectioner vos agents')
+            if(specialties && agents){
+                console.log('spe:',specialties,'agent:',agents)
+                return errors
             }
         }).required(),
+        agents: yup.array().required(),
         contacts :yup.array().when('country',(country,schema,contacts)=>{
             
             if(country && contacts){
@@ -115,7 +111,6 @@ const FormMissions =({title,onSubmit,defaultData})=>{
         }).required(),
         stashs: yup.string().when('country',(country,schema,stashs)=>{
             if(country&& stashs){
-
                 let errors
                 stahsData?.map((stahs)=>{
                     if(stahs.country !== country){
@@ -133,11 +128,14 @@ const FormMissions =({title,onSubmit,defaultData})=>{
                     agents.map((agentSelectedId)=>{
                         if(agentId === agentSelectedId){
                             targetsData?.map((target)=>{
-                                if(target.nationality === agent.nationality){
-                                    let targetId =`/api/targets/${target.id}`
+                                let targetId =`/api/targets/${target.id}`
+                                if(targetId === targets){
+                                    if(target.nationality === agent.nationality){
 
-                                    return errors = yup.array().of(yup.string()).targetsVerify('la ou les cibles ne peuvent pas avoir la même nationalité que le ou les agents',targetId)
+                                        return errors = yup.array().of(yup.string()).targetsVerify('la ou les cibles ne peuvent pas avoir la même nationalité que le ou les agents',targetId)
+                                    }
                                 }
+
 
                             })
 
@@ -165,16 +163,16 @@ const FormMissions =({title,onSubmit,defaultData})=>{
         return { value:`/api/stashs/${id}`, label:code}
     })
     const {data:targetsData}= useQuery('Targets',Targets.fetchAll,)
-    const targetsOptions =  targetsData?.map(({id,firstName, lastName})=>{
-        return { value:`/api/targets/${id}`, label: `${firstName} ${lastName}` }
+    const targetsOptions =  targetsData?.map(({id,firstName, lastName, nationality})=>{
+        return { value:`/api/targets/${id}`, label: `${firstName} ${lastName} - ${nationality}` }
     })
     const {data:contactsData}= useQuery('Contacts',Contacts.fetchAll,)
     const contactsOptions =  contactsData?.map(({id,firstName, lastName,nationality})=>{
         return { value:`/api/contacts/${id}`, label:`${firstName} ${lastName} - ${nationality}`}
     })
     const {data:agentsData,isFetching:agentFetching}= useQuery('Agents',Agents.fetchAll,)
-    const agentsOptions =  agentsData?.map(({id,firstName, lastName})=>{
-     return { value:`/api/agents/${id}`, label:`${firstName} ${lastName} `}
+    const agentsOptions =  agentsData?.map(({id,firstName, lastName, nationality})=>{
+     return { value:`/api/agents/${id}`, label:`${firstName} ${lastName} - ${nationality} `}
  })
   const statusOptions =Configs.table.status
     const missionTypeOptions =Configs.table.missionType
@@ -195,81 +193,94 @@ const FormMissions =({title,onSubmit,defaultData})=>{
 
     return(
         <form onSubmit={handleSubmit(onSubmit)}>
-            <FormInput
-                errors={errors.title?.message} type='text' name='title' placeholder='Titre'{...register('title')}
-            />
+            <Grid columns={[1,2]}>
+                <FormInput
+                    errors={errors.title?.message} type='text' name='title' placeholder='Titre'{...register('title')}
+                />
 
+                <FormInput
+                    errors={errors.codeName?.message} type='text' name='codeName' placeholder='Nom de code'{...register('codeName')}
+                />
 
+                <FormSelectInput
+                    name='country' label='Pays' id='county' errors={errors.country?.message}
+                    control={control}
+                    data={optionsPays}
+                />
+                <FormSelectInput
+                    name='missionType' label='Type de mission' id='missionType' errors={errors.missionType?.message}
+                    control={control}
+                    data={missionTypeOptions}
+
+                />
+                <FormSelectInput
+                    name='agents' label='Agents' id='agents' errors={errors.agents?.message}
+                    control={control}
+                    data={agentsOptions}
+                    isMulti
+                    isLoading={agentFetching}
+
+                />
+                <FormSelectInput
+                    name='contacts' label='Contacts' id='contacts' errors={errors.contacts?.message}
+                    control={control}
+                    data={contactsOptions}
+                    isMulti
+
+                />
+
+            </Grid>
             <FormTextarea
                 errors={errors.description?.message} type='text' name='description' rows={8} placeholder='description'{...register('description')}
             />
-            <FormInput
-                errors={errors.codeName?.message} type='text' name='codeName' placeholder='Nom de code'{...register('codeName')}
-            />
-            <FormSelectInput
-                name='country' label='Pays' id='county' errors={errors.country?.message}
-                control={control}
-                data={optionsPays}
-            />
-            <FormSelectInput
-                name='missionType' label='Type de mission' id='missionType' errors={errors.missionType?.message}
-                control={control}
-                data={missionTypeOptions}
+            <Grid columns={[1,2,3]}>
+                <FormSelectInput
+                    name='targets' label='Cibles' id='targets' errors={errors.targets?.message}
+                    control={control}
+                    data={targetsOptions}
+                    isMulti
 
-            />
-
-            <FormSelectInput
-                name='agents' label='Agents' id='agents' errors={errors.agents?.message}
-                control={control}
-                data={agentsOptions}
-                isMulti
-                isLoading={agentFetching}
-
-            />
-
-            <FormSelectInput
-                name='contacts' label='Contacts' id='contacts' errors={errors.contacts?.message}
-                control={control}
-                data={contactsOptions}
-                isMulti
-
-            />
-            <FormSelectInput
-                name='targets' label='Cibles' id='targets' errors={errors.targets?.message}
-                control={control}
-                data={targetsOptions}
-                isMulti
-
-            />
-            <FormSelectInput
-                name='stashs' label='Planque' id='stashs' errors={errors.stashs?.message}
-                control={control}
-                data={stahsOptions }
+                />
+                <FormSelectInput
+                    name='stashs' label='Planque' id='stashs' errors={errors.stashs?.message}
+                    control={control}
+                    data={stahsOptions }
 
 
-            />
-            <FormSelectInput
-                name='specialties' label='Specialtié' id='specialties' errors={errors.specialties?.message}
-                control={control}
-                data={specialtiesOptions}
+                />
+                <FormSelectInput
+                    name='specialties' label='Specialtié' id='specialties' errors={errors.specialties?.message}
+                    control={control}
+                    data={specialtiesOptions}
 
 
-            />
-            <FormSelectInput
-                name='status' label='Status' id='status' errors={errors.status?.message}
-                control={control}
-                data={statusOptions}
+                />
+
+                <FormSelectInput
+                    name='status' label='Status' id='status' errors={errors.status?.message}
+                    control={control}
+                    data={statusOptions}
 
 
-            />
-            <FormInput
-                label='Date de début' id='startDate'
-                errors={errors.startDate?.message} type='date' name='startDate' {...register('startDate')}
-            />
-            <FormInput
-                label='Date de fin' id='endDate'
-                errors={errors.endDate?.message} type='date' name='endDate' {...register('endDate')}
-            />
+                />
+                <FormInput
+                    label='Date de début' id='startDate'
+                    errors={errors.startDate?.message} type='date' name='startDate' {...register('startDate')}
+                />
+                <FormInput
+                    label='Date de fin' id='endDate'
+                    errors={errors.endDate?.message} type='date' name='endDate' {...register('endDate')}
+                />
+
+            </Grid>
+
+
+
+
+
+
+
+
 
 
 

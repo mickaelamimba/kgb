@@ -1,5 +1,5 @@
 
-import {faHome, faIdCard, faUserGraduate,faUserTie, faUserTag, faBriefcase, faTintSlash,faOutdent} from '@fortawesome/free-solid-svg-icons'
+import {faHome, faIdCard, faUserGraduate,faUserTie, faUserTag, faBriefcase, faTintSlash} from '@fortawesome/free-solid-svg-icons'
 
 export default function useSidebar(){
 

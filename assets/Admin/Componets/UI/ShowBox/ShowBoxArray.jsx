@@ -18,8 +18,9 @@ const ShowBoxArray=({config,arrayData, title})=>{
 
 
 
-                {arrayData.map((data)=>{
-                    if(arrayData.length >= 2){
+                {arrayData.map((data,i)=>{
+
+                    if(arrayData.length >= 2 && i>0){
                         items.push(< Divider key={Math.random()}/>)
                     }
                     Object.entries(data).map(([itemKey, item])=>{

@@ -8,10 +8,11 @@ import useAgentsCRUD from "../../Hooks/useAgentsCRUD";
 import Edit from "../Agents/Edit";
 import {useOpenModal} from "../../Context/OpenModalContext";
 import ShowBox from "../../Componets/UI/ShowBox/ShowBox";
-import {Alert, Close, Flex, Spinner} from "theme-ui";
+import {Alert, Box, Close, Flex, Spinner} from "theme-ui";
 import {useAlert} from "../../Context/AlertContext";
 import Configs from "../../Config/Config.json";
 import ShowBoxChild from "../../Componets/UI/ShowBox/ShowBoxChild";
+import ShowBoxArray from "../../Componets/UI/ShowBox/ShowBoxArray";
 
 const ShowAgent = () => {
     const {id} = useParams()
@@ -43,6 +44,12 @@ const ShowAgent = () => {
 
         }
 
+        const specialties=[
+            {
+                specialties:agentSpecialties?.map(spe => <Box key={spe.id} px={2} as="span">{spe.name}</Box> )
+            }
+        ]
+
     const handleModify=async(data)=>{
 
             const newVar = await mutateAsyncUpdate({
@@ -65,12 +72,17 @@ const ShowAgent = () => {
             handleDelete={handleDelete}
             isUpdateSuccess={isUpdateSuccess}
             isUpdateError={isUpdateError}
+            headerTitle="d'un agent"
 
         >
             <ShowBoxChild
                 config={Configs.table.agents}
-                arrayData={agent}
+                arrayData={dataAgent}
 
+            />
+            <ShowBoxArray
+                config={Configs.table.agents}
+                arrayData={specialties}
             />
 
             <ul>

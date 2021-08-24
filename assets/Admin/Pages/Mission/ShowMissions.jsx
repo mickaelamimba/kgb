@@ -12,6 +12,7 @@ import useMissionsCRUD from "../../Hooks/useMissionsCRUD";
 import Edit from "./Edit";
 import ShowBoxChild from "../../Componets/UI/ShowBox/ShowBoxChild";
 import ShowBoxArray from "../../Componets/UI/ShowBox/ShowBoxArray";
+import {formatDateInArray} from "../../Func/formtsDate";
 
 const ShowMissions=()=>{
 
@@ -29,6 +30,8 @@ const {isUpdate,isUpdateSuccess,isUpdateError,mutateAsyncUpdate,mutateAsyncDelet
      history.push(`/Admin/missions`)
 
  }
+    formatDateInArray(mission)
+
   const {endDate,startDate,agents,contacts,targets,stashs,specialties,...infosMission}= mission
  const arrayOfMission =
   {
@@ -38,6 +41,7 @@ const {isUpdate,isUpdateSuccess,isUpdateError,mutateAsyncUpdate,mutateAsyncDelet
    stashs: stashs !== undefined && stashs.code,
    specialties:specialties !== undefined &&  specialties.name
   }
+
   const defaultValues={
       ...arrayOfMission,
       agents:agents?.map(agent => `/api/agents/${agent.id}`),
@@ -64,6 +68,7 @@ const  handleModify = async(data)=>{
               handleDelete={handleDelete}
               isUpdateSuccess={isUpdateSuccess}
               isUpdateError={isUpdateError}
+              headerTitle='de la mission'
      >
          <ShowBoxChild
              config={Configs.table.mission}

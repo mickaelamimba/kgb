@@ -10,7 +10,7 @@ import ShowBoxChild from "../../Componets/UI/ShowBox/ShowBoxChild";
 import Edit from "./Edit";
 import useTargetsCRUD from "../../Hooks/useTargetsCRUD";
 const ShowTargets =()=>{
-    document.title='Planques'
+
     let match = useRouteMatch('/Admin/targets/:id/show/')
     const{isUpdate,isUpdateSuccess,isUpdateError,mutateAsyncUpdate}=useTargetsCRUD()
     const{id} = useParams()
@@ -51,6 +51,7 @@ const ShowTargets =()=>{
                  isUpdateError={isUpdateError}
                  isUpdateSuccess={isUpdateSuccess}
                  handleDelete={handleDelete}
+                 headerTitle="d'une cible"
 
         >
             <ShowBoxChild

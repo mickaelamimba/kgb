@@ -1,12 +1,12 @@
 import React from 'react';
-import {Box, Container, Heading, MenuButton} from "theme-ui";
+import {Box, Container, Heading, MenuButton,Button} from "theme-ui";
 import Sidebar from "../Sidebar/Sidebar";
 import NaveItem from "../Sidebar/NaveItem";
 import useSidebar from "../../../Hooks/useSidebar";
 import {Link} from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {useOpenModal} from "../../../Context/OpenModalContext";
-import {faOutdent, faAlignJustify} from "@fortawesome/free-solid-svg-icons";
+import {faOutdent} from "@fortawesome/free-solid-svg-icons";
 
 
 const Layout =({children})=>{
@@ -17,7 +17,9 @@ const Layout =({children})=>{
     return(
         <React.Fragment>
             <Heading as='header'>
-                <MenuButton  aria-label="Toggle Menu" onClick={modal.handleToggleMenu} />
+
+                <MenuButton m={2} color="white" bg='primary'  aria-label="Toggle Menu" onClick={modal.handleToggleMenu}  />
+
 
                 <Sidebar toggle={modal.toggleMenu} onClose={modal.handleToggleMenu}>
                     <NaveItem>

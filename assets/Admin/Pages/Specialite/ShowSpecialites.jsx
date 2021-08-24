@@ -49,6 +49,7 @@ const ShowSpecialites =()=>{
          handleDelete={handleDelete}
          isUpdateSuccess={isUpdateSuccess}
          isUpdateError={isUpdateError}
+         headerTitle="d'une specialité"
      >
          <ShowBoxChild
              config={Configs.table.specialties}

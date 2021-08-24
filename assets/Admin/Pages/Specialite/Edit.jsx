@@ -13,7 +13,9 @@ const Edit=({ close,defaultValues, onSubmit})=>{
         >
             <FormSpecialtie
                 onSubmit={onSubmit}
-                defaultData={defaultValues} />
+                defaultData={defaultValues}
+                title='Modifier'
+            />
         </CreateBox>
     )
 }

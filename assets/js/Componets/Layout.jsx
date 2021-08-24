@@ -1,20 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
-import {Link} from "react-router-dom";
-import {Container} from "theme-ui";
-const Wrapper = styled.div`
-    padding :2rem;
-`;
-const HeaderWrapper = styled.header`
-display: flex;
-`;
+
+import {Container, Heading} from "theme-ui";
+
 
 function Layout({navBar,children}){
     return(
-        <Wrapper>
-            <HeaderWrapper>
+        <>
+            <Heading as='header' mb={3}>
                 {navBar}
-            </HeaderWrapper>
+            </Heading>
             <Container sx={{
                 maxWidth:1024,
             }}  >
@@ -22,7 +16,7 @@ function Layout({navBar,children}){
                 {children}
             </main>
             </Container>
-        </Wrapper>
+        </>
 
     )
 }

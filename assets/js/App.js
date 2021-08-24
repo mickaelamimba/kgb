@@ -35,16 +35,7 @@ function App(){
 
 
     ]
-    const Lists =
-        [
-            {
-                path:'/',
-                name:'Mission'
-            },
-
-
-
-        ]
+    const Lists = []
    return(
 
        <QueryClientProvider client={queryClient}>
