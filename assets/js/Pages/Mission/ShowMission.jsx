@@ -12,6 +12,7 @@ import ShowBoxChild from "../../../Admin/Componets/UI/ShowBox/ShowBoxChild";
 import ShowBoxArray from "../../../Admin/Componets/UI/ShowBox/ShowBoxArray";
 
 const ShowMission =()=>{
+    document.title='KGB APP - mission'
     let match = useRouteMatch('/missions/:id')
     const {id}=useParams()
     const {data:{...mission}, isLoading, isError}= useQuery(['Missions',id],  ()=>Missions.oneById(id))

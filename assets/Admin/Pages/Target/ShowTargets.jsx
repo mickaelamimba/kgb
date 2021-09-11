@@ -10,6 +10,7 @@ import ShowBoxChild from "../../Componets/UI/ShowBox/ShowBoxChild";
 import Edit from "./Edit";
 import useTargetsCRUD from "../../Hooks/useTargetsCRUD";
 const ShowTargets =()=>{
+    document.title='cible - show'
 
     let match = useRouteMatch('/Admin/targets/:id/show/')
     const{isUpdate,isUpdateSuccess,isUpdateError,mutateAsyncUpdate}=useTargetsCRUD()

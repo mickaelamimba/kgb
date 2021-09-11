@@ -1,11 +1,13 @@
 import React from "react";
 import {useMutation, useQueryClient} from "react-query";
 import {Agents} from "../Func/apiUrl";
+import {useOpenModal} from "../Context/OpenModalContext";
 
 
 
 
 export default function useAgentsCRUD(){
+    const modal =useOpenModal()
     const queryCache = useQueryClient()
 
 
@@ -20,6 +22,7 @@ export default function useAgentsCRUD(){
 
     const handleAdde= async(data)=>{
         await mutateAsyncAdde(data)
+        modal.handleOpenModal()
     }
     const {mutateAsync:mutateAsyncUpdate,isLoading:isUpdate, isSuccess:isUpdateSuccess, isError:isUpdateError}= useMutation(((payload)=> Agents.update(payload)
     ),{

@@ -6,6 +6,7 @@ import {useOpenModal} from "../Context/OpenModalContext";
 
 
 export default function useSpecialtiesCRUD(){
+
     const queryCache = useQueryClient()
 
     const {mutateAsync:mutateAsyncAdde,isError,isSuccess}= useMutation((payload)=>(

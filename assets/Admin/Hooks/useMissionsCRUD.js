@@ -1,11 +1,9 @@
 import {useMutation, useQueryClient} from "react-query";
 import {Missions} from "../Func/apiUrl";
+import {useOpenModal} from "../Context/OpenModalContext";
 
 export default function useMissionsCRUD() {
-
-
-
-
+    const modal =useOpenModal()
     const queryCache = useQueryClient()
 
 
@@ -20,6 +18,7 @@ export default function useMissionsCRUD() {
 
     const handleAdde= async(data)=>{
         await mutateAsyncAdde(data)
+        modal.handleOpenModal()
     }
     const {mutateAsync:mutateAsyncUpdate,isLoading:isUpdate, isSuccess:isUpdateSuccess, isError:isUpdateError}= useMutation(((payload)=> Missions.update(payload)
     ),{

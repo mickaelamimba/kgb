@@ -4,11 +4,12 @@ import React, { useState} from "react";
 
 import {useMutation, useQueryClient} from "react-query";
 import { Stashs} from "../Func/apiUrl";
+import {useOpenModal} from "../Context/OpenModalContext";
 
 
 
 export default function useStashsCRUD(){
-
+    const modal =useOpenModal()
     const queryCache = useQueryClient()
 
 
@@ -22,6 +23,7 @@ export default function useStashsCRUD(){
 
     const handleAdde= async(data)=>{
         await mutateAsyncAdde(data)
+        modal.handleOpenModal()
     }
 
 

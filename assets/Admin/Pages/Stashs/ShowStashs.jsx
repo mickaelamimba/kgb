@@ -11,6 +11,7 @@ import Edit from "./Edit";
 import useStashsCRUD from "../../Hooks/useStashsCRUD";
 
 const ShowStashs=()=>{
+    document.title='planque - show'
     const modal = useOpenModal()
     let match = useRouteMatch('/Admin/stashs/:id/show/')
     const{isUpdate,isUpdateSuccess,isUpdateError,mutateAsyncUpdate,mutateAsyncDelete}= useStashsCRUD()

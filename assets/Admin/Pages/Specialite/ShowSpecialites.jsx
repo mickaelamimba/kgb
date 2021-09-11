@@ -4,15 +4,16 @@ import {useQuery} from "react-query";
 import { Specialties} from "../../Func/apiUrl";
 
 import ShowBox from "../../Componets/UI/ShowBox/ShowBox";
-import {Box, Flex, Spinner} from "theme-ui";
+import {Flex, Spinner} from "theme-ui";
 import Edit from "./Edit";
 import {useOpenModal} from "../../Context/OpenModalContext";
 import useSpecialtiesCRUD from "../../Hooks/useSpecialtiesCRUD";
 import Configs from "../../Config/Config.json";
 import ShowBoxChild from "../../Componets/UI/ShowBox/ShowBoxChild";
-import {useAlert} from "../../Context/AlertContext";
+
 
 const ShowSpecialites =()=>{
+    document.title='specialties - show'
 
  const{id} = useParams()
     const modal = useOpenModal()

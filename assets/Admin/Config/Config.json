@@ -39,6 +39,10 @@
     "targets":{
       "titleAdd":"Ajouter une Cible",
       "titleUpdate": "Modifier une Cible"
+    },
+    "contacts":{
+      "titleAdd":"Ajouter un contact",
+      "titleUpdate": "Modifier un contact"
     }
   },
   "frontendTable": {

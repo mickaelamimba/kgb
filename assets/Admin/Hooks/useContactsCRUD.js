@@ -1,9 +1,11 @@
 
 import {Contacts} from "../Func/apiUrl";
 import {useMutation, useQueryClient} from "react-query";
+import {useOpenModal} from "../Context/OpenModalContext";
 
 
 export default function useContactsCRUD(){
+    const modal =useOpenModal()
     const queryCache = useQueryClient()
 
     const {mutateAsync:mutateAsyncAdde,isError,isSuccess}= useMutation((payload)=>(
@@ -17,6 +19,7 @@ export default function useContactsCRUD(){
     const handleAdde = async(data)=>{
 
        await mutateAsyncAdde( data)
+        modal.handleOpenModal()
 
 
 

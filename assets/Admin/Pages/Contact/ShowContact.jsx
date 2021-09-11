@@ -1,5 +1,5 @@
 import {useHistory, useParams, useRouteMatch} from "react-router-dom";
-import React, {useState} from 'react'
+import React from 'react'
 import {useQuery} from "react-query";
 import { Contacts} from "../../Func/apiUrl";
 
@@ -9,11 +9,11 @@ import {useOpenModal} from "../../Context/OpenModalContext";
 import ShowBox from "../../Componets/UI/ShowBox/ShowBox";
 import Configs from "../../Config/Config.json";
 import ShowBoxChild from "../../Componets/UI/ShowBox/ShowBoxChild";
-import {useAlert} from "../../Context/AlertContext";
 import {Flex, Spinner} from "theme-ui";
 import useContactsCRUD from "../../Hooks/useContactsCRUD";
 
 const ShowContact =()=>{
+    document.title='contact - show'
     const modal =useOpenModal()
     const{id} = useParams()
     const history = useHistory()

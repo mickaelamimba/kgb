@@ -10,7 +10,7 @@ const Edit=({ close, defaultValues,onSubmit})=>{
     return(
         <CreateBox
             handleClose={close}
-            title={Configs.formInfo.agents.titleUpdate}
+            title={Configs.formInfo.contacts.titleUpdate}
         >
             <FormContacts title='Modifier' valueUpdate={defaultValues} onSubmit={onSubmit}/>
         </CreateBox>

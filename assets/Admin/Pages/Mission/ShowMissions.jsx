@@ -15,6 +15,7 @@ import ShowBoxArray from "../../Componets/UI/ShowBox/ShowBoxArray";
 import {formatDateInArray} from "../../Func/formtsDate";
 
 const ShowMissions=()=>{
+    document.title='mission - show'
 
     const modal = useOpenModal()
  const{id} = useParams()

@@ -8,18 +8,18 @@ import useAgentsCRUD from "../../Hooks/useAgentsCRUD";
 import Edit from "../Agents/Edit";
 import {useOpenModal} from "../../Context/OpenModalContext";
 import ShowBox from "../../Componets/UI/ShowBox/ShowBox";
-import {Alert, Box, Close, Flex, Spinner} from "theme-ui";
-import {useAlert} from "../../Context/AlertContext";
+import { Box,  Flex, Spinner} from "theme-ui";
 import Configs from "../../Config/Config.json";
 import ShowBoxChild from "../../Componets/UI/ShowBox/ShowBoxChild";
 import ShowBoxArray from "../../Componets/UI/ShowBox/ShowBoxArray";
 
 const ShowAgent = () => {
+    document.title='agent - show'
     const {id} = useParams()
     const modal = useOpenModal()
     const history = useHistory()
     let match = useRouteMatch(['/Admin/agents/:id/show/'])
-    const { mutateAsyncDelete,mutateAsyncUpdate,deleteLoad,isUpdate,isUpdateSuccess,isUpdateError} = useAgentsCRUD()
+    const { mutateAsyncDelete,mutateAsyncUpdate,isUpdate,isUpdateSuccess,isUpdateError} = useAgentsCRUD()
     const {data: {...agent}, isLoading, isError} = useQuery(['Agents', id], () => Agents.oneById(id),{
         enabled:modal.enabled
     })
