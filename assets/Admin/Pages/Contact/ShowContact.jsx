@@ -53,6 +53,7 @@ const ShowContact =()=>{
                  handleDelete={handleDelete}
                  isUpdateSuccess={isUpdateSuccess}
                  isUpdateError={isUpdateError}
+                 headerTitle="d'un contact"
         >
             <ShowBoxChild
                 config={Configs.table.duplicateValue}

@@ -2,7 +2,6 @@ import {Box, Divider, Grid} from "theme-ui";
 import React from "react";
 
 const ShowBoxArray=({config,arrayData, title})=>{
- console.log(arrayData.length)
     if(arrayData.length !== 0){
         let items=[]
         return(

@@ -1,6 +1,6 @@
 import React from 'react'
 import {useHistory, useParams, useRouteMatch} from "react-router-dom";
-import { Flex, Grid, Spinner} from "theme-ui";
+import {Box, Flex, Grid, Spinner} from "theme-ui";
 import {useQuery} from "react-query";
 import { Missions} from "../../Func/apiUrl";
 import {useOpenModal} from "../../Context/OpenModalContext";
@@ -31,8 +31,16 @@ const {isUpdate,isUpdateSuccess,isUpdateError,mutateAsyncUpdate,mutateAsyncDelet
 
  }
     formatDateInArray(mission)
-
+    const agent =[]
   const {endDate,startDate,agents,contacts,targets,stashs,specialties,...infosMission}= mission
+    agents?.map(({agentSpecialties,...infoAgent})=>{
+        agent.push(
+            {
+                ...infoAgent,
+                specialties:agentSpecialties !== undefined && agentSpecialties?.map((v)=><Box pl={2} as='span' key={v.id}>{v.name}</Box>)
+            }
+        )
+    })
  const arrayOfMission =
   {
    ...infosMission,
@@ -78,7 +86,7 @@ const  handleModify = async(data)=>{
          <Grid as='dl' width={'auto'} columns={[1,2,3]}>
              <ShowBoxArray
                  title='Agents'
-                 arrayData={agents}
+                 arrayData={agent}
                  config={Configs.table.agents}
 
              />

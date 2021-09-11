@@ -3,7 +3,7 @@ import {useRouteMatch} from "react-router-dom";
 import {useParams} from "react-router";
 import {useQuery} from "react-query";
 import {Missions} from "../../../Admin/Func/apiUrl";
-import {Flex, Grid, Spinner} from "theme-ui";
+import {Box, Flex, Grid, Spinner} from "theme-ui";
 import Configs from "../../../Admin/Config/Config.json";
 import {formatDateInArray, formatsDate, globalRegex, patt} from "../../../Admin/Func/formtsDate";
 
@@ -16,7 +16,17 @@ const ShowMission =()=>{
     const {id}=useParams()
     const {data:{...mission}, isLoading, isError}= useQuery(['Missions',id],  ()=>Missions.oneById(id))
     formatDateInArray(mission)
+    const agent =[]
     const {agents,contacts,targets,stashs,specialties,...infosMission}= mission
+    agents?.map(({agentSpecialties,...infoAgent})=>{
+        agent.push(
+            {
+                ...infoAgent,
+                specialties:agentSpecialties !== undefined && agentSpecialties?.map((v)=><Box pl={2} as='span' key={v.id}>{v.name}</Box>)
+            }
+        )
+    })
+
     const arrayOfMission =
         {
             ...infosMission,
@@ -42,7 +52,7 @@ const ShowMission =()=>{
             <Grid as='dl' width={'auto'} columns={[1,2,3]}>
                 <ShowBoxArray
                     title='Agents'
-                    arrayData={agents}
+                    arrayData={agent}
                     config={Configs.table.agents}
 
                 />

@@ -11,13 +11,9 @@ export const formatsDate =(date)=>{
 export const globalRegex = new RegExp("^[0-9]{4}[^a-zA-Z0-9_][0-9]{2}[^a-zA-Z0-9_][0-9]{2}[a-zA-Z]([0-9][^a-zA-Z0-9_]*)+", 'g');
 export const formatDateInArray =(obj)=>{
     Object.entries(obj).map(([valueKeys, values])=>{
-        let newArray =Object.entries(obj)
         if(values !== undefined && patt.test(values) ){
-            {
-                 obj[valueKeys] = formatsDate(values)
-            }
 
-            console.log(obj)
+                {obj[valueKeys] = formatsDate(values)}
         }
         if(Array.isArray(values)){
             values.map((objArray)=>{
